@@ -30,34 +30,42 @@ class AppFixtures extends Fixture
 
         $chrono = 1;
 
-        for($u=0; $u<3;$u++){
+        for ($u = 0; $u < 4; $u++) {
             $user = new User();
 
             $hash = $this->encoder->encodePassword($user, "password");
             $user->setFirstName($faker->firstName())
-                 ->setLastName($faker->lastName)
-                 ->setEmail($faker->email)
-                 ->setPassword($hash);
+                ->setLastName($faker->lastName)
+                ->setPhoneNumber($faker->phoneNumber)
+                ->setEmail($faker->email)
+                ->setPassword($hash)
+                ->setZipcode($faker->numberBetween(1000, 9999))
+                ->setAddress($faker->streetAddress)
+                ->setCity($faker->city)
+                ->setRoles($faker->randomElement([['ADMIN'], ['WAITER'], ['COOK']]));
 
             $manager->persist($user);
         }
-        
-        for($i=0; $i<30;$i++){
+
+        for ($i = 0; $i < 30; $i++) {
             $customer = new Customer();
             $customer->setFirstName($faker->firstName())
-                     ->setLastName($faker->lastName)
-                     ->setPhoneNumber($faker->phoneNumber)
-                     ->setEmail($faker->email);
+                ->setLastName($faker->lastName)
+                ->setPhoneNumber($faker->phoneNumber)
+                ->setEmail($faker->email)
+                ->setZipcode($faker->numberBetween(1000, 9999))
+                ->setAddress($faker->streetAddress)
+                ->setCity($faker->city);
 
             $manager->persist($customer);
 
-            for($a=0; $a< mt_rand(1,2);$a++){
+            for ($a = 0; $a < mt_rand(1, 2); $a++) {
                 $invoice = new Invoice();
-                $invoice->setAmount($faker->randomFloat(2,2,300))
-                        ->setSentAt($faker->dateTimeBetween('-6 months'))
-                        ->setStatus($faker->randomElement(['PAID','CANCELLED','WAITING']))
-                        ->setCustomer($customer)
-                        ->setChrono($chrono);
+                $invoice->setAmount($faker->randomFloat(2, 2, 300))
+                    ->setSentAt($faker->dateTimeBetween('-6 months'))
+                    ->setStatus($faker->randomElement(['PAID', 'CANCELLED', 'WAITING']))
+                    ->setCustomer($customer)
+                    ->setChrono($chrono);
 
                 $chrono++;
                 $manager->persist($invoice);

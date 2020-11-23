@@ -1,0 +1,141 @@
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e9ecef;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a8adb3;
+}
+
+.row div {
+  border-radius: 3px;
+}
+
+.col-md-3 > .card {
+  height: 100%;
+}
+h1 {
+  color: dimgrey;
+}
+.card-body > span {
+  font-size: 150%;
+}
+.card-body > #nb {
+  font-weight: bold;
+  font-size: 300%;
+}
+hr.mid {
+  margin-top: auto;
+  margin-bottom: auto;
+  border-left: 0.8px solid lightgray;
+  height: 60vh;
+}
+.btn-danger {
+  height: 30px;
+  width: 30px;
+  padding: 0px;
+  font-weight: bold;
+}
+form {
+  background-color: whitesmoke;
+  padding: 20px;
+  margin: 10px;
+  box-shadow: lightslategrey 2px 2px 5px 0.2px;
+  border-radius: 4px;
+}
+div .profil {
+  background-color: whitesmoke;
+  padding: 20px;
+  margin: 10px;
+  box-shadow: lightslategrey 2px 2px 5px 0.5px;
+  border-radius: 4px;
+  margin-left: 35px;
+  margin-right: 35px;
+}
+.toa {
+  border-radius: 5px;
+  color: white;
+  box-shadow: lightslategrey 5px 5px 10px 0.5px;
+  padding-left: 25px;
+}
+.popup {
+  margin: 10px;
+  text-align: center;
+  border-radius: 5px;
+}
+.liste {
+  height: 35em;
+  overflow-y: scroll;
+  overflow: auto;
+  border-radius: 5px;
+}
+.listeProfil {
+  height: 10.5em;
+  overflow-y: scroll;
+  overflow: auto;
+  border-radius: 5px;
+  width: 20em;
+}
+#mapid {
+  margin-top: 1em;
+  box-shadow: lightgray 1px 1px 5px 0.5px;
+  background-color: rgb(53, 53, 53);
+  min-height: 40vh;
+}
+.clienttable {
+  margin-left: 17%;
+  margin-right: 17%;
+  padding: 0;
+  margin-bottom: 0.5em;
+}
+.select-address {
+  width: 100%;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.jumbotron {
+  margin-right: 10vw;
+  margin-left: 10vw;
+  margin-top: 2vh;
+  margin-bottom: 0.5%;
+}
+.footer {
+  margin-right: 10vw;
+  margin-left: 10vw;
+}
+hr {
+  margin-right: 3vw;
+  margin-left: 3vw;
+}
+.list-group-item:hover {
+  background-color: #f0f0f0;
+}
+.formBlock {
+  width: 50vw;
+  min-height: 30vh;
+  padding: 5vh 8vw;
+}
+.loginFormBlock {
+  min-width: 35vw;
+  min-height: 30vh;
+  padding: 6vh 5vw;
+}
+.orderBtn {
+  min-width: 16vw;
+  padding: 4vw;
+  margin: 1vh;
+  border-width: 0.2vh;
+}
+.btnblock:hover {
+  box-shadow: lightgray 2px 2px 5px 0.5px;
+  border-radius: 4px;
+}
+.card-body {
+  min-height: 78vh;
+}
