@@ -5,9 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -32,7 +30,7 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=100, unique=true)
      * @Groups({"users_read"})
      * @Assert\NotBlank(message="Email obligatoire")
      * @Assert\Email(message="Format de l'email invalide")
@@ -69,7 +67,7 @@ class User implements UserInterface
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=100)
      * @Groups({"users_read"})
      * @Assert\Length(min=5, minMessage="Trop court")
      * @Assert\NotBlank(message="Adresse obligatoire")
@@ -81,11 +79,12 @@ class User implements UserInterface
      * @Groups({"users_read"})
      * @Assert\NotBlank(message="Code postal obligatoire")
      * @Assert\Range(min=1000,max=99999,notInRangeMessage = "Le format du code postal n'est pas valide [{{min}}-{{max}}]")
+     * @Assert\Type("numeric")
      */
     private $zipcode;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=50)
      * @Groups({"users_read"})
      * @Assert\Length(min=2, minMessage="Nom trop court", max=50, maxMessage="Nom trop long")
      * @Assert\NotBlank(message="Ville obligatoire")
@@ -93,10 +92,11 @@ class User implements UserInterface
     private $city;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=15)
      * @Groups({"users_read"})
      * @Assert\Length(min=8, minMessage="Numéro trop court", max=15, maxMessage="Numéro trop long")
      * @Assert\NotBlank(message="Numéro de téléphone obligatoire")
+     * @Assert\Type("numeric")
      */
     private $phoneNumber;
 

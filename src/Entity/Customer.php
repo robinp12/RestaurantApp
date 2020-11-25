@@ -11,6 +11,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
 
 /**
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
@@ -35,44 +38,64 @@ class Customer
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"customers_read","invoices_read"})
+     * @Assert\Length(min=2, minMessage="Prénom trop court", max=50, maxMessage="Prénom trop long")
+     * @Assert\NotBlank(message="Prénom obligatoire")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"customers_read","invoices_read"})
+     * @Assert\Length(min=2, minMessage="Nom trop court", max=50, maxMessage="Nom trop long")
+     * @Assert\NotBlank(message="Nom obligatoire")
      */
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=180)
+     * @ORM\Column(type="string", length=100, unique=true)
      * @Groups({"customers_read","invoices_read"})
+     * @Assert\NotBlank(message="Email obligatoire")
+     * @Assert\Email(message="Format de l'email invalide")
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=15)
      * @Groups({"customers_read","invoices_read"})
+     * @Assert\Length(min=8, minMessage="Numéro trop court", max=15, maxMessage="Numéro trop long")
+     * @Assert\NotBlank(message="Numéro de téléphone obligatoire")
+     * @Assert\Type("numeric")
      */
     private $phoneNumber;
 
     /**
      * @ORM\OneToMany(targetEntity=Invoice::class, mappedBy="customer")
+     * @Groups({"customers_read"})
      */
     private $invoices;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=100)
+     * @Groups({"customers_read","invoices_read"})
+     * @Assert\Length(min=5, minMessage="Trop court")
+     * @Assert\NotBlank(message="Adresse obligatoire")
      */
     private $address;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"customers_read","invoices_read"})
+     * @Assert\NotBlank(message="Code postal obligatoire")
+     * @Assert\Range(min=1000,max=99999,notInRangeMessage = "Le format du code postal n'est pas valide")
+     * @Assert\Type("integer")
      */
     private $zipcode;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=50)
+     * @Groups({"customers_read","invoices_read"})
+     * @Assert\Length(min=2, minMessage="Nom trop court", max=50, maxMessage="Nom trop long")
+     * @Assert\NotBlank(message="Ville obligatoire")
      */
     private $city;
 

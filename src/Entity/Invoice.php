@@ -7,12 +7,15 @@ use App\Repository\InvoiceRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=InvoiceRepository::class)
  * @ApiResource(
  *  normalizationContext={
  *      "groups"={"invoices_read"}
- *  }
+ *  }, attributes={"order": {"chrono":"desc"}}
  * )
  */
 class Invoice
@@ -28,18 +31,24 @@ class Invoice
     /**
      * @ORM\Column(type="float")
      * @Groups({"invoices_read"})
+     * @Assert\NotBlank(message="Montant obligatoire")
      */
     private $amount;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"invoices_read"})
+     * @Assert\DateTime
+     * @var string A "Y-m-d H:i:s" formatted value
+     * @Assert\NotBlank(message="Date obligatoire")
      */
     private $sentAt;
 
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"invoices_read"})
+     * @Assert\NotBlank(message="Status obligatoire")
+     * @Assert\Choice(choices={"SENT", "PAID","CANCELLED"}, message="Le statut n'est pas valide")
      */
     private $status;
 
@@ -47,6 +56,7 @@ class Invoice
      * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="invoices")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"invoices_read"})
+     * @Assert\NotBlank(message="Client obligatoire")
      */
     private $customer;
 

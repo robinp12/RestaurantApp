@@ -4,8 +4,10 @@ namespace App\Events;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 
-class JwtCreatedSubscriber {
-    public function updateJwtData(JWTCreatedEvent $event){
+class JwtCreatedSubscriber
+{
+    public function updateJwtData(JWTCreatedEvent $event)
+    {
 
         $user = $event->getUser();
 
@@ -16,6 +18,5 @@ class JwtCreatedSubscriber {
         $data['roles'] = $user->getRoles();
 
         $event->setData($data);
-        dd($event->getData());
     }
 }

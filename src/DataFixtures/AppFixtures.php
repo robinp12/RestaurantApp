@@ -34,6 +34,7 @@ class AppFixtures extends Fixture
             $user = new User();
 
             $hash = $this->encoder->encodePassword($user, "password");
+
             $user->setFirstName($faker->firstName())
                 ->setLastName($faker->lastName)
                 ->setPhoneNumber($faker->phoneNumber)
@@ -42,7 +43,7 @@ class AppFixtures extends Fixture
                 ->setZipcode($faker->numberBetween(1000, 9999))
                 ->setAddress($faker->streetAddress)
                 ->setCity($faker->city)
-                ->setRoles($faker->randomElement([['ADMIN'], ['WAITER'], ['COOK']]));
+                ->setRoles($faker->randomElement([['ROLE_ADMIN'], ['ROLE_WAITER'], ['ROLE_COOK']]));
 
             $manager->persist($user);
         }
