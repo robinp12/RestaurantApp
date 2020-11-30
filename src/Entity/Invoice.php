@@ -38,8 +38,6 @@ class Invoice
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"invoices_read"})
-     * @Assert\DateTime
-     * @var string A "Y-m-d H:i:s" formatted value
      * @Assert\NotBlank(message="Date obligatoire")
      */
     private $sentAt;
@@ -64,6 +62,7 @@ class Invoice
      * Numero de commande
      * @ORM\Column(type="integer")
      * @Groups({"invoices_read"})
+     * @Assert\NotBlank(message="Chrono obligatoire")
      */
     private $chrono;
 

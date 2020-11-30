@@ -12,7 +12,7 @@ const Menu = () => {
             <div className="card-text">
                 <div className="row">
                     <div className="col">
-                        <h4 className="display-5 my-3" id="plats">Plats</h4>
+                        <h4 className="display-5 my-3" id="plats">Entrées</h4>
                         <ul className="list-group">
                             <li className="list-group-item d-flex justify-content-between align-items-center">
                                 Cras justo odio
@@ -29,7 +29,7 @@ const Menu = () => {
                         </ul>
                     </div>
                     <div className="col">
-                        <h4 className="display-5 my-3">Suggestions du moment</h4>
+                        <h4 className="display-5 my-3">Plats</h4>
                         <ul className="list-group">
                             <li className="list-group-item d-flex justify-content-between align-items-center">
                                 <span>Cras justo odio <PopupInfo info={"Information sur le plat"}>{infoIcon}</PopupInfo></span>
@@ -41,6 +41,25 @@ const Menu = () => {
                             </li>
                             <li className="list-group-item d-flex justify-content-between align-items-center">
                                 <span>Morbi leo risus {infoIcon}</span>
+                                <span className="lead">1.00€</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <h4 className="display-5 my-3">Desserts</h4>
+                        <ul className="list-group">
+                            <li className="list-group-item d-flex justify-content-between align-items-center">
+                                Cras justo odio
+                                <span className="lead">10.00€</span>
+                            </li>
+                            <li className="list-group-item d-flex justify-content-between align-items-center">
+                                Dapibus ac facilisis in
+                                <span className="lead">1.00€</span>
+                            </li>
+                            <li className="list-group-item d-flex justify-content-between align-items-center">
+                                Morbi leo risus
                                 <span className="lead">1.00€</span>
                             </li>
                         </ul>
@@ -78,27 +97,6 @@ const Menu = () => {
                             <li className="list-group-item d-flex justify-content-between align-items-center">
                                 Morbi leo risus
                                         <span className="lead">1.00€</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-
-
-                        <h4 className="display-5 my-3">Desserts</h4>
-                        <ul className="list-group">
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Cras justo odio
-                                <span className="lead">10.00€</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Dapibus ac facilisis in
-                                <span className="lead">1.00€</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Morbi leo risus
-                                <span className="lead">1.00€</span>
                             </li>
                         </ul>
                     </div>

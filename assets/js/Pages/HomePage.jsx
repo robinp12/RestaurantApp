@@ -4,7 +4,7 @@ import Header from "../Components/Header";
 const HomePage = () => {
     return (
         <>
-            <h2 className="card-title"><Header title={"Restaurant"} /></h2>
+            <h2 className="card-title"><Header title={"Le Cheval Blanc"} /></h2>
             <div className="row">
                 <div className="col">
                     <img src="https://ad962edbae8ba7b03b7f-d10007df79b5b7a4e475a291e50a08cf.ssl.cf3.rackcdn.com/creer-un-restaurant/creer-un-restaurant.jpg" />

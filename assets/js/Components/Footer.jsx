@@ -1,6 +1,14 @@
 import React from "react";
+import authAPI from "../Services/authAPI";
 
-const Footer = () => {
+const Footer = ({ isAuth, onLogout, history }) => {
+
+    const handleLogout = () => {
+        authAPI.logout();
+        onLogout(false);
+        history.push("/connexion")
+    }
+
     return (
         <>
             {/* Composant pour le footer */}
@@ -11,10 +19,15 @@ const Footer = () => {
                 <small className="text-muted">
                     Front-End & Back-End by Robin Paquet
                 </small>
-                <a href="#connexion"><small className="text-primary">
-                    Connexion
-                </small>
+                {!isAuth &&
+                    <a href="#connexion" className="small">
+                        Connexion
                 </a>
+                    ||
+                    <a onClick={handleLogout} className="small">
+                        Deconnexion
+                </a>
+                }
             </div>
         </>
     );

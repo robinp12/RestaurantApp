@@ -2,14 +2,15 @@
 
 namespace App\Events;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use DateTime;
 use App\Entity\Invoice;
 use App\Repository\InvoiceRepository;
-use DateTime;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
+use ApiPlatform\Core\EventListener\EventPriorities;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\ViewEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 
 class InvoiceChronoSubscriber implements EventSubscriberInterface
 {

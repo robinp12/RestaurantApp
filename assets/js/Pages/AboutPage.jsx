@@ -26,25 +26,27 @@ const AboutPage = () => {
                     <div className="row">
                         <div className="col">
                             <address>
-                                <strong>Restaurant.</strong>
+                                <strong>Le Cheval Blanc</strong>
                                 <br />
-                                    1355 Market Street, Suite 900
+                                Chaussée de Dinant, 26
+                                <br />5530 Spontin
                                     <br />
-                                    San Francisco, CA 94103
+                                <abbr title="Phone">N: </abbr> 083 69 96 19
+
+                                <abbr title="Phone">N: </abbr> 0475 31 93 24
+
                                     <br />
-                                <abbr title="Phone">N: </abbr> (+32) 499 02 22 02
-                                    <br />
-                                <a href="mailto:#">first.last@example.com</a>
+                                <a href="mailto:cavalo.branco@skynet.be">cavalo.branco@skynet.be</a>
                             </address>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col">
-                            <strong>Horaire</strong>
+                            <strong>Horaires d'ouvertures :</strong>
                             <br />Lundi et Mardi : de 18h à 21h
-                                <br />Vendredi : de 18h à 22h
-                                <br />Samedi : de 11h à 14h et de 18h à 22h
-                                <br />Dimanche : de 11h à 21h
+                               <br /> Vendredi : de 18h à 22h
+                               <br /> Samedi : de 11h à 14h et de 18h à 22h
+                               <br /> Dimanche : de 11h à 21h
                                 </div>
                     </div>
                 </div>

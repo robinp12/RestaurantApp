@@ -16,33 +16,68 @@ import OrderPage from "./Pages/OrderPage";
 import MenuPage from "./Pages/MenuPage";
 import ConnexionPage from "./Pages/ConnexionPage";
 import Footer from "./Components/Footer";
+import CustomersPage from "./Pages/CustomersPage";
+import UsersPage from "./Pages/UsersPage";
+import InvoicesPage from "./Pages/InvoicesPage";
+import authAPI from "./Services/authAPI";
 
 {
   /* Routes sécurisées */
 }
-
+authAPI.setup();
+{
+  /* Routes sécurisées */
+}
+const PrivateRoute = ({ path, isAuth, component }) =>
+  isAuth ? (
+    <Route path={path} component={component} />
+  ) : (
+    <Redirect to="/connexion" />
+  );
 const App = () => {
+  const [isAuth, setIsAuth] = useState(authAPI.isAuth());
   const NavbarWithRouter = withRouter(NavbarPerso);
-
+  const FooterWithRouter = withRouter(Footer);
   return (
     <>
-      <HashRouter>
-        <NavbarWithRouter />
+      <HashRouter hashType="noslash">
+        <NavbarWithRouter isAuth={isAuth} />
         <div className="jumbotron">
           <div className="card mt-4">
             <div className="card-body">
               <Switch>
-                <Route path="/connexion" component={ConnexionPage} />
-                <Route path="/about" component={AboutPage} />
+                <PrivateRoute
+                  isAuth={isAuth}
+                  path="/factures"
+                  component={InvoicesPage}
+                />
+                <PrivateRoute
+                  isAuth={isAuth}
+                  path="/utilisateurs"
+                  component={UsersPage}
+                />
+                <PrivateRoute
+                  isAuth={isAuth}
+                  path="/clients"
+                  component={CustomersPage}
+                />
+                {isAuth && <Redirect path={"/connexion"} to="/" />}
+                <Route
+                  path="/connexion"
+                  render={(props) => (
+                    <ConnexionPage onLogin={setIsAuth} {...props} />
+                  )}
+                />
+                <Route path="/apropos" component={AboutPage} />
                 <Route path="/menu" component={MenuPage} />
-                <Route path="/reserve" component={ReservationPage} />
-                <Route path="/order" component={OrderPage} />
+                <Route path="/reserver" component={ReservationPage} />
+                <Route path="/commander" component={OrderPage} />
                 <Route path="/" component={HomePage} />
               </Switch>
             </div>
           </div>
         </div>
-        <Footer />
+        <FooterWithRouter isAuth={isAuth} onLogout={setIsAuth} />
       </HashRouter>
       {/* Configuration notification */}
     </>
