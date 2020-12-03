@@ -39,7 +39,7 @@ const ConnexionPage = ({ onLogin, history }) => {
         <>
             <h2 className="card-title"><Header title={"Connexion"} /></h2>
             <div className="row justify-content-center">
-                <form onSubmit={handleSubmit} className="loginFormBlock">
+                <form onSubmit={handleSubmit} className="loginFormBlock form">
                     <Field
                         label="Adresse mail"
                         name="username"

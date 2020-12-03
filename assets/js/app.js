@@ -21,6 +21,10 @@ import UsersPage from "./Pages/UsersPage";
 import InvoicesPage from "./Pages/InvoicesPage";
 import authAPI from "./Services/authAPI";
 
+import fr from "./Lang/fr_FR.json";
+import en from "./Lang/en_EN.json";
+import ManagementPage from "./Pages/ManagementPage";
+
 {
   /* Routes sécurisées */
 }
@@ -38,10 +42,23 @@ const App = () => {
   const [isAuth, setIsAuth] = useState(authAPI.isAuth());
   const NavbarWithRouter = withRouter(NavbarPerso);
   const FooterWithRouter = withRouter(Footer);
+
+  const [language, setLanguage] = useState(true);
+  let lang;
+  if (language) {
+    lang = fr;
+  } else {
+    lang = en;
+  }
+
   return (
     <>
       <HashRouter hashType="noslash">
-        <NavbarWithRouter isAuth={isAuth} />
+        <NavbarWithRouter
+          setLanguage={setLanguage}
+          language={language}
+          isAuth={isAuth}
+        />
         <div className="jumbotron">
           <div className="card mt-4">
             <div className="card-body">
@@ -61,6 +78,11 @@ const App = () => {
                   path="/clients"
                   component={CustomersPage}
                 />
+                <PrivateRoute
+                  isAuth={isAuth}
+                  path="/manage"
+                  component={ManagementPage}
+                />
                 {isAuth && <Redirect path={"/connexion"} to="/" />}
                 <Route
                   path="/connexion"
@@ -68,11 +90,26 @@ const App = () => {
                     <ConnexionPage onLogin={setIsAuth} {...props} />
                   )}
                 />
-                <Route path="/apropos" component={AboutPage} />
-                <Route path="/menu" component={MenuPage} />
-                <Route path="/reserver" component={ReservationPage} />
-                <Route path="/commander" component={OrderPage} />
-                <Route path="/" component={HomePage} />
+                <Route
+                  path="/apropos"
+                  render={(props) => <AboutPage lang={lang} {...props} />}
+                />
+                <Route
+                  path="/menu"
+                  render={(props) => <MenuPage lang={lang} {...props} />}
+                />
+                <Route
+                  path="/reserver"
+                  render={(props) => <ReservationPage lang={lang} {...props} />}
+                />
+                <Route
+                  path="/commander"
+                  render={(props) => <OrderPage lang={lang} {...props} />}
+                />
+                <Route
+                  path="/"
+                  render={(props) => <HomePage lang={lang} {...props} />}
+                />
               </Switch>
             </div>
           </div>

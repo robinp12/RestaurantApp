@@ -2,10 +2,10 @@ import React from 'react';
 import Header from '../Components/Header';
 import Menu from '../Components/Menu';
 
-const MenuPage = () => {
+const MenuPage = ({ lang }) => {
     return (
         <>
-            <h2 className="card-title"><Header title={"La carte"} /></h2>
+            <h2 className="card-title"><Header title={lang.theMenu} /></h2>
             <Menu />
         </>
     );

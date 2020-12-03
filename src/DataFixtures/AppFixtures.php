@@ -52,7 +52,7 @@ class AppFixtures extends Fixture
             $customer = new Customer();
             $customer->setFirstName($faker->firstName())
                 ->setLastName($faker->lastName)
-                ->setPhoneNumber($faker->phoneNumber)
+                ->setPhoneNumber("0000000000")
                 ->setEmail($faker->email)
                 ->setZipcode($faker->numberBetween(1000, 9999))
                 ->setAddress($faker->streetAddress)

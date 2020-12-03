@@ -60,11 +60,11 @@ class Customer
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=30)
      * @Groups({"customers_read","invoices_read"})
-     * @Assert\Length(min=8, minMessage="Numéro trop court", max=15, maxMessage="Numéro trop long")
+     * @Assert\Length(min=5, minMessage="Numéro trop court", max=30, maxMessage="Numéro trop long")
      * @Assert\NotBlank(message="Numéro de téléphone obligatoire")
-     * @Assert\Type("numeric")
+     * @Assert\Type("numeric",message="Format du numéro de téléphone invalide")
      */
     private $phoneNumber;
 
@@ -99,9 +99,15 @@ class Customer
      */
     private $city;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="customer")
+     */
+    private $reservations;
+
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -220,6 +226,37 @@ class Customer
     public function setCity(string $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reservation[]
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations[] = $reservation;
+            $reservation->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): self
+    {
+        if ($this->reservations->contains($reservation)) {
+            $this->reservations->removeElement($reservation);
+            // set the owning side to null (unless already changed)
+            if ($reservation->getCustomer() === $this) {
+                $reservation->setCustomer(null);
+            }
+        }
 
         return $this;
     }

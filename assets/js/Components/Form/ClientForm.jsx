@@ -1,12 +1,16 @@
 import React from 'react';
 import Field from './Field';
 
-const ClientForm = () => {
+const ClientForm = ({ setClient }) => {
+
+
+
     return (
         <>
+            <button onClick={() => setClient({ lastName: "Rob" })}>test</button>
             <div className="row">
                 <div className="col">
-                    <Field label="Nom" placeholder="Nom" />
+                    <Field label="Nom" placeholder="Nom" onChange={() => setClient({ lastName: "Rob" })} />
                 </div>
                 <div className="col">
                     <Field label="Prénom" placeholder="Prénom" />

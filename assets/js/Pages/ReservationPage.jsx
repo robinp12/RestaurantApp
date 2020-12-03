@@ -56,7 +56,7 @@ const ReservationPage = () => {
         <>
             <h2 className="card-title"><Header title={"Réservation"} /></h2>
             <div className="row justify-content-center">
-                <form className="formBlock">
+                <form className="formBlock form">
                     {reserve()}
                 </form>
             </div>

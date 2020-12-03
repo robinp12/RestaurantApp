@@ -38,31 +38,28 @@ const CustomersPage = () => {
     return (
         <>
             <div className="row">
-                <div className="col-4">
-                    <div className="table-responsive">
-                        <table className="table table-hover">
-                            <thead className="thead-dark">
-                                <tr>
-                                    <th className="text-center">Numéro client</th>
-                                    <th className="text-center">Client</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {customers.map(customer => <tr key={customer.id} onClick={() => setCustomersInfo(customer)}>
-                                    <th scope="row" className="text-center">{customer.id}</th>
-                                    <td className="text-center">{customer.firstName} {customer.lastName.toUpperCase()}</td>
-                                </tr>)}
-
-                            </tbody>
-                        </table>
-                    </div>
+                <div className="col-12-sm">
+                    <table className="table table-responsive-sm table-hover">
+                        <thead className="thead-dark">
+                            <tr>
+                                <th className="text-center">Numéro client</th>
+                                <th className="text-center">Client</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {customers.map(customer => <tr key={customer.id} onClick={() => setCustomersInfo(customer)}>
+                                <th scope="row" className="text-center">#{customer.id}</th>
+                                <td className="text-center">{customer.firstName} {customer.lastName.toUpperCase()}</td>
+                            </tr>)}
+                        </tbody>
+                    </table>
                 </div>
                 <div className="col">
                     <h2>Clients <b>{customerInfo.id}</b></h2>
                     {customerInfo.length !== 0 &&
-                        <div className="container">
-                            <div className="row">
-                                <div className="col">
+                        <div className="row justify-content-center">
+                            <div className="col">
+                                <div className="form container p-4">
                                     <div className="row">
                                         {change &&
                                             <>
@@ -90,15 +87,15 @@ const CustomersPage = () => {
                                     <div className="row">
                                         <div className="col">
 
-                                            <span>{customerInfo.invoices}</span><br />
+                                            <span>{customerInfo.invoices}<br /></span>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col">
-                                    <button className="btn btn-secondary" onClick={() => setChange(!change)}>{!change ? "Modifier" : "Valider"}</button>
-                                    <button className="btn btn-primary" onClick={() => handleDelete(customerInfo.id)} disabled={customerInfo.invoices.length}>Supprimer</button>
+                                    <div className="row mt-3">
+                                        <div className="col">
+                                            <button className="btn btn-secondary" onClick={() => setChange(!change)}>{!change ? "Modifier" : "Valider"}</button>
+                                            <button className="btn btn-primary" onClick={() => handleDelete(customerInfo.id)} disabled={customerInfo.invoices.length}>Supprimer</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -40,12 +40,15 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="json")
      * @Groups({"users_read"})
+     * @Assert\NotBlank(message="Rôle obligatoire")
+     * @Assert\Type("array",message="Rôle obligatoire")
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Length(min=5, minMessage="Mot de passe trop court")
      * @Assert\NotBlank(message="Mot de passe obligatoire")
      */
     private $password;
@@ -75,11 +78,11 @@ class User implements UserInterface
     private $address;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=4)
      * @Groups({"users_read"})
      * @Assert\NotBlank(message="Code postal obligatoire")
-     * @Assert\Range(min=1000,max=99999,notInRangeMessage = "Le format du code postal n'est pas valide [{{min}}-{{max}}]")
-     * @Assert\Type("numeric")
+     * @Assert\Range(min=1000,max=99999,notInRangeMessage = "Format de code postal invalide")
+     * @Assert\Type("numeric",message="Format du code postal invalide")
      */
     private $zipcode;
 
@@ -96,7 +99,7 @@ class User implements UserInterface
      * @Groups({"users_read"})
      * @Assert\Length(min=8, minMessage="Numéro trop court", max=15, maxMessage="Numéro trop long")
      * @Assert\NotBlank(message="Numéro de téléphone obligatoire")
-     * @Assert\Type("numeric")
+     * @Assert\Type("numeric",message="Format du numéro de téléphone invalide")
      */
     private $phoneNumber;
 
@@ -214,12 +217,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getZipcode(): ?int
+    public function getZipcode(): ?string
     {
         return $this->zipcode;
     }
 
-    public function setZipcode(int $zipcode): self
+    public function setZipcode(string $zipcode): self
     {
         $this->zipcode = $zipcode;
 

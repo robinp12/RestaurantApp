@@ -2,75 +2,113 @@ import axios from 'axios';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import AddUser from '../Components/Form/Add/AddUser';
+import usersAPI from '../Services/usersAPI';
 
 const UsersPage = () => {
 
     const [users, setUsers] = useState([]);
     const [userInfo, setUserInfo] = useState([]);
+    const [addUser, setAddUser] = useState(false);
 
+    const fetchUsers = async () => {
+        try {
+            const data = await usersAPI.getAllUsers();
+            setUsers(data);
+        } catch (error) {
+            console.log(error.response);
+            //   toast(error + "", {
+            //     className: "bg-red",
+            //   });
+        }
+    };
     useEffect(() => {
-        axios
-            .get("http://localhost:8000/api/users")
-            .then(rep => rep.data["hydra:member"])
-            .then(data => setUsers(data))
-            .catch(err => console.log(err.response));
+        fetchUsers();
     }, [])
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         const originUsers = [...users];
 
         setUsers(users.filter(user => user.id !== id));
-
-        axios
-            .delete("http://localhost:8000/api/users/" + id)
-            .then(rep => console.log("supp"))
-            .catch(err => {
-                setUsers(originUsers);
-                console.log(err.response);
-            });
-        ;
+        try {
+            await usersAPI.deleteUsers(id);
+            // toast("Utilisateur n°" + id + " supprimé", {
+            //     className: "bg-red",
+            // });
+        } catch (error) {
+            setUsers(originUsers);
+            // toast(error + "", {
+            //     className: "bg-red",
+            // });
+        }
     }
 
 
     return (
         <>
             <div className="row">
-                <div className="col">
+                <div className="col-12-sm col-4-md">
                     <table className="table table-hover">
-                        <thead>
+                        <thead className="thead-dark">
                             <tr>
-                                <th>Utilisateur</th>
+                                <th className=" align-middle">Utilisateur
+                                </th>
+                                <th>
+                                    <button onClick={() => setAddUser(!addUser)} className="btn btn-primary float-right">+</button>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map(user => <tr key={user.id} onClick={() => setUserInfo(user)}>
+                            {users.map(user => <tr key={user.id} onClick={() => {
+                                setUserInfo(user)
+                                setAddUser(false)
+                            }}>
                                 <td>{user.firstName} {user.lastName.toUpperCase()}</td>
-                            </tr>)}
+                                <td></td></tr>)}
                         </tbody>
                     </table>
                 </div>
                 <div className="col">
-                    <h2>Utilisateur</h2>
-                    <div className="row">
-                        <div className="col">
-                            <span>{userInfo.id}</span><br />
-                            <span>{userInfo.lastName}</span><br />
-                            <span>{userInfo.firstName}</span><br />
-                            <span>{userInfo.phoneNumber}</span><br />
-                            <span>{userInfo.address}</span><br />
-                            <span>{userInfo.city}</span><br />
-                            <span>{userInfo.zipcode}</span><br />
-                            <span>{userInfo.roles}</span><br />
-                            <span>{userInfo.email}</span><br />
+                    {addUser &&
+                        <>
+                            <h2>Ajouter un utilisateur</h2>
+                            <AddUser />
+                        </>
+                        ||
+                        <>
+                            <h2>Utilisateur <b>{userInfo.id}</b></h2>
+                            {isNaN(userInfo) &&
+                                <div className="row justify-content-center">
+                                    <div className="col">
+                                        <div className="form container p-4">
+                                            <div className="row">
+                                                <div className="col">
+                                                    <span>Nom : {userInfo.lastName}</span><br />
+                                                    <span>Prénom : {userInfo.firstName}</span><br />
+                                                    <span>Téléphone : {userInfo.phoneNumber}</span><br />
+                                                    <span>Email : {userInfo.email}</span><br />
+                                                    <span>Rôle : {userInfo.roles}</span><br />
+                                                </div>
+                                                <div className="col">
+                                                    <span>Adresse : {userInfo.address}</span><br />
+                                                    <span>Ville : {userInfo.city}</span><br />
+                                                    <span>Code postal : {userInfo.zipcode}</span><br />
+                                                </div>
+                                            </div>
+                                            <div className="row mt-3">
+                                                <div className="col">
+                                                    {userInfo.length !== 0 && <button className="btn btn-primary" onClick={() => handleDelete(userInfo.id)}>Supprimer</button>}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        </div>
-                        <div className="col">
-                            {userInfo.length !== 0 && <button className="btn btn-primary" onClick={() => handleDelete(userInfo.id)}>Supprimer</button>}
-                        </div>
-                    </div>
+                                </div>}
+
+                        </>
+                    }
                 </div>
             </div>
-
         </>
     );
 }

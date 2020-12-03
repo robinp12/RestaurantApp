@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 
 
-const NavbarPerso = ({ isAuth }) => {
-
+const NavbarPerso = ({ isAuth, setLanguage, language }) => {
   return (
     <Navbar fixed="top" bg="dark" variant="dark" collapseOnSelect expand="lg">
       <Navbar.Brand href="#">Le Cheval Blanc</Navbar.Brand>
@@ -12,6 +11,7 @@ const NavbarPerso = ({ isAuth }) => {
         {!isAuth &&
           <>
             <Nav className="mr-auto nav-item">
+              <button onClick={() => setLanguage(!language)}>Langue</button>
               <NavDropdown title="La carte" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#menu#plats">Plats</NavDropdown.Item>
                 <NavDropdown.Item href="#menu#boissons">Boissons</NavDropdown.Item>
@@ -26,7 +26,7 @@ const NavbarPerso = ({ isAuth }) => {
             </Nav>
           </>
           ||
-          <Nav className="ml-auto nav-item">
+          <Nav className="mr-auto nav-item">
             <Nav.Link className="nav-item" href="#commandes">Commandes</Nav.Link>
             <Nav.Link className="nav-item" href="#reservations">Reservations</Nav.Link>
             <Nav.Link className="nav-item" href="#factures">Factures</Nav.Link>
@@ -34,7 +34,7 @@ const NavbarPerso = ({ isAuth }) => {
               <NavDropdown.Item href="#clients">Clients</NavDropdown.Item>
               <NavDropdown.Item href="#utilisateurs">Utilisateurs</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">Menus</NavDropdown.Item>
+              <NavDropdown.Item href="#manage">Menus</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         }

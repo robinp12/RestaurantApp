@@ -6,10 +6,14 @@ import OrderSummary from '../Components/Form/OrderSummary';
 import PaymentForm from '../Components/Form/PaymentForm';
 import Header from '../Components/Header';
 import Menu from '../Components/Menu';
+import lang from "../Lang/en_EN.json"
+//Mise ne place dans le state
+const handleChange = ({ currentTarget }) => {
+  const { value, name } = currentTarget;
+  setLogin({ ...login, [name]: value });
+};
 
-
-
-const OrderPage = () => {
+const OrderPage = ({ lang }) => {
   const [there, setThere] = useState(0);
   const [away, setAway] = useState(0);
   const [choose, setChoose] = useState(0);
@@ -24,7 +28,7 @@ const OrderPage = () => {
     zipcode: data.zipcode,
     phoneNumber: data.phoneNumber
   });
-
+  console.log(client);
   function order() {
     console.log(there, away)
     switch (choose) {
@@ -32,13 +36,13 @@ const OrderPage = () => {
         switch (there) {
           case 1:
             return (<>Apres emporter
-              <button className="btn-primary btn" onClick={() => setThere(step => step - 1)}>Retour</button>
+              <button className="btn-primary btn" onClick={() => setThere(step => step - 1)}>{lang.back}</button>
             </>);
           default:
             return (
               <>
-                <button className="btn-primary btn float-left" onClick={() => setChoose(0)}>Retour</button>
-                <button className="btn-primary btn float-right" onClick={() => setThere(step => step + 1)}>Suivant</button>
+                <button className="btn-primary btn float-left" onClick={() => setChoose(0)}>{lang.back}</button>
+                <button className="btn-primary btn float-right" onClick={() => setThere(step => step + 1)}>{lang.next}</button>
               </>);
         }
       case 2:
@@ -49,8 +53,8 @@ const OrderPage = () => {
                 <div className="container">
                   <Menu />
                   <br />
-                  <button className="btn-primary btn float-left" onClick={() => setAway(step => step - 1)}>Retour</button>
-                  <button className="btn-primary btn float-right" onClick={() => setAway(step => step + 1)}>Suivant</button>
+                  <button className="btn-primary btn float-left" onClick={() => setAway(step => step - 1)}>{lang.back}</button>
+                  <button className="btn-primary btn float-right" onClick={() => setAway(step => step + 1)}>{lang.next}</button>
 
                 </div>
               </>);
@@ -59,8 +63,8 @@ const OrderPage = () => {
               <>
                 <div className="container">
                   <OrderInformation />
-                  <button className="btn-primary btn float-left" onClick={() => setAway(step => step - 1)}>Retour</button>
-                  <button className="btn-primary btn float-right" onClick={() => setAway(step => step + 1)}>Suivant</button>
+                  <button className="btn-primary btn float-left" onClick={() => setAway(step => step - 1)}>{lang.back}</button>
+                  <button className="btn-primary btn float-right" onClick={() => setAway(step => step + 1)}>{lang.next}</button>
                 </div>
               </>);
           case 3: // Order summary
@@ -68,25 +72,25 @@ const OrderPage = () => {
               <>
                 <div className="container">
                   <OrderSummary />
-                  <button className="btn-primary btn float-left" onClick={() => setAway(step => step - 1)}>Retour</button>
-                  <button className="btn-primary btn float-right" onClick={() => setAway(step => step + 1)}>Confirmer</button>
+                  <button className="btn-primary btn float-left" onClick={() => setAway(step => step - 1)}>{lang.back}</button>
+                  <button className="btn-primary btn float-right" onClick={() => setAway(step => step + 1)}>{lang.confirm}</button>
                 </div>
               </>);
           case 4: // Payment
             return (
               <>
                 <div className="container">
-                  <h3>Paiement</h3>
+                  <h3>{lang.payment}</h3>
                   <PaymentForm />
-                  <button className="btn-primary btn float-left" onClick={() => setAway(step => step - 1)}>Retour</button>
-                  <button className="btn-primary btn float-right" onClick={() => setAway(step => step + 1)}>Payer</button>
+                  <button className="btn-primary btn float-left" onClick={() => setAway(step => step - 1)}>{lang.back}</button>
+                  <button className="btn-primary btn float-right" onClick={() => setAway(step => step + 1)}>{lang.pay}</button>
                 </div>
               </>);
           case 5: // Payment validation
             return (
               <>
                 <div className="container">
-                  <h3>Confirmation du payement</h3>
+                  <h3>{lang.paymentConfirmation}</h3>
 
                   <button className="btn-primary btn float-right" onClick={() => { setChoose(0); setAway(0) }}>OK</button>
                 </div>
@@ -95,9 +99,9 @@ const OrderPage = () => {
             return (
               <>
                 <div className="container">
-                  <ClientForm />
-                  <button className="btn-primary btn float-left" onClick={() => setChoose(0)}>Retour</button>
-                  <button className="btn-primary btn float-right" onClick={() => setAway(step => step + 1)}>Suivant</button>
+                  <ClientForm setClient={setClient} />
+                  <button className="btn-primary btn float-left" onClick={() => setChoose(0)}>{lang.back}</button>
+                  <button className="btn-primary btn float-right" onClick={() => setAway(step => step + 1)}>{lang.next}</button>
                 </div>
               </>);
         };
@@ -106,8 +110,8 @@ const OrderPage = () => {
         return (<>
           <div className="container">
             <div className="d-flex justify-content-center align-items-center">
-              <a className="btn text-primary border-primary orderBtn" onClick={() => setChoose(1)}><h3>Sur place</h3></a>
-              <a className="btn text-dark border-dark orderBtn" onClick={() => setChoose(2)}><h3>À emporter</h3></a>
+              <a className="btn text-primary border-primary orderBtn" onClick={() => setChoose(1)}><h3>{lang.there}</h3></a>
+              <a className="btn text-dark border-dark orderBtn" onClick={() => setChoose(2)}><h3>{lang.takeAway}</h3></a>
             </div>
           </div>
         </>);
@@ -116,10 +120,10 @@ const OrderPage = () => {
 
   return (
     <>
-      <h2 className="card-title"><Header title={"Commande"} /></h2>
+      <h2 className="card-title"><Header title={lang.toOrder} /></h2>
       <div className="container">
         <div className="row justify-content-center">
-          <form className="formBlock ">
+          <form className="formBlock form">
             {order()}
           </form>
         </div>

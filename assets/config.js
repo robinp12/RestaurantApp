@@ -5,4 +5,6 @@ export const API_URL = "http://localhost:8000/api/";
 export const USERS_API = API_URL + "users";
 export const INVOICES_API = API_URL + "invoices";
 export const CUSTOMERS_API = API_URL + "customers";
+export const PRODUCTS_API = API_URL + "products";
+export const CATEGORIES_API = API_URL + "categories";
 export const LOGIN_API = API_URL + "login_check";

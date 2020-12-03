@@ -1,105 +1,49 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
+import React, { useEffect } from 'react';
 import PopupInfo from './PopupInfo';
+import productsAPI from '../Services/productsAPI';
+import categoriesAPI from '../Services/categoriesAPI';
+import { useState } from 'react';
 
 const infoIcon = <FontAwesomeIcon icon={faInfoCircle} pull="right" className="infoIcon align-middle" fixedWidth />;
 
-
 const Menu = () => {
+    const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+
+    const fetchCatProd = async () => {
+        try {
+            const prod = await productsAPI.getAllProducts();
+            const cat = await categoriesAPI.getAllCategories();
+            setProducts(prod);
+            setCategories(cat);
+        } catch (error) {
+            console.log(error.response);
+        }
+    }
+    useEffect(() => {
+        fetchCatProd();
+    }, [])
+
     return (
         <>
             <div className="card-text">
                 <div className="row">
-                    <div className="col">
-                        <h4 className="display-5 my-3" id="plats">Entrées</h4>
-                        <ul className="list-group">
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Cras justo odio
-                                <span className="lead">10.00€</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Dapibus ac facilisis in
-                                <span className="lead">1.00€</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Morbi leo risus
-                                <span className="lead">1.00€</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="col">
-                        <h4 className="display-5 my-3">Plats</h4>
-                        <ul className="list-group">
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                <span>Cras justo odio <PopupInfo info={"Information sur le plat"}>{infoIcon}</PopupInfo></span>
-                                <span className="lead">10.00€</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                <span> Dapibus ac facilisis in {infoIcon}</span>
-                                <span className="lead"> 1.00€</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                <span>Morbi leo risus {infoIcon}</span>
-                                <span className="lead">1.00€</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <h4 className="display-5 my-3">Desserts</h4>
-                        <ul className="list-group">
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Cras justo odio
-                                <span className="lead">10.00€</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Dapibus ac facilisis in
-                                <span className="lead">1.00€</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Morbi leo risus
-                                <span className="lead">1.00€</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <h4 className="display-5 my-3" id="boissons">Boissons</h4>
-                        <ul className="list-group">
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Cras justo odio
-                                <span className="lead">10.00€</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Dapibus ac facilisis in
-                                <span className="lead">1.00€</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Morbi leo risus
-                                <span className="lead">1.00€</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="col">
-                        <h4 className="display-5 my-3">Vins</h4>
-                        <ul className="list-group">
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Cras justo odio
-                                        <span className="lead">10.00€</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Dapibus ac facilisis in
-                                        <span className="lead">1.00€</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Morbi leo risus
-                                        <span className="lead">1.00€</span>
-                            </li>
-                        </ul>
-                    </div>
+                    {categories.map((cat, index) =>
+                        <div key={index} className={"col-" + (index == 2 ? "12" : "6")}>
+                            <h4 className="display-5 my-3" id={cat.label}>{cat.label}</h4>
+                            <ul className="list-group">
+                                {products.map((prod, index) =>
+                                    cat.id == prod.category.id &&
+                                    <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                                        <span> {prod.label} <PopupInfo info={prod.description}>{infoIcon}</PopupInfo></span>
+                                        <span className="lead">{prod.price}€</span>
+                                    </li>
+                                )}
+                            </ul>
+                        </div>
+                    )}
                 </div>
             </div>
         </>);
