@@ -41,7 +41,7 @@ hr.mid {
 }
 .form {
   background-color: whitesmoke;
-  padding: 20px;
+  padding: 2vh 2vw;
   margin: 10px;
   box-shadow: lightslategrey 2px 2px 5px 0.2px;
   border-radius: 4px;
@@ -119,7 +119,6 @@ hr {
 .formBlock {
   width: 50vw;
   min-height: 30vh;
-  padding: 5vh 8vw;
 }
 .loginFormBlock {
   min-width: 35vw;

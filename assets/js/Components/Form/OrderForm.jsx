@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Field from './Field';
+import Field from './Input/Field';
 
-const OrderInformation = ({ reservation = false }) => {
+const OrderForm = ({ reservation = false }) => {
 
     const [today, setToday] = useState(new Date().toJSON().substring(0, 10));
     const [maxDate, setMaxDate] = useState(new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toJSON().substring(0, 10));
@@ -31,4 +31,4 @@ const OrderInformation = ({ reservation = false }) => {
         </>);
 }
 
-export default OrderInformation;
+export default OrderForm;

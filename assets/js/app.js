@@ -14,16 +14,18 @@ import AboutPage from "./Pages/AboutPage";
 import ReservationPage from "./Pages/ReservationPage";
 import OrderPage from "./Pages/OrderPage";
 import MenuPage from "./Pages/MenuPage";
-import ConnexionPage from "./Pages/ConnexionPage";
 import Footer from "./Components/Footer";
-import CustomersPage from "./Pages/CustomersPage";
-import UsersPage from "./Pages/UsersPage";
-import InvoicesPage from "./Pages/InvoicesPage";
-import authAPI from "./Services/authAPI";
+
+import ReservationManagement from "./Pages/Admin/ReservationManagement.jsx";
+import ConnexionPage from "./Pages/Admin/ConnexionPage";
+import CustomersPage from "./Pages/Admin/CustomersPage";
+import InvoicesPage from "./Pages/Admin/InvoicesPage";
+import MenuManagement from "./Pages/Admin/MenuManagement";
+import UsersPage from "./Pages/Admin/UsersPage";
 
 import fr from "./Lang/fr_FR.json";
 import en from "./Lang/en_EN.json";
-import ManagementPage from "./Pages/ManagementPage";
+import authAPI from "./Services/authAPI";
 
 {
   /* Routes sécurisées */
@@ -80,8 +82,13 @@ const App = () => {
                 />
                 <PrivateRoute
                   isAuth={isAuth}
+                  path="/reservations"
+                  component={ReservationManagement}
+                />
+                <PrivateRoute
+                  isAuth={isAuth}
                   path="/manage"
-                  component={ManagementPage}
+                  component={MenuManagement}
                 />
                 {isAuth && <Redirect path={"/connexion"} to="/" />}
                 <Route

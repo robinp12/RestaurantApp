@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import categoriesAPI from "../../../Services/categoriesAPI";
-import Field from "../Field";
-import Select from "./Select";
+import Field from "../Input/Field";
+import Select from "../Input/Select";
 
 const CategoryManagement = ({ setRefresh, refresh }) => {
 
@@ -136,6 +136,7 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                 <table className="table table-hover">
                     <thead className="">
                         <tr>
+                            <th className="text-center">Id</th>
                             <th className="text-center">Position</th>
                             <th className="text-center">Catégorie</th>
                             <th className="text-center"></th>
@@ -144,8 +145,9 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                     <tbody>
                         {categories.map((cat, index) =>
                             <tr key={index}>
+                                <td className="text-center align-middle">{cat.id}</td>
                                 <td className="text-center">
-                                    <div className="col-md-4 mx-auto">
+                                    <div className="col-md-5 mx-auto">
                                         <Select
                                             name="position"
                                             onChange={(e) => { handleChangeCategory(cat.id, e) }}

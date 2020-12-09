@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\InvoiceRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      "groups"={"invoices_read"}
  *  }, attributes={"order": {"chrono":"desc"}}
  * )
+ * @UniqueEntity("chrono", message="Déjà existant")
  */
 class Invoice
 {

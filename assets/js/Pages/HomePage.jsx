@@ -1,9 +1,24 @@
 import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import Header from "../Components/Header";
+let toto = [];
 
 const HomePage = () => {
+    const [bool, setBool] = useState(false);
+    const click = () => {
+        toto.push("dd")
+    }
+    useEffect(() => {
+        click()
+    }, [bool])
+
+    console.log(toto)
+
     return (
         <>
+            {toto.map(e => <b>{e}</b>)
+            }
             <h2 className="card-title"><Header title={"Le Cheval Blanc"} /></h2>
             <div className="row align-items-center">
                 <div className="col">
@@ -16,7 +31,7 @@ const HomePage = () => {
                         <hr className="my-4" />
                         <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
                         <p className="lead">
-                            <a className="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+                            <a onClick={() => setBool(!bool)} className="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
                         </p>                            </div>
                     <a href="#" className="card-link">Card link</a>
                     <a href="#" className="card-link">Another link</a>

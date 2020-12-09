@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Field from "../Components/Form/Field";
-import Header from '../Components/Header';
-import authAPI from "../Services/authAPI";
+import Field from "../../Components/Form/Input/Field";
+import Header from '../../Components/Header';
+import authAPI from "../../Services/authAPI";
 
 const ConnexionPage = ({ onLogin, history }) => {
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Field from "../Field";
+import Field from "../Input/Field";
 import productsAPI from "../../../Services/productsAPI";
-import Select from "./Select";
+import Select from "../Input/Select";
 import categoriesAPI from "../../../Services/categoriesAPI";
-import { Tabs } from "react-bootstrap";
+import { Tab, Tabs } from "react-bootstrap";
 
 
 const ProductManagement = ({ setRefresh, refresh }) => {
@@ -168,7 +168,7 @@ const ProductManagement = ({ setRefresh, refresh }) => {
                 <Tabs onSelect={() => setRefresh(!refresh)} id="controlled-tab">
                     {console.log(products)}
                     {categories.map((cat, index) =>
-                        <Tabs key={index} eventKey={cat.label} title={cat.label}>
+                        <Tab key={index} eventKey={cat.label} title={cat.label}>
                             <table className="table table-hover">
                                 <thead className="">
                                     <tr>
@@ -193,7 +193,7 @@ const ProductManagement = ({ setRefresh, refresh }) => {
                                     )}
                                 </tbody>
                             </table>
-                        </Tabs>
+                        </Tab>
                     )}
                 </Tabs>
             </div>

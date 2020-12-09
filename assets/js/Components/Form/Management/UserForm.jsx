@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import usersAPI from "../../../Services/usersAPI";
-import Field from "../Field";
-import Select from "./Select";
+import Field from "../Input/Field";
+import Select from "../Input/Select";
 
-const AddUser = () => {
+const UserForm = () => {
     const [users, setUsers] = useState({
         lastName: "",
         firstName: "",
@@ -210,4 +210,4 @@ const AddUser = () => {
         </>
     );
 };
-export default AddUser;
+export default UserForm;

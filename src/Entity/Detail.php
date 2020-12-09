@@ -2,60 +2,48 @@
 
 namespace App\Entity;
 
-use App\Repository\OrderRepository;
+use App\Repository\DetailRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
-
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass=OrderRepository::class)
- * @ORM\Table(name="`order`")
+ * @ORM\Entity(repositoryClass=DetailRepository::class)
  * @ApiResource(
  *  normalizationContext={
- *      "groups"={"orders_read"}
+ *      "groups"={"detail_read"}
  *  }
  * )
+ * @UniqueEntity("label", message="Déja utilisée")
  */
-class Order
+class Detail
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"orders_read"})
+     * @Groups({"detail_read"})
      */
     private $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"orders_read"})
+     * @ORM\Column(type="string", length=100)
+     * @Groups({"detail_read","product_read"})
+     * @Assert\NotBlank(message="Nom obligatoire")
      */
-    private $orderTable;
-
+    private $label;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Invoice::class, inversedBy="id_order")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"orders_read"})
-     * @Assert\NotBlank(message="Obligatoire")
-     */
-    private $invoice;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="orders")
-     * @Groups({"orders_read"})
-     * @Assert\NotBlank(message="Obligatoire")
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="detail")
      */
     private $product;
 
     public function __construct()
     {
-        $this->id_product = new ArrayCollection();
         $this->product = new ArrayCollection();
     }
 
@@ -64,26 +52,14 @@ class Order
         return $this->id;
     }
 
-    public function getOrderTable(): ?int
+    public function getLabel(): ?string
     {
-        return $this->orderTable;
+        return $this->label;
     }
 
-    public function setOrderTable(?int $orderTable): self
+    public function setLabel(string $label): self
     {
-        $this->orderTable = $orderTable;
-
-        return $this;
-    }
-
-    public function getInvoice(): ?Invoice
-    {
-        return $this->invoice;
-    }
-
-    public function setInvoice(?Invoice $invoice): self
-    {
-        $this->invoice = $invoice;
+        $this->label = $label;
 
         return $this;
     }
@@ -100,6 +76,7 @@ class Order
     {
         if (!$this->product->contains($product)) {
             $this->product[] = $product;
+            $product->setDetail($this);
         }
 
         return $this;
@@ -109,6 +86,10 @@ class Order
     {
         if ($this->product->contains($product)) {
             $this->product->removeElement($product);
+            // set the owning side to null (unless already changed)
+            if ($product->getDetail() === $this) {
+                $product->setDetail(null);
+            }
         }
 
         return $this;

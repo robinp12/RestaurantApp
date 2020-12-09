@@ -27,6 +27,8 @@
         "react-dom": "^16.8.6",
         "react-leaflet": "^2.7.0",
         "react-router-dom": "^5.2.0",
-        "reactjs-popup": "^2.0.4"
+        "reactjs-popup": "^2.0.4",
+        "socket.io": "^3.0.3",
+        "socket.io-client": "^3.0.3"
     }
 }

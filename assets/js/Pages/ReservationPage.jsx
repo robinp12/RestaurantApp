@@ -1,32 +1,58 @@
 import React, { useState } from 'react';
-import ClientForm from '../Components/Form/ClientForm';
-import OrderInformation from '../Components/Form/OrderInformation';
+import CustomerForm from '../Components/Form/CustomerForm';
+import OrderForm from '../Components/Form/OrderForm';
 import OrderSummary from '../Components/Form/OrderSummary';
 import Header from '../Components/Header';
 
 const ReservationPage = () => {
     const [step, setStep] = useState(0);
 
+    const [client, setClient] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        address: "",
+        city: "",
+        zipcode: "",
+        phoneNumber: ""
+    });
+    const [errors, setErrors] = useState({
+        lastName: "",
+        firstName: "",
+        email: "",
+        address: "",
+        zipcode: "",
+        city: "",
+        phoneNumber: ""
+    });
+
+    const handleChange = ({ currentTarget }) => {
+        const { name, value } = currentTarget;
+        setClient({ ...client, [name]: value });
+    };
+
+    const ButtonReservation = ({ children, next, back }) => {
+        return (
+            <div className="container">
+                {children}
+                <button className="btn-primary btn float-left" onClick={() => setStep(step => step - 1)}>{back}</button>
+                <button className="btn-primary btn float-right" onClick={() => setStep(step => step + 1)}>{next}</button>
+            </div>
+        )
+    }
+
     function reserve() {
         switch (step) {
             case 1: // Client informations
                 return (
-                    <>
-                        <div className="container">
-                            <ClientForm />
-                            <button className="btn-primary btn float-left" onClick={() => setStep(step => step - 1)}>Retour</button>
-                            <button className="btn-primary btn float-right" onClick={() => setStep(step => step + 1)}>Suivant</button>
-                        </div>
-                    </>);
+                    <ButtonReservation back={"Retour"} next={"Suivant"}>
+                        <CustomerForm client={client} errors={errors} handleChange={handleChange} />
+                    </ButtonReservation>);
             case 2: // Reservation summary
                 return (
-                    <>
-                        <div className="container">
-                            <OrderSummary reservation />
-                            <button className="btn-primary btn float-left" onClick={() => setStep(step => step - 1)}>Retour</button>
-                            <button className="btn-primary btn float-right" onClick={() => setStep(step => step + 1)}>Réserver</button>
-                        </div>
-                    </>);
+                    <ButtonReservation back={"Retour"} next={"Suivant"}>
+                        <OrderSummary reservation client={client} />
+                    </ButtonReservation>);
             case 3: // Reservation validation
                 return (
                     <>
@@ -45,7 +71,7 @@ const ReservationPage = () => {
                 return (
                     <>
                         <div className="container">
-                            <OrderInformation reservation />
+                            <OrderForm reservation />
                             <button className="btn-primary btn float-right" onClick={() => setStep(step => step + 1)}>Suivant</button>
                         </div>
                     </>);

@@ -2,7 +2,7 @@ import React from 'react';
 //Composant d'input
 const Field = ({ name, label, value, onChange, placeholder, type = "text", error = "", id }) => (
     <div className="form-group">
-        <label htmlFor={name}>{label}</label>
+        {label && <label htmlFor={name}>{label}</label>}
         <input
             value={value}
             name={name}

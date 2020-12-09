@@ -18,6 +18,15 @@ class ReservationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Reservation::class);
     }
+    public function findNextChrono()
+    {
+        return $this->createQueryBuilder("i")
+            ->select("i.chrono")
+            ->orderBy("i.chrono", "DESC")
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult() + 1;
+    }
 
     // /**
     //  * @return Reservation[] Returns an array of Reservation objects

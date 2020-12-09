@@ -12,12 +12,12 @@ const Footer = ({ isAuth, onLogout, history }) => {
     return (
         <>
             {/* Composant pour le footer */}
-            <div className="row justify-content-between footer">
+            <div className="row justify-content-between footer my-3">
                 <small className="text-muted">
-                    © Copyright 2020 Restaurant - All rights reserved
+                    © Copyright 2020 Le Cheval Blanc - All rights reserved
                 </small>
                 <small className="text-muted">
-                    Front-End & Back-End by Robin Paquet
+                    Application developped by <b>Robin Paquet</b>
                 </small>
                 {!isAuth &&
                     <a href="#connexion" className="small">
