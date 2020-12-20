@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import React, { useContext, useState } from 'react';
 import PopupInfo from './PopupInfo';
-import { Tab, Tabs } from 'react-bootstrap';
+import { Button, OverlayTrigger, Popover, Tab, Tabs } from 'react-bootstrap';
 import { CartContext } from '../Context/CartContext';
 import ordersAPI from '../Services/ordersAPI';
 import { toast, ToastContainer, Zoom } from "react-toastify";
@@ -17,11 +17,6 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
     const actif = (product) => {
         for (var i in cart) {
             if (cart[i].product == product) return "selected"
-        }
-    }
-    const productNumber = (product) => {
-        for (var i in cart) {
-            if (cart[i].product == product) return cart[i].quantity + " x"
         }
     }
     const deleteItem = (product) => {
@@ -50,15 +45,13 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
                                                 addItemToCart(prod.id, prod.label, prod.price, 1); setCart(listCart);
                                             }} className={"list-group-item d-flex justify-content-between align-items-center align-middle " + actif(prod.id)}>
                                                 <span className="float-left">
-                                                    <span>{prod.label}</span> <PopupInfo info={prod.description} />
+                                                    <span>{prod.label}</span> {prod.description && <PopupInfo info={prod.description} />}
                                                 </span>
                                                 <span className="lead">
-                                                    <span className="mx-4">{productNumber(prod.id)}</span>
                                                     {prod.price}€
                                                 </span>
                                             </li>
                                         </div>
-                                        {actif(prod.id) && <a className="badge badge-primary mx-0" onClick={() => deleteItem(prod.id)}><em className="fa fa-times"></em></a>}
                                     </div>
                                 )}
                             </ul>
@@ -116,12 +109,10 @@ const MenuOrder = ({ products, categories, listCart, addItemToCart }) => {
                                                 }} className={"list-group-item d-flex justify-content-between align-items-center " + actif(prod.id)}>
                                                     <span> {prod.label} <PopupInfo info={prod.description}>{infoIcon}</PopupInfo></span>
                                                     <span className="lead">
-                                                        <span className="mx-4">{productNumber(prod.id)}</span>
                                                         {prod.price}€
                                                 </span>
                                                 </li>
                                             </div>
-                                            {actif(prod.id) && <a className="badge badge-primary mx-0" onClick={() => deleteItem(prod.id)}><em className="fa fa-times"></em></a>}
                                         </div>
                                     )}
                                 </ul>

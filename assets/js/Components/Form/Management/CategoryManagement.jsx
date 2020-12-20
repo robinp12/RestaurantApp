@@ -109,7 +109,7 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                                         error={errors.label}
                                     />
                                 </div>
-                                <div className="col-4">
+                                <div className="col-5">
                                     <Select
                                         label="Position dans le menu"
                                         name="position"
@@ -172,7 +172,7 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                                 <td className="text-center align-middle">{cat.label}</td>
                                 {/* <td>{prod.category.label}</td> */}
                                 <td align="center">
-                                    <a className="btn btn-primary" onClick={() => handleDeleteCategory(cat.id)}><em className="fa fa-trash"></em></a>
+                                    {editable && <a className="btn btn-primary" onClick={() => handleDeleteCategory(cat.id)}><em className="fa fa-trash"></em></a>}
                                 </td>
                             </tr>
                         )}

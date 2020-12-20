@@ -40,23 +40,37 @@ const Cart = () => {
 
     return (
         <>
-            {cart.map((e, index) =>
-                <div key={e.product} className="row">
-                    <div className="col">
-                        <span className="align-middle">{e.name}</span>
-                    </div>
-                    <div className="col-3 float-right">
-                        <Field name={e.product} type="number" value={e.quantity} placeholder={e.quantity} onChange={handleChange}
-                        />
-                    </div>
-                    <div className="col">
-                        <span className="align-middle">{e.totalAmount}€</span>
-                    </div>
-                    <div className="col">
-                        <button onClick={() => deleteItem(e.product)} className='btn btn-primary btn-sm float-right'>x</button>
-                    </div>
+            <div className="row">
+                <div className="col">
+                    <table className="table text-center align-middle">
+                        <tbody>
+                            {cart.map((e, index) =>
+                                <tr className="text-center align-middle" key={e.product}>
+                                    <td className="text-center align-middle">{e.name}</td>
+                                    <td className="text-center align-middle">
+                                        {e.totalAmount}€
+                                    </td>
+                                    <td className="text-center align-middle">
+                                        <input
+                                            className={"form-control"}
+                                            value={e.quantity}
+                                            name={e.product}
+                                            onChange={handleChange}
+                                            type={"number"}
+                                            placeholder={e.quantity}
+                                        />
+                                    </td>
+                                    <td className="text-center align-middle">
+                                        <a className="badge badge-primary" onClick={() => deleteItem(e.product)}>
+                                            <em className="fa fa-times"></em>
+                                        </a>
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
                 </div>
-            )}
+            </div>
         </>
     );
 }

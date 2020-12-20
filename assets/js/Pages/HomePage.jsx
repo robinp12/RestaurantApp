@@ -3,7 +3,7 @@ import Field from "../Components/Form/Input/Field";
 import Header from "../Components/Header";
 import { LangContext } from "../Context/LangContext";
 import moment from "moment";
-import { Carousel } from "react-bootstrap";
+import { Button, Carousel, OverlayTrigger, Popover } from "react-bootstrap";
 import Axios from "axios";
 import productsAPI from "../Services/productsAPI";
 import { useRef } from "react";
@@ -14,25 +14,11 @@ const HomePage = () => {
 
     const [time, setTime] = useState(new Date());
     const [file, setFile] = useState();
-    const handleChange = ({ currentTarget }) => {
-        const { name, value } = currentTarget;
-        console.log(moment(value).format())
 
-
-    };
 
     const refContainer = useRef();
 
-    const selectFile = (e) => {
-        setFile(e.target.files[0])
 
-    }
-    const upload = () => {
-        let data = new FormData();
-        data.append("image", file);
-        data.append("name", "test");
-
-    }
     const oneTimeClick = (e) => {
         e.preventDefault()
 
@@ -43,6 +29,7 @@ const HomePage = () => {
         }, 1000);
 
     }
+
 
     return (
         <>

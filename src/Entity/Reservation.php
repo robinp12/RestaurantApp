@@ -39,7 +39,7 @@ class Reservation
     private $chrono;
 
     /**
-     * @ORM\Column(type="string", length=4)
+     * @ORM\Column(type="integer", length=4)
      * @Groups({"reservations_read"})
      * @Assert\NotBlank(message="Obligatoire")
      * @Assert\Positive(message="Quantité invalide")
@@ -89,12 +89,12 @@ class Reservation
         return $this;
     }
 
-    public function getPeopleNumber(): ?string
+    public function getPeopleNumber(): ?int
     {
         return $this->peopleNumber;
     }
 
-    public function setPeopleNumber(string $peopleNumber): self
+    public function setPeopleNumber(int $peopleNumber): self
     {
         $this->peopleNumber = $peopleNumber;
 

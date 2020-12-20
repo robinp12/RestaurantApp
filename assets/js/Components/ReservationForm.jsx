@@ -5,6 +5,8 @@ import OrderSummary from '../Components/Form/OrderSummary';
 import Header from '../Components/Header';
 import { CustomerContext } from '../Context/CustomerContext';
 import { LangContext } from '../Context/LangContext';
+import customersAPI from '../Services/customersAPI';
+import reservationsAPI from '../Services/reservationsAPI';
 
 let now = new Date(new Date().setHours(new Date().getHours() + 1)).toISOString().slice(0, 16);
 
@@ -13,6 +15,7 @@ const ReservationForm = () => {
     const { lang } = useContext(LangContext);
 
     const [orderInfo, setOrderInfo] = useState({ time: now, numberOfPeople: 2 });
+
 
     const [customer, setCustomer] = useState({
         firstName: "",
@@ -24,6 +27,8 @@ const ReservationForm = () => {
         phoneNumber: "",
     });
 
+    console.log(customer)
+    console.log(orderInfo)
     const [errors, setErrors] = useState({
         lastName: "",
         firstName: "",
@@ -33,6 +38,20 @@ const ReservationForm = () => {
         city: "",
         phoneNumber: ""
     });
+
+    const handleSubmit = async (e) => {
+
+        try {
+            const rep = await customersAPI.register(customer);
+            console.log(rep);
+
+            // reservationsAPI.add()
+        } catch (error) {
+            console.log(error)
+
+        }
+
+    }
 
     const ButtonReservation = ({ children, next, back }) => {
         return (
@@ -66,9 +85,11 @@ const ReservationForm = () => {
                     </div>);
             case 2: // Reservation summary
                 return (
-                    <ButtonReservation back={lang.back} next={lang.next}>
+                    <div className="container">
                         <OrderSummary reservation orderInfo={orderInfo} />
-                    </ButtonReservation>);
+                        <button className="btn-primary btn float-left" onClick={() => setStep(step => step - 1)}>{lang.back}</button>
+                        <button className="btn-primary btn float-right" onClick={(e) => { setStep(step => step + 1); handleSubmit(e) }}>{lang.confirm}</button>
+                    </div>);
             case 3: // Reservation validation
                 return (
                     <>

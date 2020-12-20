@@ -24,6 +24,21 @@ security:
       anonymous: true
       stateless: true
       methods: [GET]
+    customers:
+      pattern: ^/api/customers
+      anonymous: true
+      stateless: true
+      methods: [POST]
+    orders:
+      pattern: ^/api/orders
+      anonymous: true
+      stateless: true
+      methods: [POST]
+    invoices:
+      pattern: ^/api/invoices
+      anonymous: true
+      stateless: true
+      methods: [POST]
     login:
       pattern: ^/api/login
       stateless: true
