@@ -50,21 +50,25 @@ const UsersPage = ({ match, history }) => {
                         <thead className="thead-dark">
                             <tr>
                                 <th className="text-center hidden-xs align-middle">ID</th>
-                                <th className="text-center align-middle">Client</th>
+                                <th className="text-center align-middle">Utilisateur</th>
                                 <th className="text-center align-middle">
                                     <button onClick={() => setAddUser(!addUser)} className="btn btn-sm btn-primary float-right">+</button>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map(user => <tr key={user.id} onClick={() => {
+                            {users.map((user, index) => <tr key={user.id} onClick={() => {
                                 history.replace("/utilisateurs/" + user.id)
                                 setAddUser(false)
                             }}>
                                 <th scope="row" className="text-center">#{user.id}</th>
                                 <td className="text-center"> {user.firstName} {user.lastName.toUpperCase()}</td>
                                 <td align="center" className="text-center">
-                                    <a className="btn btn-primary" onClick={() => handleDelete(user.id)}><em className="fa fa-trash"></em></a>
+                                    {console.log(users.length)}
+
+                                    {users.length !== 1 &&
+                                        <a className="btn btn-primary" onClick={() => handleDelete(user.id)}><em className="fa fa-trash"></em></a>
+                                    }
                                 </td>
                             </tr>)}
                         </tbody>
@@ -101,7 +105,7 @@ const UsersPage = ({ match, history }) => {
                                                 </div>
                                                 <div className="row mt-3">
                                                     <div className="col">
-                                                        {userInfo.length !== 0 && <button className="btn btn-primary" onClick={() => handleDelete(userInfo.id)}>Supprimer</button>}
+                                                        {users.length !== 1 && <button className="btn btn-primary" onClick={() => handleDelete(userInfo.id)}>Supprimer</button>}
                                                     </div>
                                                 </div>
                                             </div>

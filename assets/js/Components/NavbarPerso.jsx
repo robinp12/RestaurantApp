@@ -18,10 +18,10 @@ const NavbarPerso = ({ history }) => {
         <img
           alt=""
           src="/logo.png"
-          width="30"
-          height="30"
+          width="44"
+          height="24"
           className="d-inline-block align-top"
-        /> Le Cheval Blanc</Navbar.Brand>
+        /></Navbar.Brand>
 
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">

@@ -19,8 +19,8 @@ const ProductManagement = ({ setRefresh, refresh }) => {
     const [products, setProducts] = useState([]);
 
     const [product, setProduct] = useState({
-        label: "1",
-        description: "1",
+        label: "",
+        description: "",
         price: 0,
         picture: "",
         category: "api/categories/52"
