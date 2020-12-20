@@ -40,7 +40,7 @@ const ReservationForm = () => {
     });
 
     const handleSubmit = async (e) => {
-
+        e.preventDefault();
         try {
             const rep = await customersAPI.register(customer);
             console.log(rep);
@@ -57,8 +57,8 @@ const ReservationForm = () => {
         return (
             <div className="container">
                 {children}
-                <button className="btn-primary btn float-left" onClick={() => setStep(step => step - 1)}>{back}</button>
-                <button className="btn-primary btn float-right" onClick={() => setStep(step => step + 1)}>{next}</button>
+                <button className="btn-primary btn float-left" onClick={(e) => { e.preventDefault(); setStep(step => step - 1) }}>{back}</button>
+                <button className="btn-primary btn float-right" onClick={(e) => { e.preventDefault(); setStep(step => step + 1) }}>{next}</button>
             </div>
         )
     }
@@ -69,8 +69,8 @@ const ReservationForm = () => {
                 return (
                     <div className="container">
                         <CustomerForm errors={errors} />
-                        <button className="btn-primary btn float-left" onClick={() => setStep(step => step - 1)}>{lang.back}</button>
-                        <button className="btn-primary btn float-right" onClick={() => setStep(step => step + 1)}
+                        <button className="btn-primary btn float-left" onClick={(e) => { e.preventDefault(); setStep(step => step - 1) }}>{lang.back}</button>
+                        <button className="btn-primary btn float-right" onClick={(e) => { e.preventDefault(); setStep(step => step + 1) }}
                             disabled={!(
                                 customer.firstName &&
                                 customer.lastName &&
@@ -87,7 +87,7 @@ const ReservationForm = () => {
                 return (
                     <div className="container">
                         <OrderSummary reservation orderInfo={orderInfo} />
-                        <button className="btn-primary btn float-left" onClick={() => setStep(step => step - 1)}>{lang.back}</button>
+                        <button className="btn-primary btn float-left" onClick={(e) => { e.preventDefault(); setStep(step => step - 1) }}>{lang.back}</button>
                         <button className="btn-primary btn float-right" onClick={(e) => { setStep(step => step + 1); handleSubmit(e) }}>{lang.confirm}</button>
                     </div>);
             case 3: // Reservation validation

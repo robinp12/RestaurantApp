@@ -19,7 +19,7 @@ const NavbarPerso = ({ history }) => {
       <Popover.Title><h3>Panier</h3></Popover.Title>
       <Popover.Content>
         <Cart />
-        <Link to="/#commander" className="btn btn-sm btn-primary my-auto">Commander</Link>
+        <a href="#commander" className="btn btn-sm btn-primary my-auto">Commander</a>
       </Popover.Content>
     </Popover>
   );
@@ -64,12 +64,17 @@ const NavbarPerso = ({ history }) => {
             <Nav className="nav-item">
               {((history.location.pathname !== "/reserver")) &&
                 <>
+
                   {cart.length &&
-                    <OverlayTrigger trigger="click" placement="bottom" overlay={popover} show={show} transition>
-                      <Nav.Link className="nav-item btn btn-dark text-primary border-primary ml-1" onClick={() => setShow(!show)}>
-                        <b><em className="fa fa-shopping-cart"></em> {lang.cart} : {cart.length}</b>
-                      </Nav.Link>
-                    </OverlayTrigger>
+                    <>
+                      <Nav.Link className="btn text-light mr-1" href="#reserver">{lang.toReserve}</Nav.Link>
+
+                      <OverlayTrigger trigger="click" placement="bottom" overlay={popover} show={show} transition>
+                        <Nav.Link className="nav-item btn btn-dark text-primary border-primary ml-1" onClick={() => setShow(!show)}>
+                          <b><em className="fa fa-shopping-cart"></em> {lang.cart} : {cart.length}</b>
+                        </Nav.Link>
+                      </OverlayTrigger>
+                    </>
                     ||
                     <>
                       {(history.location.pathname !== "/commander") &&

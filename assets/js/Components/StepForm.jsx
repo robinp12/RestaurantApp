@@ -167,8 +167,9 @@ const StepForm = () => {
             <div className="container">
                 {children}
                 <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setAway(step => step - 1) }}>{back}</button>
-                <button className="btn-primary btn float-right mt-4" onClick={() => {
+                <button className="btn-primary btn float-right mt-4" onClick={(e) => {
                     setAway(step => step + 1);
+                    e.preventDefault();
                 }} disabled={disabled}>{next}</button>
             </div>
         )
@@ -226,7 +227,7 @@ const StepForm = () => {
 
                         <div className="container">
                             <OrderSummary orderInfo={orderInfo} />
-                            <button className="btn-primary btn float-left mt-4" onClick={() => setAway(step => step - 1)}>{lang.back}</button>
+                            <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setAway(step => step - 1) }}>{lang.back}</button>
                             <button className="btn-primary btn float-right mt-4" ref={confirmRef} onClick={(e) => {
                                 handleSubmit(e)
                                 oneTimeClick(e)
@@ -241,7 +242,7 @@ const StepForm = () => {
                             <button className="btn-primary btn float-right mt-4" onClick={(e) => {
                                 sendNotif()
                                 console.log("Nouvelle commande")
-
+                                e.preventDefault();
                                 setAway(step => step + 1)
                                 //Handle CHANGE STATUS COMMANDE TO PAY
                             }} >{lang.next}</button>
@@ -261,7 +262,7 @@ const StepForm = () => {
                             <div className="container">
                                 <CustomerForm errors={errors} />
                                 <button className="btn-primary btn float-left" onClick={() => setChoose(0)}>{lang.back}</button>
-                                <button className="btn-primary btn float-right" onClick={() => setAway(step => step + 1)}
+                                <button className="btn-primary btn float-right" onClick={(e) => { e.preventDefault(); setAway(step => step + 1) }}
                                     disabled={!(
                                         customer.firstName &&
                                         customer.lastName &&
