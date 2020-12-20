@@ -17,7 +17,6 @@ const UserForm = () => {
         city: "",
         phoneNumber: ""
     });
-    console.log(users);
     const [errors, setErrors] = useState({
         lastName: "",
         firstName: "",
