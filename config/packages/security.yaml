@@ -14,6 +14,16 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
+    products:
+      pattern: ^/api/products
+      anonymous: true
+      stateless: true
+      methods: [GET]
+    categories:
+      pattern: ^/api/categories
+      anonymous: true
+      stateless: true
+      methods: [GET]
     login:
       pattern: ^/api/login
       stateless: true
