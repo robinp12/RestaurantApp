@@ -67,6 +67,11 @@ class Reservation
      */
     private $customer;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $reservation_at;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -128,6 +133,18 @@ class Reservation
     public function setCustomer(?Customer $customer): self
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getReservationAt(): ?\DateTimeInterface
+    {
+        return $this->reservation_at;
+    }
+
+    public function setReservationAt(\DateTimeInterface $reservation_at): self
+    {
+        $this->reservation_at = $reservation_at;
 
         return $this;
     }
