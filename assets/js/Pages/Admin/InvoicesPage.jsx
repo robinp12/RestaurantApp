@@ -80,8 +80,6 @@ const InvoicesPage = ({ match, history }) => {
                         <div className="row card p-3" key={invoice.chrono}>
                             <h2>Factures <b>{invoice.id}</b></h2>
                             {/* <h2>Factures <b>{invoice.chrono}</b></h2> */}
-                            {console.log(invoice)
-                            }
                             <div className="container form">
                                 <div className="row justify-content-center">
                                     <div className="col">
