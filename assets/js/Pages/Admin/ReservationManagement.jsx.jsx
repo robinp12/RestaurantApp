@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import reservationsAPI from '../../Services/reservationsAPI';
 
-const ReservationManagement = ({ history }) => {
+const ReservationManagement = ({ match, history }) => {
+
+    const { id } = match.params
 
     const [showCat, setShowCat] = useState(true);
     const [reservations, setReservations] = useState([]);

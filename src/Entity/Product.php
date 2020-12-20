@@ -32,7 +32,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"product_read","category_read"})
+     * @Groups({"product_read","category_read","orders_read","invoices_read"})
      * @Assert\NotBlank(message="Nom obligatoire")
      */
     private $label;
@@ -51,7 +51,7 @@ class Product
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"product_read","category_read"})
+     * @Groups({"product_read","category_read","orders_read"})
      * @Assert\NotBlank(message="Prix obligatoire")
      * @Assert\Type("numeric",message="Format incorrect")
      */
@@ -64,18 +64,6 @@ class Product
      * @Assert\NotBlank(message="Catégorie obligatoire")
      */
     private $category;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"product_read"})
-     * @Assert\NotBlank(message="Obligatoire")
-     */
-    private $quantity;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="product")
-     */
-    private $orders;
 
     /**
      * @ORM\ManyToOne(targetEntity=Detail::class, inversedBy="product")
@@ -149,46 +137,6 @@ class Product
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
-
-        return $this;
-    }
-
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): self
-    {
-        $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Order[]
-     */
-    public function getOrders(): Collection
-    {
-        return $this->orders;
-    }
-
-    public function addOrder(Order $order): self
-    {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->addProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrder(Order $order): self
-    {
-        if ($this->orders->contains($order)) {
-            $this->orders->removeElement($order);
-            $order->removeProduct($this);
-        }
 
         return $this;
     }

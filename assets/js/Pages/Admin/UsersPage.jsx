@@ -1,11 +1,10 @@
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { USERS_API } from '../../../config';
+import React, { useEffect, useState } from 'react';
 import UserForm from '../../Components/Form/Management/UserForm';
 import usersAPI from '../../Services/usersAPI';
 
-const UsersPage = ({ history }) => {
+const UsersPage = ({ match, history }) => {
+    const { id } = match.params
+
 
     const [users, setUsers] = useState([]);
     const [addUser, setAddUser] = useState(false);
@@ -47,24 +46,27 @@ const UsersPage = ({ history }) => {
         <>
             <div className="row">
                 <div className="col-12-sm col-4-md">
-                    <table className="table table-hover">
+                    <table className="table table-responsive-md table-hover ">
                         <thead className="thead-dark">
                             <tr>
-                                <th className=" align-middle">Utilisateur
-                                </th>
-                                <th>
-                                    <button onClick={() => setAddUser(!addUser)} className="btn btn-primary float-right">+</button>
+                                <th className="text-center hidden-xs align-middle">ID</th>
+                                <th className="text-center align-middle">Client</th>
+                                <th className="text-center align-middle">
+                                    <button onClick={() => setAddUser(!addUser)} className="btn btn-sm btn-primary float-right">+</button>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             {users.map(user => <tr key={user.id} onClick={() => {
                                 history.replace("/utilisateurs/" + user.id)
-                                console.log(USERS_API);
                                 setAddUser(false)
                             }}>
-                                <td>{user.firstName} {user.lastName.toUpperCase()}</td>
-                                <td></td></tr>)}
+                                <th scope="row" className="text-center">#{user.id}</th>
+                                <td className="text-center"> {user.firstName} {user.lastName.toUpperCase()}</td>
+                                <td align="center" className="text-center">
+                                    <a className="btn btn-primary" onClick={() => handleDelete(user.id)}><em className="fa fa-trash"></em></a>
+                                </td>
+                            </tr>)}
                         </tbody>
                     </table>
                 </div>
@@ -77,7 +79,7 @@ const UsersPage = ({ history }) => {
                         ||
                         <>
                             {users.map(userInfo =>
-                                userInfo.id == +window.location.hash.slice(14) &&
+                                userInfo.id == id &&
                                 <div key={userInfo.id}>
                                     <h2>Utilisateur <b>{userInfo.id}</b></h2>
                                     <div className="row justify-content-center">

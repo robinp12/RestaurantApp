@@ -1,14 +1,14 @@
-import CategoryManagement from "../../Components/Form/Management/CategoryManagement";
 import React, { useState } from 'react';
-import ProductManagement from "../../Components/Form/Management/ProductManagement";
+import CategoryManagement from "../../Components/Form/Management/CategoryManagement";
 import DetailManagement from "../../Components/Form/Management/DetailManagement";
+import ProductManagement from "../../Components/Form/Management/ProductManagement";
 
 const ManagementPage = () => {
 
     const [refresh, setRefresh] = useState(true);
 
     const [showCat, setShowCat] = useState(false);
-    const [showProd, setShowProd] = useState(false);
+    const [showProd, setShowProd] = useState(true);
     const [showDet, setShowDet] = useState(true);
 
     const ManagementPart = ({ title, className, setShow, show, children }) => {

@@ -1,12 +1,38 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import PopupInfo from './PopupInfo';
 import { Tab, Tabs } from 'react-bootstrap';
+import { CartContext } from '../Context/CartContext';
+import ordersAPI from '../Services/ordersAPI';
+import { toast, ToastContainer, Zoom } from "react-toastify";
+
 
 const infoIcon = <FontAwesomeIcon icon={faInfoCircle} pull="right" className="infoIcon align-middle" fixedWidth />;
 
-const Menu = ({ products, categories }) => {
+const Menu = ({ products, categories, listCart, addItemToCart }) => {
+
+    const { cart, setCart } = useContext(CartContext);
+
+    const actif = (product) => {
+        for (var i in cart) {
+            if (cart[i].product == product) return "selected"
+        }
+    }
+    const productNumber = (product) => {
+        for (var i in cart) {
+            if (cart[i].product == product) return cart[i].quantity + " x"
+        }
+    }
+    const deleteItem = (product) => {
+        for (var item in cart) {
+            if (cart[item].product === product) {
+                cart.splice(item, 1);
+                break;
+            }
+        }
+        setCart([...cart])
+    }
 
     return (
         <>
@@ -18,10 +44,22 @@ const Menu = ({ products, categories }) => {
                             <ul className="list-group">
                                 {products.map((prod, index) =>
                                     cat.id == prod.category.id &&
-                                    <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                                        <span> {prod.label} <PopupInfo info={prod.description}>{infoIcon}</PopupInfo></span>
-                                        <span className="lead">{prod.price}€</span>
-                                    </li>
+                                    <div className="row align-items-center" key={index}>
+                                        <div className="col">
+                                            <li onClick={() => {
+                                                addItemToCart(prod.id, prod.label, prod.price, 1); setCart(listCart);
+                                            }} className={"list-group-item d-flex justify-content-between align-items-center align-middle " + actif(prod.id)}>
+                                                <span className="float-left">
+                                                    <span>{prod.label}</span> <PopupInfo info={prod.description} />
+                                                </span>
+                                                <span className="lead">
+                                                    <span className="mx-4">{productNumber(prod.id)}</span>
+                                                    {prod.price}€
+                                                </span>
+                                            </li>
+                                        </div>
+                                        {actif(prod.id) && <a className="badge badge-primary mx-0" onClick={() => deleteItem(prod.id)}><em className="fa fa-times"></em></a>}
+                                    </div>
                                 )}
                             </ul>
                         </div>
@@ -30,41 +68,33 @@ const Menu = ({ products, categories }) => {
             </div>
         </>);
 }
-let sac = new Set();
 let cle;
 
-const MenuOrder = ({ products, categories, setCart, cart }) => {
+const MenuOrder = ({ products, categories, listCart, addItemToCart }) => {
+
     const [key, setKey] = useState(cle);
     cle = key;
 
-    // Add to cart
-    const addItemToCart = function (name, price, count) {
-        for (var item in cart) {
-            if (cart[item].name === name) {
-                cart[item].count++;
-                return;
-            }
-        }
-        var item = { name, price, count };
+    const { cart, setCart } = useContext(CartContext);
 
-        cart.push(item);
-        listCart()
+    const actif = (product) => {
+        for (var i in cart) {
+            if (cart[i].product == product) return "selected"
+        }
     }
-    const listCart = function () {
-        var cartCopy = [];
-        for (let i in cart) {
-
-            let item = cart[i];
-            let itemCopy = {};
-            for (let p in item) {
-
-                itemCopy[p] = item[p];
-
+    const deleteItem = (product) => {
+        for (var item in cart) {
+            if (cart[item].product === product) {
+                cart.splice(item, 1);
+                break;
             }
-            itemCopy.total = Number(item.price * item.count).toFixed(2);
-            cartCopy.push(itemCopy)
         }
-        return cartCopy;
+        setCart([...cart])
+    }
+    const productNumber = (product) => {
+        for (var i in cart) {
+            if (cart[i].product == product) return cart[i].quantity + " x"
+        }
     }
 
     return (
@@ -77,21 +107,24 @@ const MenuOrder = ({ products, categories, setCart, cart }) => {
                                 <ul className={"list-group"}>
                                     {products.map((prod, index) =>
                                         cat.id == prod.category.id &&
-                                        <li key={index} onClick={() => {
-                                            addItemToCart(prod.label, prod.price, 1)
-                                            setCart(listCart);
+                                        <div className="row align-items-center" key={index}>
+                                            <div className="col">
 
-                                        }} className={"list-group-item d-flex justify-content-between align-items-center "
-                                            + (sac.has(prod.label) ? "text-muted" : "")
-                                        }>
-                                            <span> {prod.label} <PopupInfo info={prod.description}>{infoIcon}</PopupInfo></span>
-                                            <span className="lead">{prod.price}€</span>
-                                        </li>
+                                                <li onClick={() => {
+                                                    addItemToCart(prod.id, prod.label, prod.price, 1)
+                                                    setCart(listCart);
+                                                }} className={"list-group-item d-flex justify-content-between align-items-center " + actif(prod.id)}>
+                                                    <span> {prod.label} <PopupInfo info={prod.description}>{infoIcon}</PopupInfo></span>
+                                                    <span className="lead">
+                                                        <span className="mx-4">{productNumber(prod.id)}</span>
+                                                        {prod.price}€
+                                                </span>
+                                                </li>
+                                            </div>
+                                            {actif(prod.id) && <a className="badge badge-primary mx-0" onClick={() => deleteItem(prod.id)}><em className="fa fa-times"></em></a>}
+                                        </div>
                                     )}
                                 </ul>
-                            </div>
-                            <div className="col">
-
                             </div>
                         </div>
                     </Tab>

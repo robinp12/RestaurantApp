@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\InvoiceRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Proxies\__CG__\App\Entity\Product;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -46,18 +49,10 @@ class Invoice
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"invoices_read"})
-     * @Assert\NotBlank(message="Status obligatoire")
+     * @Assert\NotBlank(message="Obligatoire")
      * @Assert\Choice(choices={"SENT", "PAID","CANCELLED"}, message="Le statut n'est pas valide")
      */
     private $status;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="invoices")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"invoices_read"})
-     * @Assert\NotBlank(message="Client obligatoire")
-     */
-    private $customer;
 
     /**
      * Numero de commande
@@ -66,6 +61,39 @@ class Invoice
      * @Assert\NotBlank(message="Chrono obligatoire")
      */
     private $chrono;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="invoice")
+     * @Groups({"invoices_read"})
+     * @Assert\NotBlank(message="Obligatoire")
+     */
+    private $orders;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Groups({"invoices_read"})
+     * @Assert\NotBlank(message="Date obligatoire")
+     */
+    private $timeToReceive;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     * @Groups({"invoices_read"})
+     * @Assert\NotBlank(message="Email obligatoire")
+     */
+    private $customer_email;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="invoices")
+     * @Groups({"invoices_read"})
+     * @Assert\NotBlank(message="Obligatoire")
+     */
+    private $client;
+
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -108,18 +136,6 @@ class Invoice
         return $this;
     }
 
-    public function getCustomer(): ?Customer
-    {
-        return $this->customer;
-    }
-
-    public function setCustomer(?Customer $customer): self
-    {
-        $this->customer = $customer;
-
-        return $this;
-    }
-
     public function getChrono(): ?int
     {
         return $this->chrono;
@@ -128,6 +144,73 @@ class Invoice
     public function setChrono(int $chrono): self
     {
         $this->chrono = $chrono;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->contains($order)) {
+            $this->orders->removeElement($order);
+            // set the owning side to null (unless already changed)
+            if ($order->getInvoice() === $this) {
+                $order->setInvoice(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTimeToReceive(): ?\DateTimeInterface
+    {
+        return $this->timeToReceive;
+    }
+
+    public function setTimeToReceive(\DateTimeInterface $timeToReceive): self
+    {
+        $this->timeToReceive = $timeToReceive;
+
+        return $this;
+    }
+
+    public function getCustomerEmail(): ?string
+    {
+        return $this->customer_email;
+    }
+
+    public function setCustomerEmail(string $customer_email): self
+    {
+        $this->customer_email = $customer_email;
+
+        return $this;
+    }
+
+    public function getClient(): ?Customer
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Customer $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }

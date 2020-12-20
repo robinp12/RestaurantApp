@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import detailsAPI from "../../../Services/detailsAPI";
 import Field from "../Input/Field";
-import Select from "../Input/Select";
+import { toast } from "react-toastify";
 
 const DetailManagement = ({ setRefresh, refresh }) => {
 
@@ -22,14 +22,14 @@ const DetailManagement = ({ setRefresh, refresh }) => {
         console.log(detail)
         try {
             const rep = await detailsAPI.add(detail);
-            // toast(users.firstName + " a été ajouté");
+            toast(detail.label + " ajouté");
             setErrors("");
             setRefresh(!refresh);
             console.log(rep)
         } catch (error) {
-            // toast("Erreur dans le formulaire !" + "", {
-            //     className: "bg-red",
-            // });
+            toast("Erreur dans le formulaire !" + "", {
+                className: "bg-red-toast",
+            });
             if (error.response.data.violations) {
 
                 const apiErrors = {};
@@ -47,9 +47,9 @@ const DetailManagement = ({ setRefresh, refresh }) => {
             setDetails(data);
         } catch (error) {
             console.log(error.response);
-            //   toast(error + "", {
-            //     className: "bg-red",
-            //   });
+            toast(error + "", {
+                className: "bg-red-toast",
+            });
         }
     };
 
@@ -60,14 +60,14 @@ const DetailManagement = ({ setRefresh, refresh }) => {
         try {
             await detailsAPI.deleteDetails(id);
             setRefresh(!refresh);
-            // toast("Utilisateur n°" + id + " supprimé", {
-            //     className: "bg-red",
-            // });
+            toast("Element n°" + id + " supprimé", {
+                className: "bg-red-toast",
+            });
         } catch (error) {
             setDetails(originObjectToDelete);
-            // toast(error + "", {
-            //     className: "bg-red",
-            // });
+            toast(error + "", {
+                className: "bg-red-toast",
+            });
         }
     }
     useEffect(() => {
@@ -87,7 +87,7 @@ const DetailManagement = ({ setRefresh, refresh }) => {
                                     <Field
                                         label="Nom de détail"
                                         name="label"
-                                        id="label1"
+                                        id="label2"
                                         value={detail.label}
                                         onChange={handleChange}
                                         placeholder="Nom"
@@ -106,12 +106,12 @@ const DetailManagement = ({ setRefresh, refresh }) => {
                 </form>
             </div>
             <div className="col">
-                <table className="table table-hover">
-                    <thead className="">
+                <table className="table table-responsive-md table-hover ">
+                    <thead className="thead-dark">
                         <tr>
-                            <th className="text-center">Id</th>
+                            <th className="text-center hidden-xs">ID</th>
                             <th className="text-center">Détail</th>
-                            <th className="text-center"></th>
+                            <th className="text-center"><em className="fa fa-cog"></em></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,7 +119,10 @@ const DetailManagement = ({ setRefresh, refresh }) => {
                             <tr key={index}>
                                 <td className="text-center align-middle">{e.id}</td>
                                 <td className="text-center align-middle">{e.label}</td>
-                                <td className="text-center align-middle"><button className="btn btn-primary" onClick={() => handleDeleteDetail(e.id)}>x</button></td>
+                                <td align="center">
+                                    <a className="btn btn-secondary"><em className="fa fa-pencil"></em></a>
+                                    <a className="btn btn-primary" onClick={() => handleDeleteDetail(order.id)}><em className="fa fa-trash"></em></a>
+                                </td>
                             </tr>)}
                     </tbody>
                 </table>

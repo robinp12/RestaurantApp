@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Invoice;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,12 +23,16 @@ class InvoiceRepository extends ServiceEntityRepository
 
     public function findNextChrono()
     {
-        return $this->createQueryBuilder("i")
-            ->select("i.chrono")
-            ->orderBy("i.chrono", "DESC")
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getSingleScalarResult() + 1;
+        try {
+            return $this->createQueryBuilder("i")
+                ->select("i.chrono")
+                ->orderBy("i.chrono", "DESC")
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getSingleScalarResult() + 1;
+        } catch (\Exception $e) {
+            return 1;
+        }
     }
 
     // /**

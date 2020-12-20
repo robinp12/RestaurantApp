@@ -20,12 +20,16 @@ class ReservationRepository extends ServiceEntityRepository
     }
     public function findNextChrono()
     {
-        return $this->createQueryBuilder("i")
-            ->select("i.chrono")
-            ->orderBy("i.chrono", "DESC")
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getSingleScalarResult() + 1;
+        try {
+            return $this->createQueryBuilder("i")
+                ->select("i.chrono")
+                ->orderBy("i.chrono", "DESC")
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getSingleScalarResult() + 1;
+        } catch (\Throwable $th) {
+            return 1;
+        }
     }
 
     // /**

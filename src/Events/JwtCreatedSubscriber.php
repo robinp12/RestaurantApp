@@ -8,6 +8,9 @@ class JwtCreatedSubscriber
 {
     public function updateJwtData(JWTCreatedEvent $event)
     {
+        /**
+         * Création jwt utilisateur
+         */
         $user = $event->getUser();
         $data = $event->getData();
         $data['id'] = $user->getId();

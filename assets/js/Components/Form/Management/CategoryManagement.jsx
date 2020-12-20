@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import categoriesAPI from "../../../Services/categoriesAPI";
 import Field from "../Input/Field";
 import Select from "../Input/Select";
+import { toast } from "react-toastify";
+
 
 const CategoryManagement = ({ setRefresh, refresh }) => {
 
@@ -14,6 +16,7 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
         position: ""
     });
     const [categories, setCategories] = useState([]);
+    const [editable, setEditable] = useState(false);
 
     const handleChange = ({ currentTarget }) => {
         const { name, value } = currentTarget;
@@ -34,14 +37,14 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
         console.log(category)
         try {
             const rep = await categoriesAPI.add(category);
-            // toast(users.firstName + " a été ajouté");
+            toast(category.label + " a été ajouté");
             setErrors("");
             setRefresh(!refresh);
             console.log(rep)
         } catch (error) {
-            // toast("Erreur dans le formulaire !" + "", {
-            //     className: "bg-red",
-            // });
+            toast("Erreur dans le formulaire !" + "", {
+                className: "bg-red-toast",
+            });
             if (error.response.data.violations) {
 
                 const apiErrors = {};
@@ -133,26 +136,31 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                 </form>
             </div>
             <div className="col">
-                <table className="table table-hover">
-                    <thead className="">
+                <table className="table table-responsive-md table-hover ">
+                    <thead className="thead-dark">
                         <tr>
-                            <th className="text-center">Id</th>
-                            <th className="text-center">Position</th>
-                            <th className="text-center">Catégorie</th>
-                            <th className="text-center"></th>
+                            <th className="text-center align-middle hidden-xs">ID</th>
+                            <th className="text-center align-middle">Position</th>
+                            <th className="text-center align-middle">Catégorie</th>
+
+                            <th className="text-center align-middle">
+                                <a className="btn btn-sm btn-secondary" onClick={() => setEditable(!editable)}><em className="fa fa-pencil"></em></a>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
+
                         {categories.map((cat, index) =>
                             <tr key={index}>
                                 <td className="text-center align-middle">{cat.id}</td>
-                                <td className="text-center">
+                                <td className="text-center align-middle">
                                     <div className="col-md-5 mx-auto">
                                         <Select
                                             name="position"
                                             onChange={(e) => { handleChangeCategory(cat.id, e) }}
                                             placeholder="Position"
                                             defaut={cat.position}
+                                            disabled={!editable}
                                         >
                                             {arr.map((arr) =>
                                                 !categories.map(cat => cat.position).includes(arr) &&
@@ -162,9 +170,12 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                                     </div>
                                 </td>
                                 <td className="text-center align-middle">{cat.label}</td>
-                                <td className="text-center align-middle"><button className="btn btn-primary" onClick={() => handleDeleteCategory(cat.id)}>x</button></td>
-
-                            </tr>)}
+                                {/* <td>{prod.category.label}</td> */}
+                                <td align="center">
+                                    <a className="btn btn-primary" onClick={() => handleDeleteCategory(cat.id)}><em className="fa fa-trash"></em></a>
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>

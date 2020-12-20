@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Select = ({ name, label, value, onChange, error = "", defaut, children }) => {
+const Select = ({ name, label, value, onChange, error = "", defaut, children, disabled = false }) => {
 
     return (
         <>
@@ -11,6 +11,7 @@ const Select = ({ name, label, value, onChange, error = "", defaut, children }) 
                 name={name}
                 onChange={onChange}
                 value={value}
+                disabled={disabled}
             >
                 <option hidden value>{defaut}</option>
                 {children}

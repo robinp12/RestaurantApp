@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ApiFilter(SearchFilter::class, properties={"firstName":"partial","lastName":"partial"})
  * @ApiFilter(OrderFilter::class)
+ * 
  */
 class Customer
 {
@@ -31,13 +32,13 @@ class Customer
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read","invoices_read","orders_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read","invoices_read","orders_read"})
      * @Assert\Length(min=2, minMessage="Prénom trop court", max=50, maxMessage="Prénom trop long")
      * @Assert\NotBlank(message="Prénom obligatoire")
      */
@@ -45,14 +46,14 @@ class Customer
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read","invoices_read","orders_read"})
      * @Assert\Length(min=2, minMessage="Nom trop court", max=50, maxMessage="Nom trop long")
      * @Assert\NotBlank(message="Nom obligatoire")
      */
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=100, unique=true)
+     * @ORM\Column(type="string", length=100)
      * @Groups({"customers_read","invoices_read"})
      * @Assert\NotBlank(message="Email obligatoire")
      * @Assert\Email(message="Format de l'email invalide")
@@ -69,12 +70,6 @@ class Customer
     private $phoneNumber;
 
     /**
-     * @ORM\OneToMany(targetEntity=Invoice::class, mappedBy="customer")
-     * @Groups({"customers_read"})
-     */
-    private $invoices;
-
-    /**
      * @ORM\Column(type="string", length=100)
      * @Groups({"customers_read","invoices_read"})
      * @Assert\Length(min=5, minMessage="Trop court")
@@ -83,11 +78,11 @@ class Customer
     private $address;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      * @Groups({"customers_read","invoices_read"})
      * @Assert\NotBlank(message="Code postal obligatoire")
      * @Assert\Range(min=1000,max=99999,notInRangeMessage = "Le format du code postal n'est pas valide")
-     * @Assert\Type("integer")
+     * @Assert\Type("numeric",message="Format du code postal invalide")
      */
     private $zipcode;
 
@@ -104,10 +99,16 @@ class Customer
      */
     private $reservations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Invoice::class, mappedBy="client")
+     */
+    private $invoices;
+
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
         $this->reservations = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,37 +164,6 @@ class Customer
         return $this;
     }
 
-    /**
-     * @return Collection|Invoice[]
-     */
-    public function getInvoices(): Collection
-    {
-        return $this->invoices;
-    }
-
-    public function addInvoice(Invoice $invoice): self
-    {
-        if (!$this->invoices->contains($invoice)) {
-            $this->invoices[] = $invoice;
-            $invoice->setCustomer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeInvoice(Invoice $invoice): self
-    {
-        if ($this->invoices->contains($invoice)) {
-            $this->invoices->removeElement($invoice);
-            // set the owning side to null (unless already changed)
-            if ($invoice->getCustomer() === $this) {
-                $invoice->setCustomer(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getAddress(): ?string
     {
         return $this->address;
@@ -206,12 +176,12 @@ class Customer
         return $this;
     }
 
-    public function getZipcode(): ?int
+    public function getZipcode(): ?string
     {
         return $this->zipcode;
     }
 
-    public function setZipcode(int $zipcode): self
+    public function setZipcode(string $zipcode): self
     {
         $this->zipcode = $zipcode;
 
@@ -255,6 +225,37 @@ class Customer
             // set the owning side to null (unless already changed)
             if ($reservation->getCustomer() === $this) {
                 $reservation->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invoice[]
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): self
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices[] = $invoice;
+            $invoice->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): self
+    {
+        if ($this->invoices->contains($invoice)) {
+            $this->invoices->removeElement($invoice);
+            // set the owning side to null (unless already changed)
+            if ($invoice->getClient() === $this) {
+                $invoice->setClient(null);
             }
         }
 

@@ -1,28 +1,38 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { CustomerContext } from '../../Context/CustomerContext';
+import { LangContext } from '../../Context/LangContext';
 import Field from './Input/Field';
 
-const CustomerForm = ({ client, handleChange, errors }) => {
+const CustomerForm = ({ errors }) => {
+
+    const { lang } = useContext(LangContext);
+    const { customer, setCustomer } = useContext(CustomerContext);
+
+    const handleChange = ({ currentTarget }) => {
+        const { name, value } = currentTarget;
+        setCustomer({ ...customer, [name]: value });
+    };
 
     return (
         <>
             <div className="row">
                 <div className="col">
                     <Field
-                        label="Nom"
+                        label={lang.lastName}
                         name="lastName"
-                        value={client.lastName}
+                        value={customer.lastName}
                         onChange={handleChange}
-                        placeholder="Nom"
+                        placeholder={lang.lastName}
                         error={errors.lastName}
                     />
                 </div>
                 <div className="col">
                     <Field
-                        label="Prénom"
+                        label={lang.firstName}
                         name="firstName"
-                        value={client.firstName}
+                        value={customer.firstName}
                         onChange={handleChange}
-                        placeholder="Prénom"
+                        placeholder={lang.firstName}
                         error={errors.firstName}
                     />
                 </div>
@@ -30,12 +40,12 @@ const CustomerForm = ({ client, handleChange, errors }) => {
             <div className="row">
                 <div className="col">
                     <Field
-                        label="Adresse mail"
+                        label={lang.email}
                         name="email"
-                        value={client.email}
+                        value={customer.email}
                         onChange={handleChange}
                         type="email"
-                        placeholder="Email"
+                        placeholder={lang.email}
                         error={errors.email}
                         size="col-3"
                     />
@@ -44,37 +54,38 @@ const CustomerForm = ({ client, handleChange, errors }) => {
             <div className="row">
                 <div className="col">
                     <Field
-                        label="Adresse"
+                        label={lang.address}
                         name="address"
-                        value={client.address}
+                        value={customer.address}
                         onChange={handleChange}
-                        placeholder="Adresse"
+                        placeholder={lang.address}
                         error={errors.address}
                     />
                     <Field
-                        label="Code postal"
+                        type="number"
+                        label={lang.zipcode}
                         name="zipcode"
-                        value={client.zipcode}
+                        value={customer.zipcode}
                         onChange={handleChange}
-                        placeholder="Code postal"
+                        placeholder={lang.zipcode}
                         error={errors.zipcode}
                     />
                 </div>
                 <div className="col">
                     <Field
-                        label="Ville"
+                        label={lang.city}
                         name="city"
-                        value={client.city}
+                        value={customer.city}
                         onChange={handleChange}
-                        placeholder="Ville"
+                        placeholder={lang.city}
                         error={errors.city}
                     />
                     <Field
-                        label="Numéro de téléphone"
+                        label={lang.phoneNumber}
                         name="phoneNumber"
-                        value={client.phoneNumber}
+                        value={customer.phoneNumber}
                         onChange={handleChange}
-                        placeholder="Numéro de téléphone"
+                        placeholder={lang.phoneNumber}
                         error={errors.phoneNumber}
                     />
                 </div>

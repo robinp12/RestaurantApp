@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import ReactDOM from "react-dom";
 import {
   HashRouter,
@@ -7,25 +7,30 @@ import {
   Switch,
   withRouter,
 } from "react-router-dom";
+import { toast, ToastContainer, Zoom } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../css/app.css";
-import NavbarPerso from "./Components/NavbarPerso";
-import HomePage from "./Pages/HomePage";
-import AboutPage from "./Pages/AboutPage";
-import ReservationPage from "./Pages/ReservationPage";
-import OrderPage from "./Pages/OrderPage";
-import MenuPage from "./Pages/MenuPage";
 import Footer from "./Components/Footer";
-
-import ReservationManagement from "./Pages/Admin/ReservationManagement.jsx";
+import NavbarPerso from "./Components/NavbarPerso";
+import { AuthContext } from "./Context/AuthContext";
+import { CartContext } from "./Context/CartContext";
+import { LangContext } from "./Context/LangContext";
+import en from "./Lang/en_EN.json";
+import fr from "./Lang/fr_FR.json";
+import AboutPage from "./Pages/AboutPage";
 import ConnexionPage from "./Pages/Admin/ConnexionPage";
 import CustomersPage from "./Pages/Admin/CustomersPage";
 import InvoicesPage from "./Pages/Admin/InvoicesPage";
 import MenuManagement from "./Pages/Admin/MenuManagement";
+import OrdersPage from "./Pages/Admin/OrdersPage";
+import ReservationManagement from "./Pages/Admin/ReservationManagement.jsx";
 import UsersPage from "./Pages/Admin/UsersPage";
-
-import fr from "./Lang/fr_FR.json";
-import en from "./Lang/en_EN.json";
+import HomePage from "./Pages/HomePage";
+import MenuPage from "./Pages/MenuPage";
+import OrderPage from "./Pages/OrderPage";
+import ReservationPage from "./Pages/ReservationPage";
 import authAPI from "./Services/authAPI";
+import client from "./Services/client";
 
 {
   /* Routes sécurisées */
@@ -34,18 +39,23 @@ authAPI.setup();
 {
   /* Routes sécurisées */
 }
-const PrivateRoute = ({ path, isAuth, component }) =>
-  isAuth ? (
+const PrivateRoute = ({ path, component }) => {
+  const { isAuth } = useContext(AuthContext);
+
+  return isAuth ? (
     <Route path={path} component={component} />
   ) : (
     <Redirect to="/connexion" />
   );
+};
 const App = () => {
   const [isAuth, setIsAuth] = useState(authAPI.isAuth());
   const NavbarWithRouter = withRouter(NavbarPerso);
   const FooterWithRouter = withRouter(Footer);
 
   const [language, setLanguage] = useState(true);
+  const [cart, setCart] = useState([]);
+
   let lang;
   if (language) {
     lang = fr;
@@ -53,77 +63,86 @@ const App = () => {
     lang = en;
   }
 
+  client.listenToSocket("notifReceiv", authAPI.isAuth());
+
   return (
     <>
-      <HashRouter hashType="noslash">
-        <NavbarWithRouter
-          setLanguage={setLanguage}
-          language={language}
-          isAuth={isAuth}
-        />
-        <div className="jumbotron">
-          <div className="card mt-4">
-            <div className="card-body">
-              <Switch>
-                <PrivateRoute
-                  isAuth={isAuth}
-                  path="/factures"
-                  component={InvoicesPage}
-                />
-                <PrivateRoute
-                  isAuth={isAuth}
-                  path="/utilisateurs"
-                  component={UsersPage}
-                />
-                <PrivateRoute
-                  isAuth={isAuth}
-                  path="/clients"
-                  component={CustomersPage}
-                />
-                <PrivateRoute
-                  isAuth={isAuth}
-                  path="/reservations"
-                  component={ReservationManagement}
-                />
-                <PrivateRoute
-                  isAuth={isAuth}
-                  path="/manage"
-                  component={MenuManagement}
-                />
-                {isAuth && <Redirect path={"/connexion"} to="/" />}
-                <Route
-                  path="/connexion"
-                  render={(props) => (
-                    <ConnexionPage onLogin={setIsAuth} {...props} />
-                  )}
-                />
-                <Route
-                  path="/apropos"
-                  render={(props) => <AboutPage lang={lang} {...props} />}
-                />
-                <Route
-                  path="/menu"
-                  render={(props) => <MenuPage lang={lang} {...props} />}
-                />
-                <Route
-                  path="/reserver"
-                  render={(props) => <ReservationPage lang={lang} {...props} />}
-                />
-                <Route
-                  path="/commander"
-                  render={(props) => <OrderPage lang={lang} {...props} />}
-                />
-                <Route
-                  path="/"
-                  render={(props) => <HomePage lang={lang} {...props} />}
-                />
-              </Switch>
-            </div>
-          </div>
-        </div>
-        <FooterWithRouter isAuth={isAuth} onLogout={setIsAuth} />
-      </HashRouter>
+      <AuthContext.Provider value={{ isAuth, setIsAuth }}>
+        <LangContext.Provider value={{ language, setLanguage, lang }}>
+          <CartContext.Provider value={{ cart, setCart }}>
+            <HashRouter hashType="noslash">
+              <NavbarWithRouter />
+              <div className="jumbotron">
+                <div className="card">
+                  <div className="body my-2 py-3 px-4">
+                    <Switch>
+                      <PrivateRoute
+                        path="/factures/:id?"
+                        component={InvoicesPage}
+                      />
+                      <PrivateRoute
+                        path="/utilisateurs/:id?"
+                        component={UsersPage}
+                      />
+                      <PrivateRoute
+                        path="/clients/:id?"
+                        component={CustomersPage}
+                      />
+                      <PrivateRoute
+                        path="/reservations/:id?"
+                        component={ReservationManagement}
+                      />
+                      <PrivateRoute
+                        path="/commandes/:id?"
+                        component={OrdersPage}
+                      />
+                      <PrivateRoute path="/manage" component={MenuManagement} />
+                      {isAuth && <Redirect path={"/connexion"} to="/" />}
+                      <Route
+                        path="/connexion"
+                        render={(props) => <ConnexionPage {...props} />}
+                      />
+                      <Route
+                        path="/apropos"
+                        render={(props) => <AboutPage {...props} />}
+                      />
+                      <Route
+                        path="/menu"
+                        render={(props) => <MenuPage {...props} />}
+                      />
+                      <Route
+                        path="/reserver"
+                        render={(props) => <ReservationPage {...props} />}
+                      />
+                      <Route
+                        path="/commander"
+                        render={(props) => <OrderPage {...props} />}
+                      />
+                      <Route
+                        path="/"
+                        render={(props) => <HomePage {...props} />}
+                      />
+                    </Switch>
+                  </div>
+                </div>
+              </div>
+              <FooterWithRouter />
+            </HashRouter>
+          </CartContext.Provider>
+        </LangContext.Provider>
+      </AuthContext.Provider>
       {/* Configuration notification */}
+      <ToastContainer
+        className="toast-container"
+        position={toast.POSITION.BOTTOM_RIGHT}
+        transition={Zoom}
+        autoClose={4000}
+        pauseOnFocusLoss={false}
+        hideProgressBar={true}
+        newestOnTop={true}
+        toastClassName="bg-dark toa"
+        limit={5}
+      />
     </>
   );
 };

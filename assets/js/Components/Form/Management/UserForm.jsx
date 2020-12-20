@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import usersAPI from "../../../Services/usersAPI";
 import Field from "../Input/Field";
 import Select from "../Input/Select";
+import { toast } from "react-toastify";
+
 
 const UserForm = () => {
     const [users, setUsers] = useState({
@@ -41,14 +43,14 @@ const UserForm = () => {
         console.log(users)
         try {
             const rep = await usersAPI.register(users);
-            // toast(users.firstName + " a été ajouté");
+            toast(users.firstName + " a été ajouté");
             setErrors("");
             console.log(rep)
         } catch (error) {
             console.log(error.response)
-            // toast("Erreur dans le formulaire !" + "", {
-            //     className: "bg-red",
-            // });
+            toast("Erreur dans le formulaire !" + "", {
+                className: "bg-red-toast",
+            });
             if (error.response.data.violations) {
 
                 const apiErrors = {};

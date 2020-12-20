@@ -42,6 +42,7 @@ class Reservation
      * @ORM\Column(type="string", length=4)
      * @Groups({"reservations_read"})
      * @Assert\NotBlank(message="Obligatoire")
+     * @Assert\Positive(message="Quantité invalide")
      */
     private $peopleNumber;
 

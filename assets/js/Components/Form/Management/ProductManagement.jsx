@@ -1,27 +1,37 @@
 import React, { useEffect, useState } from "react";
-import Field from "../Input/Field";
-import productsAPI from "../../../Services/productsAPI";
-import Select from "../Input/Select";
-import categoriesAPI from "../../../Services/categoriesAPI";
 import { Tab, Tabs } from "react-bootstrap";
+import categoriesAPI from "../../../Services/categoriesAPI";
+import productsAPI from "../../../Services/productsAPI";
+import Field from "../Input/Field";
+import Select from "../Input/Select";
+import { toast } from "react-toastify";
+import Axios from "axios";
 
+
+let cle;
 
 const ProductManagement = ({ setRefresh, refresh }) => {
+
+    const [key, setKey] = useState(cle);
+    cle = key;
 
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
 
     const [product, setProduct] = useState({
-        label: "",
-        description: "",
-        price: "",
-        category: ""
+        label: "1",
+        description: "1",
+        price: 0,
+        picture: "",
+        category: "api/categories/52"
     });
+
 
     const [errors, setErrors] = useState({
         label: "",
         description: "",
         price: "",
+        picture: "",
         category: ""
     });
 
@@ -40,14 +50,14 @@ const ProductManagement = ({ setRefresh, refresh }) => {
         console.log(product)
         try {
             const rep = await productsAPI.add(product);
-            // toast(users.firstName + " a été ajouté");
+            toast(product.label + " a été ajouté");
             setRefresh(!refresh);
             setErrors("");
         } catch (error) {
             console.log(error.response.data)
-            // toast("Erreur dans le formulaire !" + "", {
-            //     className: "bg-red",
-            // });
+            toast("Erreur dans le formulaire !" + "", {
+                className: "bg-red",
+            });
             if (error.response.data.violations) {
                 const apiErrors = {};
                 error.response.data.violations.forEach((violation) => {
@@ -85,7 +95,8 @@ const ProductManagement = ({ setRefresh, refresh }) => {
 
         setProducts(products.filter(objectToDelete => objectToDelete.id !== id));
         try {
-            await productsAPI.deleteProducts(id);
+            const rep = await productsAPI.deleteProducts(id);
+
             // toast("Utilisateur n°" + id + " supprimé", {
             //     className: "bg-red",
             // });
@@ -105,7 +116,9 @@ const ProductManagement = ({ setRefresh, refresh }) => {
     return (
         <>
             <div className="col-6">
-                <form className="form" onSubmit={handleSubmit}>
+                <form className="form"
+                    onSubmit={handleSubmit}
+                >
                     <div className="row m-1 p-3 border">
                         <div className="col">
                             <div className="row">
@@ -159,24 +172,25 @@ const ProductManagement = ({ setRefresh, refresh }) => {
                                 <div className="col">
                                     <button className="btn-primary btn float-right" type="submit" disabled={false}>Ajouter</button>
                                 </div>
+                                {/* <input type="file" onChange={selectFile} />
+                                <button onClick={upload}>Upload</button> */}
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div className="col">
-                <Tabs onSelect={() => setRefresh(!refresh)} id="controlled-tab">
-                    {console.log(products)}
+                <Tabs id="controlled-tab" activeKey={key} onSelect={(k) => setKey(k)}>
                     {categories.map((cat, index) =>
                         <Tab key={index} eventKey={cat.label} title={cat.label}>
-                            <table className="table table-hover">
-                                <thead className="">
+                            <table className="table table-responsive-md table-hover ">
+                                <thead className="thead-dark">
                                     <tr>
-                                        <th className="text-center">Identifiant</th>
+                                        <th className="text-center hidden-xs">ID</th>
                                         <th className="text-center">Nom</th>
                                         <th className="text-center">Prix</th>
                                         <th className="text-center">Description</th>
-                                        <th className="text-center"></th>
+                                        <th className="text-center"><em className="fa fa-cog"></em></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -188,7 +202,10 @@ const ProductManagement = ({ setRefresh, refresh }) => {
                                             <td className="text-center align-middle">{prod.price}€</td>
                                             <td className="text-center align-middle">{prod.description}</td>
                                             {/* <td>{prod.category.label}</td> */}
-                                            <td><button className="btn btn-primary" onClick={() => handleDeleteProduct(prod.id)}>x</button></td>
+                                            <td align="center">
+                                                <a className="btn btn-secondary"><em className="fa fa-pencil"></em></a>
+                                                <a className="btn btn-primary" onClick={() => handleDeleteProduct(prod.id)}><em className="fa fa-trash"></em></a>
+                                            </td>
                                         </tr>
                                     )}
                                 </tbody>

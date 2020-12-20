@@ -30,7 +30,7 @@ security:
     api:
       pattern: ^/api
       stateless: true
-      anonymous: true
+      # anonymous: true
       #Mettre la ligne du dessus en commentaire pour sécuriser l'api
       guard:
         authenticators:

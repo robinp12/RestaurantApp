@@ -1,13 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../Components/Header';
 import { Menu } from '../Components/Menu';
 import categoriesAPI from '../Services/categoriesAPI';
+import { LangContext } from '../Context/LangContext';
 import productsAPI from '../Services/productsAPI';
+import { CartContext } from '../Context/CartContext';
 
-const MenuPage = ({ lang }) => {
+
+const MenuPage = () => {
 
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
+    const { lang } = useContext(LangContext);
+    const { cart, setCart } = useContext(CartContext);
+
+
+    const listCart = function () {
+        var cartCopy = [];
+        for (let i in cart) {
+
+            let item = cart[i];
+            let itemCopy = {};
+            for (let p in item) {
+
+                itemCopy[p] = item[p];
+
+            }
+            itemCopy.totalAmount = +Number(item.price * item.quantity).toFixed(2);
+            cartCopy.push(itemCopy)
+        }
+        return cartCopy;
+    }
+    // Add to cart
+    const addItemToCart = function (product, name, price, quantity) {
+        console.log(cart)
+
+        for (var item in cart) {
+            if (cart[item].product === product) {
+                cart[item].quantity++;
+                return;
+            }
+        }
+        var item = { product, name, price, quantity };
+        cart.push(item);
+    }
 
     const fetchCatProd = async () => {
         try {
@@ -26,8 +62,8 @@ const MenuPage = ({ lang }) => {
 
     return (
         <>
-            <h2 className="card-title"><Header title={lang.theMenu} /></h2>
-            <Menu products={products} categories={categories} />
+            <Header title={lang.theMenu} bool={false} />
+            <Menu products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
         </>
     );
 }

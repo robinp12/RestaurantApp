@@ -1,28 +1,57 @@
-import React, { useState } from "react";
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import React, { useContext } from "react";
+import { Dropdown, DropdownButton, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { AuthContext } from "../Context/AuthContext";
+import { CartContext } from "../Context/CartContext";
+import { LangContext } from '../Context/LangContext';
 
 
-const NavbarPerso = ({ isAuth, setLanguage, language }) => {
+
+const NavbarPerso = ({ history }) => {
+  const { cart, setCart } = useContext(CartContext);
+
+  const { language, setLanguage, lang } = useContext(LangContext);
+  const { isAuth } = useContext(AuthContext);
+
   return (
-    <Navbar fixed="top" bg="dark" variant="dark" collapseOnSelect expand="lg">
-      <Navbar.Brand href="#">Le Cheval Blanc</Navbar.Brand>
+    <Navbar fixed="top" bg="dark" variant="dark" collapseOnSelect expand="lg" >
+      <Navbar.Brand href="#home">
+        <img
+          alt=""
+          src="/logo.png"
+          width="30"
+          height="30"
+          className="d-inline-block align-top"
+        /> Le Cheval Blanc</Navbar.Brand>
+
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         {!isAuth &&
           <>
             <Nav className="mr-auto nav-item">
-              <button onClick={() => setLanguage(!language)}>Langue</button>
-              <NavDropdown title="La carte" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#menu#plats">Plats</NavDropdown.Item>
-                <NavDropdown.Item href="#menu#boissons">Boissons</NavDropdown.Item>
+              <NavDropdown title={lang.theMenu} id="basic-nav-dropdown">
+                <NavDropdown.Item href="#menu#plats">{lang.foods}</NavDropdown.Item>
+                <NavDropdown.Item href="#menu#boissons">{lang.drinks}</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Suggestions du moment</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.4">{"..."}</NavDropdown.Item>
+                {/* <NavDropdown.Item href="#action/3.4">{lang.suggestions}</NavDropdown.Item> */}
               </NavDropdown>
-              <Nav.Link className="nav-item" href="#apropos">À propos</Nav.Link>
+              <Nav.Link className="nav-item" href="#apropos">{lang.about}</Nav.Link>
             </Nav>
             <Nav className="nav-item">
-              <Nav.Link className="btn btn-dark text-light border-light mr-2" href="#reserver">Reserver</Nav.Link>
-              <Nav.Link className="btn btn-dark text-primary border-primary mr-2" href="#commander">Commander</Nav.Link>
+              {((history.location.pathname !== "/reserver")) &&
+                <>
+                  {(history.location.pathname !== "/commander") &&
+                    <Nav.Link className="btn text-light mr-1" href="#reserver">{lang.toReserve}</Nav.Link>
+                  }
+                  <Nav.Link className="nav-item btn btn-dark text-primary border-primary ml-1" href="#commander">
+                    {cart.length &&
+                      <b><em className="fa fa-shopping-cart"></em> {lang.cart}
+                      : {cart.length}</b>
+                      || <>{lang.toOrder}
+                      </>}
+                  </Nav.Link>
+                </>
+              }
             </Nav>
           </>
           ||
@@ -30,8 +59,8 @@ const NavbarPerso = ({ isAuth, setLanguage, language }) => {
             <Nav.Link className="nav-item" href="#commandes">Commandes</Nav.Link>
             <Nav.Link className="nav-item" href="#reservations">Reservations</Nav.Link>
             <Nav.Link className="nav-item" href="#factures">Factures</Nav.Link>
+            <Nav.Link className="nav-item" href="#clients">Clients</Nav.Link>
             <NavDropdown title="Gestion" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#clients">Clients</NavDropdown.Item>
               <NavDropdown.Item href="#utilisateurs">Utilisateurs</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#manage">Menus</NavDropdown.Item>
@@ -39,7 +68,7 @@ const NavbarPerso = ({ isAuth, setLanguage, language }) => {
           </Nav>
         }
       </Navbar.Collapse>
-    </Navbar>
+    </Navbar >
   );
 };
 

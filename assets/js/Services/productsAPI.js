@@ -14,6 +14,20 @@ function add(product) {
     return response;
   });
 }
+function updateInfo(id, products) {
+  return Axios.put(PRODUCTS_API + "/" + id, products).then(async (response) => {
+    const cachedProducts = await Cache.get("products");
+    if (cachedProducts) {
+      const index = cachedProducts.findIndex((e) => e.id === +id);
+      const newcachedcustomer = response.data;
+      cachedProducts[index] = newcachedcustomer;
+
+      Cache.set("products", cachedProducts);
+    }
+    return response;
+  });
+}
+
 // Récuperer un product pour la page profil
 async function findProduct(id) {
   // const cachedProducts = await Cache.get("products");
@@ -58,6 +72,7 @@ function deleteProducts(id) {
 
 export default {
   add,
+  updateInfo,
   findProduct,
   getAllProducts,
   deleteProducts,

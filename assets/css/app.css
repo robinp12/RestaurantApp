@@ -10,57 +10,6 @@
   background: #a8adb3;
 }
 
-.row div {
-  border-radius: 3px;
-}
-
-.col-md-3 > .card {
-  height: 100%;
-}
-h1 {
-  color: dimgrey;
-}
-.card-body > span {
-  font-size: 150%;
-}
-.card-body > #nb {
-  font-weight: bold;
-  font-size: 300%;
-}
-hr.mid {
-  margin-top: auto;
-  margin-bottom: auto;
-  border-left: 0.8px solid lightgray;
-  height: 60vh;
-}
-.btn-danger {
-  height: 30px;
-  width: 30px;
-  padding: 0px;
-  font-weight: bold;
-}
-.form {
-  background-color: whitesmoke;
-  padding: 2vh 2vw;
-  margin: 10px;
-  box-shadow: lightslategrey 2px 2px 5px 0.2px;
-  border-radius: 4px;
-}
-div .profil {
-  background-color: whitesmoke;
-  padding: 20px;
-  margin: 10px;
-  box-shadow: lightslategrey 2px 2px 5px 0.5px;
-  border-radius: 4px;
-  margin-left: 35px;
-  margin-right: 35px;
-}
-.toa {
-  border-radius: 5px;
-  color: white;
-  box-shadow: lightslategrey 5px 5px 10px 0.5px;
-  padding-left: 25px;
-}
 .popup {
   margin: 10px;
   text-align: center;
@@ -79,51 +28,47 @@ div .profil {
   border-radius: 5px;
   width: 20em;
 }
-#mapid {
-  margin-top: 1em;
-  box-shadow: lightgray 1px 1px 5px 0.5px;
-  background-color: rgb(53, 53, 53);
-  min-height: 40vh;
-}
 .clienttable {
   margin-left: 17%;
   margin-right: 17%;
   padding: 0;
   margin-bottom: 0.5em;
 }
-.select-address {
-  width: 100%;
-}
-input[type="number"]::-webkit-inner-spin-button,
+/* input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
+} */
 .jumbotron {
-  margin-right: 10vw;
-  margin-left: 10vw;
-  margin-top: 2vh;
-  margin-bottom: 0.5%;
+  margin-right: 8vw;
+  margin-left: 8vw;
+  margin-top: 3vh;
+  margin-bottom: 1vh;
 }
 .footer {
-  margin-right: 10vw;
-  margin-left: 10vw;
-}
-hr {
-  margin-right: 3vw;
-  margin-left: 3vw;
+  margin-right: 8vw;
+  margin-left: 8vw;
 }
 .list-group-item:hover {
   background-color: #f0f0f0;
 }
-.formBlock {
-  width: 50vw;
-  min-height: 30vh;
+.selected {
+  background-color: #f0f0f0;
 }
-.loginFormBlock {
+.block {
+  background-color: whitesmoke;
   min-width: 35vw;
-  min-height: 30vh;
-  padding: 6vh 5vw;
+  padding: 4vh 4vw;
+  box-shadow: lightslategrey 1px 1px 5px 0.1px;
+  border-radius: 8px;
+}
+.blockStep {
+  background-color: whitesmoke;
+  min-width: 50vw;
+  min-height: 35vh;
+  padding: 4vh 4vw;
+  box-shadow: lightslategrey 1px 1px 5px 0.1px;
+  border-radius: 8px;
 }
 .orderBtn {
   min-width: 18vw;
@@ -135,6 +80,70 @@ hr {
   box-shadow: lightgray 2px 2px 5px 0.5px;
   border-radius: 4px;
 }
-.card-body {
+.body {
   min-height: 78vh;
+}
+.bg-red-toast {
+  background-color: #be1603;
+  color: white;
+  border-radius: 5px;
+}
+.panel-table .panel-body {
+  padding: 0;
+}
+
+.panel-table .panel-body .table-bordered {
+  border-style: none;
+  margin: 0;
+}
+
+.panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
+  text-align: center;
+  width: 100px;
+}
+
+.panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
+.panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
+  border-right: 0px;
+}
+
+.panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
+.panel-table .panel-body .table-bordered > tbody > tr > td:first-of-type {
+  border-left: 0px;
+}
+
+.panel-table .panel-body .table-bordered > tbody > tr:first-of-type > td {
+  border-bottom: 0px;
+}
+
+.panel-table .panel-body .table-bordered > thead > tr:first-of-type > th {
+  border-top: 0px;
+}
+
+.panel-table .panel-footer .pagination {
+  margin: 0;
+}
+
+/*
+used to vertically center elements, may need modification if you're not using default sizes.
+*/
+.panel-table .panel-footer .col {
+  line-height: 34px;
+  height: 34px;
+}
+
+.panel-table .panel-heading .col h3 {
+  line-height: 30px;
+  height: 30px;
+}
+
+.panel-table .panel-body .table-bordered > tbody > tr > td {
+  line-height: 34px;
+}
+input[type="text"]:disabled {
+  background-color: rgb(250, 250, 250);
+}
+.borderButt {
+  border: 1.5px solid;
+  min-width: 13vw;
 }

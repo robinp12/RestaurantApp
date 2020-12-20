@@ -1,13 +1,17 @@
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import invoicesAPI from "../../Services/invoicesAPI"
+import invoicesAPI from "../../Services/invoicesAPI";
+import { toast } from "react-toastify";
 
-const InvoicesPage = ({ history }) => {
+
+const InvoicesPage = ({ match, history }) => {
+
+    const { id } = match.params
 
     const [invoices, setInvoices] = useState([]);
     const [change, setChange] = useState(false);
-    let invoice_id = +window.location.hash.slice(10);
+    let invoice_id = id;
 
     const fetchAllInvoices = async () => {
 
@@ -29,6 +33,8 @@ const InvoicesPage = ({ history }) => {
         setInvoices(invoices.filter(user => user.id !== id));
         try {
             await invoicesAPI.deleteInvoices(id)
+            history.replace("/factures/" + invoices[invoices.length - 1 - 1].i)
+
         } catch (error) {
             setInvoices(originInvoices);
         }
@@ -39,21 +45,30 @@ const InvoicesPage = ({ history }) => {
         <>
             <div className="row">
                 <div className="col">
-                    <table className="table table-responsive-md table-hover">
+                    <table className="table table-responsive-md table-hover ">
                         <thead className="thead-dark">
                             <tr>
-                                <th className="text-center">Numéro</th>
-                                <th className="text-center">Montant</th>
+                                <th className="text-center hidden-xs">ID</th>
                                 <th className="text-center">Etat</th>
-                                <th className="text-center">Date</th>
+                                <th className="text-center">Envoyé</th>
+                                <th className="text-center">Recevoir</th>
+                                <th className="text-center">Montant</th>
+                                <th className="text-center"><em className="fa fa-cog"></em></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {invoices.map(invoice => <tr key={invoice.id} onClick={() => history.replace("/factures/" + invoice.chrono)}>
+                            {invoices.map(invoice => <tr key={invoice.id}
+                                onClick={() => history.replace("/factures/" + invoice.id)}
+                            >
                                 <th scope="row" className="text-center align-middle">{zeroPad(invoice.chrono)}</th>
-                                <td className="text-center align-middle">{invoice.amount}€</td>
                                 <td className="text-center align-middle">{invoice.status} </td>
                                 <td className="text-center align-middle">{new Date(invoice.sentAt).toLocaleString()} </td>
+                                <td className="text-center align-middle">{new Date(invoice?.timeToReceive).toLocaleString()} </td>
+                                <td className="text-center align-middle">{invoice.amount}€</td>
+                                <td align="center">
+                                    <a className="btn btn-secondary"><em className="fa fa-pencil"></em></a>
+                                    <a className="btn btn-primary" onClick={() => handleDelete(invoice.id)}><em className="fa fa-trash"></em></a>
+                                </td>
                             </tr>)}
 
                         </tbody>
@@ -61,23 +76,32 @@ const InvoicesPage = ({ history }) => {
                 </div>
                 <div className="col">
                     {invoices.map(invoice =>
-                        invoice.chrono == invoice_id &&
-                        <div key={invoice.chrono}>
-                            <h2>Factures <b>{invoice.chrono}</b></h2>
+                        invoice.id == invoice_id &&
+                        <div className="row card p-3" key={invoice.chrono}>
+                            <h2>Factures <b>{invoice.id}</b></h2>
+                            {/* <h2>Factures <b>{invoice.chrono}</b></h2> */}
+                            {console.log(invoice)
+                            }
                             <div className="container form">
                                 <div className="row justify-content-center">
                                     <div className="col">
-                                        <span>Id : {invoice.chrono}</span><br />
-                                        <span>Montant : {invoice.amount}€</span><br />
+                                        <span>Chrono : {invoice.chrono}</span><br />
+                                        <span>Prix Total : {invoice.amount}€</span><br />
                                         <span>Date : {new Date(invoice.sentAt).toLocaleString()}</span><br />
+                                        <span>Client : {invoice.client?.firstName} {invoice.client?.lastName}</span><br />
                                     </div>
                                     <div className="col">
-                                        <span>Client : {invoice.customer.firstName} {invoice.customer.lastName}</span><br />
+                                        Commande :
+                                            {invoice?.orders.map((e) =>
+                                        <ul key={e.id}>
+                                            <li>Id : <b>{e.id}</b> {" | " + e.label + " | " + e.quantity + " x " + e.price + "€ = " + e.totalAmount}</li>
+                                        </ul>)}
+                                        <br />
                                     </div>
                                 </div>
                                 <div className="row">
                                     <button className="btn btn-secondary" onClick={() => setChange(!change)}>{!change ? "Modifier" : "Valider"}</button>
-                                    <button className="btn btn-primary" onClick={() => handleDelete(invoice.id)} disabled={invoice}>Supprimer</button>
+                                    <button className="btn btn-primary" onClick={() => handleDelete(invoice.id)}>Supprimer</button>
                                 </div>
                             </div>
                         </div >

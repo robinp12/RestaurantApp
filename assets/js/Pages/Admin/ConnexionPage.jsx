@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { toast } from "react-toastify";
 import Field from "../../Components/Form/Input/Field";
 import Header from '../../Components/Header';
 import authAPI from "../../Services/authAPI";
+import { AuthContext } from "../../Context/AuthContext";
 
-const ConnexionPage = ({ onLogin, history }) => {
 
-    const [showRegister, setShowRegister] = useState(false);
+const ConnexionPage = ({ history }) => {
+
+    const { isAuth, setIsAuth } = useContext(AuthContext);
+
     const [login, setLogin] = useState({
         username: "",
         password: ""
@@ -24,22 +28,22 @@ const ConnexionPage = ({ onLogin, history }) => {
         try {
             await authAPI.authenticate(login);
             setError("");
-            onLogin(true);
-            // toast("Connecté ! " + authAPI.getCurrent().firstName);
+            setIsAuth(true);
+            toast("Connecté ! " + authAPI.getCurrent().firstName);
             history.replace("/clients");
         } catch (error) {
-            // toast("Mauvais identifiants", {
-            //     className: "bg-red",
-            // });
+            toast("Mauvais identifiants", {
+                className: "bg-red-toast",
+            });
             setError("Mauvais identifiants");
         }
     };
 
     return (
         <>
-            <h2 className="card-title"><Header title={"Connexion"} /></h2>
+            <Header title={"Connexion"} />
             <div className="row justify-content-center">
-                <form onSubmit={handleSubmit} className="loginFormBlock form">
+                <form onSubmit={handleSubmit} className="block">
                     <Field
                         label="Adresse mail"
                         name="username"
@@ -62,7 +66,6 @@ const ConnexionPage = ({ onLogin, history }) => {
                     </div>
                 </form>
             </div>
-            <br />
         </>
     );
 };

@@ -11,14 +11,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
-
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
  * @ApiResource(
  *  normalizationContext={
  *      "groups"={"orders_read"}
- *  }
+ *  }, attributes={"order": {"id":"desc"}}
  * )
  */
 class Order
@@ -27,36 +26,57 @@ class Order
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"orders_read"})
+     * @Groups({"orders_read","invoices_read"})
      */
     private $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"orders_read"})
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"orders_read","invoices_read"})
+     * @Assert\NotBlank(message="Obligatoire")
      */
-    private $orderTable;
-
+    private $label;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Invoice::class, inversedBy="id_order")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"orders_read"})
+     * @ORM\Column(type="float")
+     * @Groups({"orders_read","invoices_read"})
      * @Assert\NotBlank(message="Obligatoire")
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"orders_read","invoices_read"})
+     * @Assert\NotBlank(message="Invalide")
+     * @Assert\Positive(message="Quantité invalide")
+     */
+    private $quantity;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"orders_read","invoices_read"})
+     * @Assert\NotBlank(message="Obligatoire")
+     * @Assert\PositiveOrZero(message="Invalide")
+     */
+    private $totalAmount;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Invoice::class, inversedBy="orders")
      */
     private $invoice;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="orders")
-     * @Groups({"orders_read"})
+     * @ORM\Column(type="string", length=100)
+     * @Groups({"orders_read","invoices_read"})
      * @Assert\NotBlank(message="Obligatoire")
      */
-    private $product;
+    private $customer_email;
 
     public function __construct()
     {
         $this->id_product = new ArrayCollection();
         $this->product = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,14 +84,26 @@ class Order
         return $this->id;
     }
 
-    public function getOrderTable(): ?int
+    public function getQuantity(): ?int
     {
-        return $this->orderTable;
+        return $this->quantity;
     }
 
-    public function setOrderTable(?int $orderTable): self
+    public function setQuantity(int $quantity): self
     {
-        $this->orderTable = $orderTable;
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getTotalAmount(): ?int
+    {
+        return $this->totalAmount;
+    }
+
+    public function setTotalAmount(int $totalAmount): self
+    {
+        $this->totalAmount = $totalAmount;
 
         return $this;
     }
@@ -88,28 +120,38 @@ class Order
         return $this;
     }
 
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProduct(): Collection
+    public function getCustomerEmail(): ?string
     {
-        return $this->product;
+        return $this->customer_email;
     }
 
-    public function addProduct(Product $product): self
+    public function setCustomerEmail(string $customer_email): self
     {
-        if (!$this->product->contains($product)) {
-            $this->product[] = $product;
-        }
+        $this->customer_email = $customer_email;
 
         return $this;
     }
 
-    public function removeProduct(Product $product): self
+    public function getLabel(): ?string
     {
-        if ($this->product->contains($product)) {
-            $this->product->removeElement($product);
-        }
+        return $this->label;
+    }
+
+    public function setLabel(string $label): self
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }

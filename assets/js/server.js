@@ -6,9 +6,9 @@ server.on("connection", (socket) => {
   console.info(`Client connected [id=${socket.id}]`);
 
   // initialize this client's sequence number
-  socket.on("msg", (obj) => {
+  socket.on("notifSend", (obj) => {
     console.log(socket.id + " : " + obj);
-    socket.broadcast.emit("server", obj + " : " + socket.id);
+    server.emit("notifReceiv", obj);
   });
 
   // when socket disconnects, remove it from the list:

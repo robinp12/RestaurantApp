@@ -8,8 +8,8 @@
     "hours": "Hours",
     "minutes": "Minutes",
     "date": "Date",
-    "numberOfPeople" : "Number of people",
-    "reservation" : "Réservation",
+    "peopleNumber" : "Number of people",
+    "reservation" : "Reservation",
     "lastName": "Last Name",
     "firstName" : "First Name",
     "email" : "Email",
@@ -27,6 +27,18 @@
     "there" : "There",
     "payment" : "Payment",
     "pay" : "Pay",
-    "confirm" : "Confirm"
-
+    "confirm" : "Confirm",
+    "openingTime" : "Opening Times",
+    "monday" : "Monday",
+    "tuesday" : "Tuesday",
+    "friday" : "Friday",
+    "saturday" : "Saturday",
+    "sunday" : "Sunday",
+    "foods" : "Foods",
+    "suggestions" : "Suggestions",
+    "cart" : "Cart",
+    "information" : "Informations",
+    "from" : "",
+    "to" : "to",
+    "and" : "and"
 }

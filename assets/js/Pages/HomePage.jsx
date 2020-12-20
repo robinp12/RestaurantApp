@@ -1,40 +1,110 @@
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import React, { useContext, useState } from "react";
+import Field from "../Components/Form/Input/Field";
 import Header from "../Components/Header";
-let toto = [];
+import { LangContext } from "../Context/LangContext";
+import moment from "moment";
+import { Carousel } from "react-bootstrap";
+import Axios from "axios";
+import productsAPI from "../Services/productsAPI";
+import { useRef } from "react";
 
 const HomePage = () => {
-    const [bool, setBool] = useState(false);
-    const click = () => {
-        toto.push("dd")
-    }
-    useEffect(() => {
-        click()
-    }, [bool])
 
-    console.log(toto)
+    const { lang } = useContext(LangContext);
+
+    const [time, setTime] = useState(new Date());
+    const [file, setFile] = useState();
+    const handleChange = ({ currentTarget }) => {
+        const { name, value } = currentTarget;
+        console.log(moment(value).format())
+
+
+    };
+
+    const refContainer = useRef();
+
+    const selectFile = (e) => {
+        setFile(e.target.files[0])
+
+    }
+    const upload = () => {
+        let data = new FormData();
+        data.append("image", file);
+        data.append("name", "test");
+
+    }
+    const oneTimeClick = (e) => {
+        e.preventDefault()
+
+        refContainer.current.setAttribute("disabled", "")
+        setTimeout(() => {
+            refContainer.current.removeAttribute("disabled")
+
+        }, 1000);
+
+    }
 
     return (
         <>
-            {toto.map(e => <b>{e}</b>)
-            }
-            <h2 className="card-title"><Header title={"Le Cheval Blanc"} /></h2>
-            <div className="row align-items-center">
+            <div className="row">
                 <div className="col">
-                    <img src="https://ad962edbae8ba7b03b7f-d10007df79b5b7a4e475a291e50a08cf.ssl.cf3.rackcdn.com/creer-un-restaurant/creer-un-restaurant.jpg" />
-                </div>
-                <div className="col">
-                    <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                    <div className="card-text">
-                        <p className="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-                        <hr className="my-4" />
-                        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-                        <p className="lead">
-                            <a onClick={() => setBool(!bool)} className="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-                        </p>                            </div>
-                    <a href="#" className="card-link">Card link</a>
-                    <a href="#" className="card-link">Another link</a>
+                    <Header title={"Le Cheval Blanc"} />
+                    <div className="row align-items-center justify-content-center">
+                        <div className="col-7 ">
+                            <div className="card-text">
+                                <Carousel>
+                                    <Carousel.Item>
+                                        <img
+                                            className="d-block w-100"
+                                            src="https://ad962edbae8ba7b03b7f-d10007df79b5b7a4e475a291e50a08cf.ssl.cf3.rackcdn.com/creer-un-restaurant/creer-un-restaurant.jpg"
+                                            alt="First slide"
+                                        />
+                                        <Carousel.Caption>
+                                            <h3>Bienvenue</h3>
+                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                        </Carousel.Caption>
+                                    </Carousel.Item>
+                                    <Carousel.Item>
+                                        <img
+                                            className="d-block w-100"
+                                            src="https://ad962edbae8ba7b03b7f-d10007df79b5b7a4e475a291e50a08cf.ssl.cf3.rackcdn.com/creer-un-restaurant/creer-un-restaurant.jpg"
+                                            alt="Third slide"
+                                        />
+
+                                        <Carousel.Caption>
+                                            <h3>Second slide label</h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                        </Carousel.Caption>
+                                    </Carousel.Item>
+                                    <Carousel.Item>
+                                        <img
+                                            className="d-block w-100"
+                                            src="https://ad962edbae8ba7b03b7f-d10007df79b5b7a4e475a291e50a08cf.ssl.cf3.rackcdn.com/creer-un-restaurant/creer-un-restaurant.jpg"
+                                            alt="Third slide"
+                                        />
+
+                                        <Carousel.Caption>
+                                            <h3>Third slide label</h3>
+                                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                                        </Carousel.Caption>
+                                    </Carousel.Item>
+                                </Carousel>
+                            </div>
+                        </div>
+                    </div>
+                    <hr className="my-4" />
+                    <div className="row">
+                        <div className="col">
+                            <div className="card-text">
+
+                                <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+                                <p className="lead">
+                                    <button className="btn btn-primary btn-lg" ref={refContainer} onClick={oneTimeClick} href="#" role="button">Learn more</button>
+                                </p>                            </div>
+                            <a href="#" className="card-link">Card link</a>
+                            <a href="#" className="card-link">Another link</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

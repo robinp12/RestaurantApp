@@ -1,12 +1,14 @@
-import React from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import React, { useContext } from 'react';
 import Header from '../Components/Header';
+import { LangContext } from '../Context/LangContext';
 
 const AboutPage = () => {
+    const { lang } = useContext(LangContext);
+
 
     return (
         <>
-            <h2 className="card-title"><Header title={"À propos"} /></h2>
+            <Header title={lang.about} />
             <div className="row card-text">
                 <div className="col">
                     <div id="mapid">
@@ -42,11 +44,11 @@ const AboutPage = () => {
                     </div>
                     <div className="row">
                         <div className="col">
-                            <strong>Horaires d'ouvertures :</strong>
-                            <br />Lundi et Mardi : de 18h à 21h
-                               <br /> Vendredi : de 18h à 22h
-                               <br /> Samedi : de 11h à 14h et de 18h à 22h
-                               <br /> Dimanche : de 11h à 21h
+                            <strong>{lang.openingTime}:</strong>
+                            <br />{lang.monday} {lang.and} {lang.tuesday} : {lang.from} 18h {lang.to} 21h
+                               <br /> {lang.friday} : {lang.from} 18h {lang.to} 22h
+                               <br /> {lang.saturday} : {lang.from} 11h {lang.to} 14h {lang.and} {lang.from} 18h {lang.to} 22h
+                               <br /> {lang.sunday} : {lang.from} 11h {lang.to} 21h
                                 </div>
                     </div>
                 </div>
