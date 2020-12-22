@@ -50,7 +50,7 @@ class Product
     private $picture;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="string")
      * @Groups({"product_read","category_read","orders_read"})
      * @Assert\NotBlank(message="Prix obligatoire")
      * @Assert\Type("numeric",message="Format incorrect")
@@ -117,12 +117,12 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): ?string
     {
         return $this->price;
     }
 
-    public function setPrice($price): self
+    public function setPrice(?string $price): self
     {
         $this->price = $price;
 

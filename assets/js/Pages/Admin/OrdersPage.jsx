@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { Accordion, Card } from 'react-bootstrap';
 import ordersAPI from '../../Services/ordersAPI';
 
 const OrdersPage = ({ match, history }) => {
@@ -92,6 +93,18 @@ const OrdersPage = ({ match, history }) => {
                     )}
                 </div>
             </div>
+            {orders.map((order) =>
+                <Accordion defaultActiveKey={order.id} key={order.id}>
+                    <Card>
+                        <Accordion.Toggle as={Card.Header} eventKey={order.id}>
+                            Commande <b>{order.id}</b>
+                        </Accordion.Toggle>
+                        <Accordion.Collapse eventKey={order.id}>
+                            <Card.Body>{order.label}</Card.Body>
+                        </Accordion.Collapse>
+                    </Card>
+                </Accordion>
+            )}
         </>
     );
 }

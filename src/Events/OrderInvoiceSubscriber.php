@@ -41,6 +41,7 @@ class OrderInvoiceSubscriber implements EventSubscriberInterface
             //si invoice a client id
             if ($this->invoice_repository->findOneBy(["customer_email" => $order_customer_email])) {
                 $this_invoice =  $this->invoice_repository->findOneBy(["customer_email" => $order_customer_email], ["id" => "DESC"]);
+                // dd($this_invoice);
                 $this_customer = $this->customerRepository->findOneBy(["email" => $order_customer_email]);
                 $this_invoice->setClient($this_customer);
                 $this_invoice->setAmount($this_invoice->getAmount() + $order->getTotalAmount());

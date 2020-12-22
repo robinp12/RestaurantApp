@@ -1,28 +1,62 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import "react-toastify/dist/ReactToastify.css";
+import socketIOClient from "socket.io-client";
+import OrderChat from '../Components/Form/OrderChat';
 import Header from '../Components/Header';
 import { LangContext } from '../Context/LangContext';
+import authAPI from '../Services/authAPI';
+import useLocalStorage from '../Services/useLocalStorage';
+
+const ENDPOINT = "http://localhost:3000";
+
+const socket = socketIOClient(ENDPOINT, {
+    transports: ["websocket"],
+});
+socket.emit("login", "1@hot.com");
 
 const AboutPage = () => {
+
     const { lang } = useContext(LangContext);
+    const [customer, setCustomer] = useState({
+        firstName: "Robin",
+        lastName: "Paquet",
+        email: "robin-be@hotmail.com",
+        address: "rue de",
+        city: "Dinant",
+        zipcode: "5500",
+        phoneNumber: "0493022156",
+    })
 
+    const [message, setMessage] = useLocalStorage('chat-message', [])
 
+    useEffect(() => {
+        socket.on("receive", (data) => {
+            console.log(data)
+            setMessage((prev) => [...prev, data]);
+        });
+        socket.on("discousr", e => console.log(e))
+
+    }, [])
     return (
         <>
             <Header title={lang.about} />
+
+
             <div className="row card-text">
                 <div className="col">
-                    <div id="mapid">
-                        {/* <Map center={[50.503439, 4.855911]} zoom={8}>
-                            <TileLayer
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            />
-                             <Marker position={[50.503439, 4.855911]}>
-                                            <Popup>
-                                                A pretty CSS3 popup. <br /> Easily customizable.
-                                            </Popup>
-                                        </Marker> 
-                        </Map> */}
-                    </div>
+                    {/* <div id="mapid">
+                        <Map center={[50.503439, 4.855911]} zoom={8}>
+                        <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <Marker position={[50.503439, 4.855911]}>
+                        <Popup>
+                        A pretty CSS3 popup. <br /> Easily customizable.
+                        </Popup>
+                        </Marker> 
+                        </Map>
+                    </div> */}
+                    {/* <OrderChat customer={customer} admin={authAPI.isAuth()} socket={socket} message={message} setMessage={setMessage} /> */}
                 </div>
                 <div className="col">
                     <div className="row">

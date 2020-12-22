@@ -18,6 +18,7 @@ import { LangContext } from "./Context/LangContext";
 import en from "./Lang/en_EN.json";
 import fr from "./Lang/fr_FR.json";
 import AboutPage from "./Pages/AboutPage";
+import ChatPage from "./Pages/Admin/ChatPage";
 import ConnexionPage from "./Pages/Admin/ConnexionPage";
 import CustomersPage from "./Pages/Admin/CustomersPage";
 import InvoicesPage from "./Pages/Admin/InvoicesPage";
@@ -30,7 +31,6 @@ import MenuPage from "./Pages/MenuPage";
 import OrderPage from "./Pages/OrderPage";
 import ReservationPage from "./Pages/ReservationPage";
 import authAPI from "./Services/authAPI";
-import client from "./Services/client";
 
 {
   /* Routes sécurisées */
@@ -63,7 +63,7 @@ const App = () => {
     lang = en;
   }
 
-  client.listenToSocket("notifReceiv", authAPI.isAuth());
+  // client.listenToSocket("notifReceiv", authAPI.isAuth());
 
   return (
     <>
@@ -97,6 +97,7 @@ const App = () => {
                         component={OrdersPage}
                       />
                       <PrivateRoute path="/manage" component={MenuManagement} />
+                      <PrivateRoute path="/chatadmin" component={ChatPage} />
                       {isAuth && <Redirect path={"/connexion"} to="/" />}
                       <Route
                         path="/connexion"

@@ -10,24 +10,33 @@ const OrderSummary = ({ reservation = false, orderInfo }) => {
     return (
         <>
             <div className="row">
-                <div className="col d-flex flex-column m-2">
+                <div className="col">
                     <h3>{lang.information}</h3>
-                    <span>{lang.lastName} : <b>{customer.lastName}</b></span>
-                    <span>{lang.firstName} : <b>{customer.firstName}</b></span>
-                    <span>{lang.email} : <b>{customer.email}</b></span>
-                    <span>{lang.phoneNumber} : <b>{customer.phoneNumber}</b></span>
-                    <br />
-                    <span>{lang.address} : <b>{customer.address}</b></span>
-                    <span>{lang.city} : <b>{customer.city}</b></span>
-                    <span>{lang.zipcode} : <b>{customer.zipcode}</b></span>
-                    <br />
-                    <span>{lang.date} : <b>{new Date(orderInfo.time).toLocaleString().slice(0, -3)}</b></span>
-                    {reservation && (<span>{lang.peopleNumber} : <b>{orderInfo.numberOfPeople}</b></span>)}
+                    <div className="row">
+                        <div className="col-xs-6 col-sm-6 col-md-6">
+                            <address>
+                                <strong>{customer.firstName} {customer.lastName}</strong>
+                                <br />
+                                {customer.address}
+                                <br />{customer.zipcode} {customer.city}
+                                <br />
+                                <abbr title="Phone">N: </abbr>{customer.phoneNumber}
+                                <br />
+                                <a>{customer.email}</a>
+                            </address>
+                            <p>
+                                <em>{lang.date} : <b>{new Date(orderInfo.time).toLocaleString().slice(0, -3)}</b></em><br />
+                                {reservation && (<span>{lang.peopleNumber} : <b>{orderInfo.numberOfPeople}</b></span>)}
+                            </p>
+                        </div>
+                    </div>
                 </div>
                 {!reservation &&
-                    <div className="col d-flex flex-column m-2">
+                    <div className="col d-flex flex-column border-left pl-4 ml-4">
                         <h3>{lang.cart}</h3>
-                        <Cart />
+                        <div className="row">
+                            <Cart />
+                        </div>
                     </div>}
             </div>
         </>);

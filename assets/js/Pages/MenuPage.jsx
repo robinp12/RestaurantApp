@@ -33,7 +33,6 @@ const MenuPage = () => {
     }
     // Add to cart
     const addItemToCart = function (product, name, price, quantity) {
-        console.log(cart)
 
         for (var item in cart) {
             if (cart[item].product === product) {

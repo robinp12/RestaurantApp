@@ -37,7 +37,7 @@ const HomePage = () => {
                 <div className="col">
                     <Header title={"Le Cheval Blanc"} />
                     <div className="row align-items-center justify-content-center">
-                        <div className="col-7 ">
+                        <div className="col-8 ">
                             <div className="card-text">
                                 <Carousel>
                                     <Carousel.Item>

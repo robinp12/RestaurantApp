@@ -4,10 +4,10 @@ import { CartContext } from '../Context/CartContext';
 import { CustomerContext } from '../Context/CustomerContext';
 import { LangContext } from '../Context/LangContext';
 import categoriesAPI from '../Services/categoriesAPI';
-import SocketClient from '../Services/client';
 import customersAPI from '../Services/customersAPI';
 import ordersAPI from '../Services/ordersAPI';
 import productsAPI from '../Services/productsAPI';
+import useLocalStorage from '../Services/useLocalStorage';
 import CustomerForm from './Form/CustomerForm';
 import OrderForm from './Form/OrderForm';
 import OrderSummary from './Form/OrderSummary';
@@ -15,11 +15,12 @@ import PaymentForm from './Form/PaymentForm';
 import { MenuOrder } from './Menu';
 
 let now = new Date(new Date().setHours(new Date().getHours() + 1)).toISOString().slice(0, 16);
-
 const StepForm = () => {
 
     const { lang } = useContext(LangContext);
     const { cart, setCart } = useContext(CartContext);
+    const [orderCart, setOrderCart] = useLocalStorage('cart', [])
+    const [message, setMessage] = useLocalStorage('chat-message', [])
 
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -51,22 +52,24 @@ const StepForm = () => {
 
     let [...bag] = cart;
 
-    const formatedOrder = ({ name, price, ...bag }) => {
+    const formatedOrder = ({ name, price, totalAmount, ...bag }) => {
         bag.customerEmail = customer.email;
         bag.label = name;
-        bag.price = price;
+        bag.price = parseFloat(price, 10);
+        bag.totalAmount = totalAmount;
         return bag
     }
-    const envoi = () => {
+    const sendAllOrders = () => {
         for (let e in bag) {
             handleSubmitOrder(formatedOrder(bag[e]))
         }
     }
-    const handleSubmitOrder = async (e) => {
+    const handleSubmitOrder = async (order) => {
         try {
-            const rep = await ordersAPI.add(e);
+            const rep = await ordersAPI.add(order);
+            setOrderCart(cart)
 
-            toast(e.product + " a été ajouté");
+            toast(order.product + " a été ajouté");
             console.log(rep)
         } catch (error) {
             console.log(error)
@@ -85,7 +88,7 @@ const StepForm = () => {
             confirmRef.current.removeAttribute("disabled")
             toast(customer.firstName + " a été ajouté");
             setErrors("");
-            envoi()
+            sendAllOrders()
             console.log(rep)
             setAway(step => step + 1);
 
@@ -125,9 +128,10 @@ const StepForm = () => {
             console.log(error.response);
         }
     }
-    const sendNotif = () => {
-        SocketClient.sendToSocket("notifSend", "Nouvelle commande");
-    }
+    // const sendNotif = () => {
+    //     SocketClient.sendToSocket("notifSend", "Nouvelle commande");
+    // }
+
 
     const listCart = function () {
         var cartCopy = [];
@@ -153,8 +157,19 @@ const StepForm = () => {
                 return;
             }
         }
+        price = parseFloat(price)
+        console.log(price)
         var item = { product, name, price, quantity };
+
         cart.push(item);
+    }
+    // Count cart 
+    const totalCount = function () {
+        var totalCount = 0;
+        for (var item in cart) {
+            totalCount += cart[item].quantity;
+        }
+        return totalCount;
     }
 
     useEffect(() => {
@@ -244,6 +259,7 @@ const StepForm = () => {
                                 console.log("Nouvelle commande")
                                 e.preventDefault();
                                 setAway(step => step + 1)
+                                setCart([])
                                 //Handle CHANGE STATUS COMMANDE TO PAY
                             }} >{lang.next}</button>
                         </div>
@@ -251,10 +267,10 @@ const StepForm = () => {
                 case 5: // Payment validation
                     return (
                         <>
-                            <div className="container">
-                                <h3>{lang.paymentConfirmation}</h3>
+                            {/* <div className="container">
+                                <OrderChat admin={authAPI.isAuth()} socket={socket} message={message} />
                                 <button className="btn-primary btn float-right" onClick={() => { setChoose(0); setAway(0); }}>OK</button>
-                            </div>
+                            </div> */}
                         </>);
                 default: // Client informations
                     return (

@@ -45,7 +45,7 @@ class CustomerOrderSubscriber implements EventSubscriberInterface
             // dd("non");
 
             $nextChrono = $this->invoice_repository->findNextChrono();
-            $this->app->createInvoice($nextChrono, 2, "SENT", new DateTime(), $customer->getEmail());
+            $this->app->createInvoice($nextChrono, 0, "SENT", new DateTime(), $customer->getEmail());
             // }
         }
     }

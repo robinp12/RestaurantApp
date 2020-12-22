@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class) 
  * @ApiResource(
@@ -78,11 +79,11 @@ class User implements UserInterface
     private $address;
 
     /**
-     * @ORM\Column(type="string", length=4)
+     * @ORM\Column(type="string", length=6)
      * @Groups({"users_read"})
      * @Assert\NotBlank(message="Code postal obligatoire")
-     * @Assert\Range(min=1000,max=99999,notInRangeMessage = "Format de code postal invalide")
-     * @Assert\Type("numeric",message="Format du code postal invalide")
+     * @Assert\Length(min=4,max=6,minMessage = "Format du code postal trop court",maxMessage = "Format de code postal trop long")
+     * @Assert\Type("numeric",message="Format du code postal de type numérique")
      */
     private $zipcode;
 

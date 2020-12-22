@@ -21,7 +21,7 @@ const ProductManagement = ({ setRefresh, refresh }) => {
     const [product, setProduct] = useState({
         label: "",
         description: "",
-        price: 0,
+        price: "",
         picture: "",
         category: "api/categories/52"
     });
@@ -38,7 +38,7 @@ const ProductManagement = ({ setRefresh, refresh }) => {
     const handleChange = ({ currentTarget }) => {
         const { name, value } = currentTarget;
         if (name == "price") {
-            setProduct({ ...product, [name]: parseFloat(value) });
+            setProduct({ ...product, [name]: value });
         }
         else {
             setProduct({ ...product, [name]: value });

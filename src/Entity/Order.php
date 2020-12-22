@@ -53,7 +53,7 @@ class Order
     private $quantity;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      * @Groups({"orders_read","invoices_read"})
      * @Assert\NotBlank(message="Obligatoire")
      * @Assert\PositiveOrZero(message="Invalide")
@@ -96,12 +96,12 @@ class Order
         return $this;
     }
 
-    public function getTotalAmount(): ?int
+    public function getTotalAmount(): ?float
     {
         return $this->totalAmount;
     }
 
-    public function setTotalAmount(int $totalAmount): self
+    public function setTotalAmount(float $totalAmount): self
     {
         $this->totalAmount = $totalAmount;
 

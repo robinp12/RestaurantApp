@@ -1,7 +1,5 @@
-import React, { useContext, useState } from "react";
-import { useEffect } from "react";
-import { Dropdown, DropdownButton, Nav, Navbar, NavDropdown, OverlayTrigger, Popover } from 'react-bootstrap';
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Nav, Navbar, NavDropdown, OverlayTrigger, Popover } from 'react-bootstrap';
 import { AuthContext } from "../Context/AuthContext";
 import { CartContext } from "../Context/CartContext";
 import { LangContext } from '../Context/LangContext';
@@ -16,10 +14,14 @@ const NavbarPerso = ({ history }) => {
   const [show, setShow] = useState(true);
   const popover = (
     <Popover id="popover-basic">
-      <Popover.Title><h3>Panier</h3></Popover.Title>
+      <Popover.Title><h4 className="m-1">Panier</h4></Popover.Title>
       <Popover.Content>
         <Cart />
-        <a href="#commander" className="btn btn-sm btn-primary my-auto">Commander</a>
+        <div className="row">
+          <div className="col">
+            <a href="#commander" className="btn btn-sm btn-primary justify-content-end btn-block">Commander</a>
+          </div>
+        </div>
       </Popover.Content>
     </Popover>
   );
@@ -96,6 +98,7 @@ const NavbarPerso = ({ history }) => {
             <Nav.Link className="nav-item" href="#reservations">Reservations</Nav.Link>
             <Nav.Link className="nav-item" href="#factures">Factures</Nav.Link>
             <Nav.Link className="nav-item" href="#clients">Clients</Nav.Link>
+            <Nav.Link className="nav-item" href="#chatadmin">Chat</Nav.Link>
             <NavDropdown title="Gestion" id="basic-nav-dropdown">
               <NavDropdown.Item href="#utilisateurs">Utilisateurs</NavDropdown.Item>
               <NavDropdown.Divider />

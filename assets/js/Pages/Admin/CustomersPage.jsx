@@ -4,7 +4,10 @@ import Field from '../../Components/Form/Input/Field';
 import customersAPI from "../../Services/customersAPI";
 import { toast } from "react-toastify";
 
+
+
 const CustomersPage = ({ match, history }) => {
+
 
     const { id } = match.params
 
@@ -20,12 +23,6 @@ const CustomersPage = ({ match, history }) => {
             console.log(error.response);
         }
     }
-    const handleChange = ({ currentTarget }) => {
-        const { name, value } = currentTarget;
-        setCustomer({ ...customer, [name]: value });
-        console.log(customer)
-
-    };
 
     const handleDelete = async (id) => {
 
@@ -45,6 +42,79 @@ const CustomersPage = ({ match, history }) => {
             });
         }
     }
+
+
+    const SingleCustomer = ({ customerInfo }) => {
+
+        const [customer, setCustomer] = useState({
+            firstName: customerInfo.firstName,
+            lastName: customerInfo.lastName,
+            email: customerInfo.email,
+            address: customerInfo.address,
+            city: customerInfo.city,
+            zipcode: customerInfo.zipcode,
+            phoneNumber: customerInfo.phoneNumber,
+        });
+        const handleChange = ({ currentTarget }) => {
+            const { name, value } = currentTarget;
+            setCustomer({ ...customer, [name]: value });
+        };
+
+        const handleSubmitChange = async (e) => {
+            e.preventDefault();
+            try {
+                const rep = await customersAPI.updateInfo(customerInfo.id, customer)
+                console.log(rep);
+                setChange(!change)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        console.log(customer)
+
+        return (
+            <div className="row justify-content-center">
+                <div className="col">
+                    <div className="form container p-4">
+                        <h2>Clients <b>{customerInfo.id}</b></h2>
+                        <div className="row">
+                            <div className="col">
+                                <Field label="Prénom" name="firstName" onChange={handleChange} value={customer.firstName} disabled={change} />
+                                <Field label="Téléphone" name="phoneNumber" onChange={handleChange} value={customer.phoneNumber} disabled={change} />
+                                <Field label="Email" name="email" onChange={handleChange} value={customer.email} disabled={change} />
+                            </div>
+                            <div className="col">
+                                <Field label="Nom" name="lastName" onChange={handleChange} value={customer.lastName} disabled={change} />
+                                <Field label="Adresse" name="address" onChange={handleChange} value={customer.address} disabled={change} />
+                                <Field label="Ville" name="city" onChange={handleChange} value={customer.city} disabled={change} />
+                                <Field label="Code Postal" name="zipcode" onChange={handleChange} value={customer.zipcode} disabled={change} />
+                            </div>
+                        </div>
+                        {/* <div className="row">
+                            <div className="col">
+                                CC
+                                <span>{customerInfo.invoices}<br /></span>
+                            </div>
+                        </div> */}
+                        <div className="row mt-3">
+                            <div className="col">
+                                {change ?
+
+                                    <button className="btn btn-secondary float-left" onClick={() => setChange(!change)}>Modifier</button>
+                                    :
+                                    <button className="btn btn-secondary float-left" onClick={handleSubmitChange}>Enregistrer</button>
+
+                                }
+                                <button className="btn btn-primary float-right" onClick={() => handleDelete(customer.id)} disabled={customer.invoices?.length}>Supprimer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     useEffect(() => {
         fetchCustomers();
     }, [])
@@ -77,38 +147,7 @@ const CustomersPage = ({ match, history }) => {
                     {customers.map(customerInfo =>
                         (customerInfo.id == id) &&
                         <div key={customerInfo.id}>
-                            <div className="row justify-content-center">
-                                <div className="col">
-                                    <div className="form container p-4">
-                                        <h2>Clients <b>{customerInfo.id}</b></h2>
-                                        <div className="row">
-                                            <div className="col">
-                                                <Field label="Prénom" name="firstName" onChange={handleChange} placeholder={customerInfo.lastName} disabled={change} />
-                                                <Field label="Téléphone" name="phoneNumber" onChange={handleChange} placeholder={customerInfo.phoneNumber} disabled={change} />
-                                                <Field label="Email" name="email" onChange={handleChange} placeholder={customerInfo.email} disabled={change} />
-                                            </div>
-                                            <div className="col">
-                                                <Field label="Nom" name="lastName" onChange={handleChange} placeholder={customerInfo.firstName} disabled={change} />
-                                                <Field label="Adresse" name="address" onChange={handleChange} placeholder={customerInfo.address} disabled={change} />
-                                                <Field label="Ville" name="city" onChange={handleChange} placeholder={customerInfo.city} disabled={change} />
-                                                <Field label="Code Postal" name="zipcode" onChange={handleChange} placeholder={customerInfo.zipcode} disabled={change} />
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col">
-
-                                                <span>{customerInfo.invoices}<br /></span>
-                                            </div>
-                                        </div>
-                                        <div className="row mt-3">
-                                            <div className="col">
-                                                <button className="btn btn-secondary" onClick={() => setChange(!change)}>{change ? "Modifier" : "Valider"}</button>
-                                                <button className="btn btn-primary" onClick={() => handleDelete(customerInfo.id)} disabled={customerInfo.invoices?.length}>Supprimer</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <SingleCustomer customerInfo={customerInfo} />
                         </div>
                     )}
                 </div>

@@ -83,6 +83,8 @@ const InvoicesPage = ({ match, history }) => {
                             <div className="container form">
                                 <div className="row justify-content-center">
                                     <div className="col">
+                                        {console.log(invoice)
+                                        }
                                         <span>Chrono : {invoice.chrono}</span><br />
                                         <span>Prix Total : {invoice.amount}€</span><br />
                                         <span>Date : {new Date(invoice.sentAt).toLocaleString()}</span><br />

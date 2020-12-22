@@ -43,7 +43,7 @@ class CustomerReservationSubscriber implements EventSubscriberInterface
             // dd("oui");
             // } else {
             // dd("non");
-            dd($event);
+            // dd($event);
 
             $nextChrono = $this->invoice_repository->findNextChrono();
             $this->app->createInvoice($nextChrono, 2, "SENT", new DateTime(), $customer->getEmail());
