@@ -30,7 +30,6 @@ const HomePage = () => {
 
     }
 
-
     return (
         <>
             <div className="row">

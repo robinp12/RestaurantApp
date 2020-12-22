@@ -29,11 +29,6 @@ const UsersPage = ({ match, history }) => {
             });
         }
     };
-    const handleChange = async ({ currentTarget }) => {
-        const { value, name } = currentTarget;
-        setUser({ ...user, [name]: value });
-    };
-
     const handleDelete = async (id) => {
         const originUsers = [...users];
 
@@ -130,7 +125,6 @@ const UsersPage = ({ match, history }) => {
                                 <Field label="Mot de passe" name="password" type="password" error={errors.password} placeholder="Nouveau mot de passe" onChange={handleChange} value={user.password} disabled={change} />
                                 <Select onChange={handleChangeRoles} value={user.roles} name={"roles"} label="Rôles" error={errors.roles} disabled>
                                     {roles.map((role, index) => <option value={[role]} key={index}>{role}</option>)}
-
                                 </Select>
                             </div>
                             <div className="col">
