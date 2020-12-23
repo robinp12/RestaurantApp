@@ -40,13 +40,15 @@ const ReservationManagement = ({ match, history }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {reservations.map(user => <tr key={user.id} onClick={() => {
-                                history.replace("/utilisateurs/" + user.id)
+                            {reservations.map(reservation => <tr key={reservation.id} onClick={() => {
+                                history.replace("/utilisateurs/" + reservation.id)
                             }}>
-                                <td>{user.chrono}</td>
-                                <td> {user.customer.toUpperCase()}</td>
-                                <td>{user.peopleNumber}</td>
-                                <td>{user.sentAt}</td>
+                                {console.log(reservation)
+                                }
+                                <td>{reservation.chrono}</td>
+                                <td>{reservation.customer?.firstName} {reservation.customer?.lastName}</td>
+                                <td>{reservation.peopleNumber}</td>
+                                <td>{reservation.sentAt}</td>
                             </tr>)}
                         </tbody>
                     </table>

@@ -132,24 +132,28 @@ const CustomersPage = ({ match, history }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {customers.map(customer => <tr key={customer.id} onClick={() => history.replace("/clients/" + customer.id)}>
-                                <th scope="row" className="text-center">#{customer.id}</th>
-                                <td className="text-center">{customer.firstName} {customer.lastName.toUpperCase()}</td>
-                                <td align="center">
-                                    <a className="btn btn-secondary"><em className="fa fa-pencil"></em></a>
-                                    <a className="btn btn-primary" onClick={() => handleDelete(customer.id)}><em className="fa fa-trash"></em></a>
-                                </td>
-                            </tr>)}
+                            {customers.map((customer, index) =>
+
+                                (typeof (customer.id) != "undefined") &&
+                                < tr key={index} onClick={() => history.replace("/clients/" + customer.id)}>
+                                    <th scope="row" className="text-center">#{customer.id}</th>
+                                    <td className="text-center">{customer.firstName} {customer.lastName?.toUpperCase()}</td>
+                                    <td align="center">
+                                        <a className="btn btn-secondary"><em className="fa fa-pencil"></em></a>
+                                        <a className="btn btn-primary" onClick={() => handleDelete(customer.id)}><em className="fa fa-trash"></em></a>
+                                    </td>
+                                </tr>)}
                         </tbody>
                     </table>
                 </div>
                 <div className="col">
-                    {customers.map(customerInfo =>
-                        (customerInfo.id == id) &&
-                        <div key={customerInfo.id}>
+                    {customers.map((customerInfo, index) => (
+                        (typeof (customerInfo.id) != "undefined") &&
+                        customerInfo.id == id &&
+                        <div key={index}>
                             <SingleCustomer customerInfo={customerInfo} />
-                        </div>
-                    )}
+                        </div>))
+                    }
                 </div>
             </div>
         </>

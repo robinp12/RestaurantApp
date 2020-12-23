@@ -32,13 +32,13 @@ class Customer
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"customers_read","invoices_read","orders_read"})
+     * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"customers_read","invoices_read","orders_read"})
+     * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
      * @Assert\Length(min=2, minMessage="Prénom trop court", max=50, maxMessage="Prénom trop long")
      * @Assert\NotBlank(message="Prénom obligatoire")
      */
@@ -46,7 +46,7 @@ class Customer
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"customers_read","invoices_read","orders_read"})
+     * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
      * @Assert\Length(min=2, minMessage="Nom trop court", max=50, maxMessage="Nom trop long")
      * @Assert\NotBlank(message="Nom obligatoire")
      */
@@ -54,7 +54,7 @@ class Customer
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
      * @Assert\NotBlank(message="Email obligatoire")
      * @Assert\Email(message="Format de l'email invalide")
      */
@@ -62,7 +62,7 @@ class Customer
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
      * @Assert\Length(min=5, minMessage="Numéro trop court", max=30, maxMessage="Numéro trop long")
      * @Assert\NotBlank(message="Numéro de téléphone obligatoire")
      * @Assert\Type("numeric",message="Format du numéro de téléphone invalide")
@@ -71,7 +71,7 @@ class Customer
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
      * @Assert\Length(min=5, minMessage="Trop court")
      * @Assert\NotBlank(message="Adresse obligatoire")
      */
@@ -79,7 +79,7 @@ class Customer
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
      * @Assert\NotBlank(message="Code postal obligatoire")
      * @Assert\Range(min=1000,max=99999,notInRangeMessage = "Le format du code postal n'est pas valide")
      * @Assert\Type("numeric",message="Format du code postal invalide")
@@ -88,7 +88,7 @@ class Customer
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
      * @Assert\Length(min=2, minMessage="Nom trop court", max=50, maxMessage="Nom trop long")
      * @Assert\NotBlank(message="Ville obligatoire")
      */

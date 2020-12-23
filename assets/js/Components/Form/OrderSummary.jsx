@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { CustomerContext } from '../../Context/CustomerContext';
 import { LangContext } from '../../Context/LangContext';
 import Cart from '../Cart';
-const OrderSummary = ({ reservation = false, orderInfo }) => {
+const OrderSummary = ({ isReservation = false, reservation }) => {
 
     const { lang } = useContext(LangContext);
     const { customer, setCustomer } = useContext(CustomerContext);
@@ -25,13 +25,13 @@ const OrderSummary = ({ reservation = false, orderInfo }) => {
                                 <a>{customer.email}</a>
                             </address>
                             <p>
-                                <em>{lang.date} : <b>{new Date(orderInfo.time).toLocaleString().slice(0, -3)}</b></em><br />
-                                {reservation && (<span>{lang.peopleNumber} : <b>{orderInfo.numberOfPeople}</b></span>)}
+                                <em>{lang.date} : <b>{new Date(reservation.reservationAt).toLocaleString().slice(0, -3)}</b></em><br />
+                                {isReservation && (<span>{lang.peopleNumber} : <b>{reservation.peopleNumber}</b></span>)}
                             </p>
                         </div>
                     </div>
                 </div>
-                {!reservation &&
+                {!isReservation &&
                     <div className="col d-flex flex-column border-left pl-4 ml-4">
                         <h3>{lang.cart}</h3>
                         <div className="row">

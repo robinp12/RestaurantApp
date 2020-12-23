@@ -4,13 +4,13 @@ import Field from './Input/Field';
 
 let max = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().slice(0, 16)
 
-const OrderForm = ({ reservation = false, orderInfo, setOrderInfo, now }) => {
+const OrderForm = ({ isReservation = false, reservation, setReservation, now }) => {
 
     const { lang } = useContext(LangContext);
 
     const handleChange = ({ currentTarget }) => {
         const { name, value } = currentTarget;
-        setOrderInfo({ ...orderInfo, [name]: value })
+        setReservation({ ...reservation, [name]: value })
     };
 
     return (
@@ -19,16 +19,16 @@ const OrderForm = ({ reservation = false, orderInfo, setOrderInfo, now }) => {
                 <div className="col">
                     <div className="form-group">
                         <label htmlFor={"time"}>{"Date"}</label>
-                        <input name="time" type="datetime-local" className="form-control"
-                            min={now} max={max} value={orderInfo.time} onChange={handleChange} placeholder={now} />
+                        <input name="reservationAt" type="datetime-local" className="form-control"
+                            min={now} max={max} value={reservation.reservationAt} onChange={handleChange} placeholder={now} />
                     </div>
                 </div>
             </div>
             {
-                reservation &&
+                isReservation &&
                 <div className="row">
                     <div className="col">
-                        <Field label={lang.peopleNumber} type="number" value={orderInfo.numberOfPeople} name="numberOfPeople" onChange={handleChange} placeholder={2} />
+                        <Field label={lang.peopleNumber} type="number" value={reservation.peopleNumber} name="peopleNumber" onChange={handleChange} />
                     </div>
                 </div>
             }

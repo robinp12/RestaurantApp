@@ -3,30 +3,20 @@
 namespace App\Events;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
-use App\Controller\AppController;
-use App\Entity\Customer;
-use App\Entity\Order;
+use App\Entity\Reservation;
 use App\Repository\CustomerRepository;
-use App\Repository\InvoiceRepository;
-use App\Repository\OrderRepository;
-use DateTime;
+use App\Repository\ReservationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class CustomerReservationSubscriber implements EventSubscriberInterface
 {
-    private $repository;
     private $repositoryCustomer;
-    private $invoice_repository;
-    private $app;
 
-    public function __construct(OrderRepository $repository, CustomerRepository $repositoryCustomer, InvoiceRepository $invoice_repository, AppController $app)
+    public function __construct(CustomerRepository $repositoryCustomer)
     {
-        $this->repository = $repository;
         $this->repositoryCustomer = $repositoryCustomer;
-        $this->invoice_repository = $invoice_repository;
-        $this->app = $app;
     }
     public static function getSubscribedEvents()
     {
@@ -36,18 +26,17 @@ class CustomerReservationSubscriber implements EventSubscriberInterface
     }
     public function setCustomerForReservation(ViewEvent $event)
     {
-        $customer = $event->getControllerResult();
+        $reservation = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
-        if ($customer instanceof Customer && $method === "POST") {
-            // if ($this->repositoryCustomer->findOneBy(["email" => $customer->getEmail()])) {
-            // dd("oui");
-            // } else {
-            // dd("non");
-            // dd($event);
-
-            // $nextChrono = $this->invoice_repository->findNextChrono();
-            // $this->app->createInvoice($nextChrono, 2, "SENT", new DateTime(), $customer->getEmail());
-            // }
+        if ($reservation instanceof Reservation && $method === "POST") {
+            $reservation_customer_email = $reservation->getCustomerEmail();
+            // Si l'email de la réservation est lié à un client existant
+            if ($this->repositoryCustomer->findOneBy(["email" => $reservation_customer_email])) {
+                $this_customer = $this->repositoryCustomer->findOneBy(["email" => $reservation_customer_email], ["id" => "DESC"]);
+                $reservation->setCustomer($this_customer);
+            } else {
+                dd("Client non existant pour cet email, impossible de créer une reservation");
+            }
         }
     }
 }

@@ -5,12 +5,6 @@ import Cache from "./cache";
 // Ajout d'un nouveau client
 function register(customer) {
   return Axios.post(CUSTOMERS_API, customer).then(async (response) => {
-    // Verification si il se trouve en cache
-    const cachedCustomers = await Cache.get("customers");
-    if (cachedCustomers) {
-      // Mise en cache si il n'y est pas encore
-      Cache.set("customers", [...cachedCustomers, response.data]);
-    }
     return response;
   });
 }

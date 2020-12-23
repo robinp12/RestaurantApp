@@ -57,15 +57,12 @@ const StepForm = () => {
         timeToReceive: new Date(),
         customerEmail: ""
     });
-    const [orderInfo, setOrderInfo] = useState({ time: now });
+    const [orderInfo, setOrderInfo] = useState({ reservationAt: now });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        confirmRef.current.setAttribute("disabled", "")
         try {
             const rep = await customersAPI.register(customer);
-            confirmRef.current.removeAttribute("disabled")
-            toast("Le client : " + customer.firstName + " a été ajouté");
             setErrors("");
             handleSubmitInvoice()
         } catch (error) {
@@ -86,10 +83,13 @@ const StepForm = () => {
 
     const handleSubmitInvoice = async () => {
         invoice.customerEmail = customer.email
-        invoice.timeToReceive = orderInfo.time
+        invoice.timeToReceive = orderInfo.reservationAt
+        confirmRef.current.setAttribute("disabled", "")
+
         try {
             const rep = await invoicesAPI.add(invoice);
-            toast("Invoice " + invoice.customerEmail + " envoyé");
+            confirmRef.current.removeAttribute("disabled")
+            toast("Commande envoyée");
             sendAllOrders()
             // sendNotif()
         } catch (error) {
@@ -115,7 +115,6 @@ const StepForm = () => {
         try {
             const rep = await ordersAPI.add(order);
             setOrderCart(cart)
-            toast("La commande de " + order.label + " a été ajoutée");
         } catch (error) {
             console.error("Order's form error")
         }
@@ -221,7 +220,7 @@ const StepForm = () => {
                 case 2: // Order informations
                     return (
                         <div className="container">
-                            <OrderForm orderInfo={orderInfo} setOrderInfo={setOrderInfo} now={now} />
+                            <OrderForm reservation={orderInfo} setReservation={setOrderInfo} now={now} />
                             <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
                             <button className="btn-primary btn float-right mt-4" onClick={Next} >{lang.next}</button>
                         </div>
@@ -230,7 +229,7 @@ const StepForm = () => {
                     if (!cart.length) setAway(1);
                     return (
                         <div className="container">
-                            <OrderSummary orderInfo={orderInfo} />
+                            <OrderSummary reservation={orderInfo} />
                             <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
                             <button className="btn-primary btn float-right mt-4" ref={confirmRef} onClick={(e) => {
                                 handleSubmit(e)

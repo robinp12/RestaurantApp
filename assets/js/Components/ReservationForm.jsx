@@ -1,20 +1,21 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import CustomerForm from '../Components/Form/CustomerForm';
 import OrderForm from '../Components/Form/OrderForm';
 import OrderSummary from '../Components/Form/OrderSummary';
-import Header from '../Components/Header';
 import { CustomerContext } from '../Context/CustomerContext';
 import { LangContext } from '../Context/LangContext';
 import customersAPI from '../Services/customersAPI';
 import reservationsAPI from '../Services/reservationsAPI';
+import { toast } from "react-toastify";
+
 
 let now = new Date(new Date().setHours(new Date().getHours() + 1)).toISOString().slice(0, 16);
 
 const ReservationForm = () => {
     const [step, setStep] = useState(0);
     const { lang } = useContext(LangContext);
+    const reserveConfirm = useRef();
 
-    const [orderInfo, setOrderInfo] = useState({ time: now, numberOfPeople: 2 });
 
     const [customer, setCustomer] = useState({
         firstName: "",
@@ -36,26 +37,50 @@ const ReservationForm = () => {
         phoneNumber: ""
     });
 
+    const [reservation, setReservation] = useState({
+        peopleNumber: 2,
+        customerEmail: "",
+        reservationAt: now,
+        comment: "",
+    })
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const rep = await customersAPI.register(customer);
-            console.log(rep);
-
             handleSubmitReservation()
         } catch (error) {
             console.error("Customer's form error")
+            if (error.response.data.violations) {
+                const apiErrors = {};
+                setStep(1)
+                error.response.data.violations.forEach((violation) => {
+                    apiErrors[violation.propertyPath] = violation.message;
+                });
+                setErrors(apiErrors);
+            }
         }
 
     }
 
     const handleSubmitReservation = async () => {
+        reservation.customerEmail = customer.email;
+        reservation.peopleNumber = parseInt(reservation.peopleNumber);
+
+        reserveConfirm.current.setAttribute("disabled", "")
+
         try {
-            const rep = await reservationsAPI.add();
-            console.log(rep);
+            const rep = await reservationsAPI.add(reservation);
+            reserveConfirm.current.removeAttribute("disabled")
+            toast("Réservation envoyée");
+            setStep(step => step + 1);
         } catch (error) {
             console.error("Reservation's form error")
         }
+    }
+    const oneTimeClick = (e) => {
+        e.preventDefault()
+        reserveConfirm.current.setAttribute("disabled", "")
     }
 
     const Back = (e) => {
@@ -90,9 +115,12 @@ const ReservationForm = () => {
             case 2: // Reservation summary
                 return (
                     <div className="container">
-                        <OrderSummary reservation orderInfo={orderInfo} />
+                        <OrderSummary isReservation reservation={reservation} />
                         <button className="btn-primary btn float-left" onClick={Back}>{lang.back}</button>
-                        <button className="btn-primary btn float-right" onClick={(e) => { setStep(step => step + 1); handleSubmit(e) }}>{lang.confirm}</button>
+                        <button className="btn-primary btn float-right" ref={reserveConfirm} onClick={(e) => {
+                            handleSubmit(e);
+                            oneTimeClick(e)
+                        }}>{lang.confirm}</button>
                     </div>);
             case 3: // Reservation validation
                 return (
@@ -111,7 +139,7 @@ const ReservationForm = () => {
                 return (
                     <>
                         <div className="container">
-                            <OrderForm reservation setOrderInfo={setOrderInfo} orderInfo={orderInfo} now={now} />
+                            <OrderForm isReservation setReservation={setReservation} reservation={reservation} now={now} />
                             <button className="btn-primary btn float-right" onClick={Next}>{lang.next}</button>
                         </div>
                     </>);

@@ -63,14 +63,21 @@ class Reservation
      * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="reservations")
      * @Groups({"reservations_read"})
      */
-    // * @Assert\NotBlank(message="Client obligatoire")
     private $customer;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"reservations_read"})
      * @Assert\NotBlank(message="Date obligatoire")
      */
     private $reservation_at;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     * @Groups({"reservations_read"})
+     * @Assert\NotBlank(message="Email obligatoire")
+     */
+    private $customerEmail;
 
     public function getId(): ?int
     {
@@ -145,6 +152,18 @@ class Reservation
     public function setReservationAt(\DateTimeInterface $reservation_at): self
     {
         $this->reservation_at = $reservation_at;
+
+        return $this;
+    }
+
+    public function getCustomerEmail(): ?string
+    {
+        return $this->customerEmail;
+    }
+
+    public function setCustomerEmail(string $customerEmail): self
+    {
+        $this->customerEmail = $customerEmail;
 
         return $this;
     }
