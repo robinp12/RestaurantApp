@@ -5,7 +5,6 @@ import Field from './Input/Field';
 let max = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().slice(0, 16)
 
 const OrderForm = ({ reservation = false, orderInfo, setOrderInfo, now }) => {
-    console.log(max)
 
     const { lang } = useContext(LangContext);
 

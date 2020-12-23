@@ -36,16 +36,14 @@ class OrderInvoiceSubscriber implements EventSubscriberInterface
         $order = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
         if ($order instanceof Order && $method === "POST") {
-            // dd($order->getProduct()->getLabel(), $order->getProduct()->getPrice());
             $order_customer_email = $order->getCustomerEmail();
             //si invoice a client id
             if ($this->invoice_repository->findOneBy(["customer_email" => $order_customer_email])) {
                 $this_invoice =  $this->invoice_repository->findOneBy(["customer_email" => $order_customer_email], ["id" => "DESC"]);
-                // dd($this_invoice);
-                $this_customer = $this->customerRepository->findOneBy(["email" => $order_customer_email]);
-                $this_invoice->setClient($this_customer);
                 $this_invoice->setAmount($this_invoice->getAmount() + $order->getTotalAmount());
                 $this_invoice->addOrder($order);
+                $this_customer = $this->customerRepository->findOneBy(["email" => $order_customer_email]);
+                $this_invoice->setClient($this_customer);
             } else {
                 dd("Impossible de créer une commande sans client");
             }

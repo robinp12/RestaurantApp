@@ -17,11 +17,13 @@ const NavbarPerso = ({ history }) => {
       <Popover.Title><h4 className="m-1">Panier</h4></Popover.Title>
       <Popover.Content>
         <Cart />
-        <div className="row">
-          <div className="col">
-            <a href="#commander" className="btn btn-sm btn-primary justify-content-end btn-block">Commander</a>
+        {(history.location.pathname !== "/commander") &&
+          <div className="row">
+            <div className="col">
+              <a href="#commander" className="btn btn-sm btn-primary justify-content-end btn-block">Commander</a>
+            </div>
           </div>
-        </div>
+        }
       </Popover.Content>
     </Popover>
   );
@@ -55,8 +57,8 @@ const NavbarPerso = ({ history }) => {
           <>
             <Nav className="mr-auto nav-item">
               <NavDropdown title={lang.theMenu} id="basic-nav-dropdown">
-                <NavDropdown.Item href="#menu#plats">{lang.foods}</NavDropdown.Item>
-                <NavDropdown.Item href="#menu#boissons">{lang.drinks}</NavDropdown.Item>
+                <NavDropdown.Item href="#menu">{lang.foods}</NavDropdown.Item>
+                <NavDropdown.Item href="#menu">{lang.drinks}</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">{"..."}</NavDropdown.Item>
                 {/* <NavDropdown.Item href="#action/3.4">{lang.suggestions}</NavDropdown.Item> */}

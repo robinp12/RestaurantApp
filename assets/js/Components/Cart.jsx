@@ -6,28 +6,6 @@ const Cart = () => {
     const { cart, setCart } = useContext(CartContext);
     const [refresh, setRefresh] = useState(true);
 
-    const handleChange = ({ currentTarget }) => {
-        const { name, value } = currentTarget;
-        setRefresh(!refresh)
-        for (var item in cart) {
-            console.log(+Number(cart[item].price * cart[item].quantity).toFixed(2));
-
-            if (cart[item].product == name) {
-                cart[item].quantity = +value
-                if (cart[item].quantity == 0) {
-                    deleteItem(cart[item].product)
-                    break;
-                }
-                else {
-                    cart[item].totalAmount = +Number(cart[item].price * cart[item].quantity).toFixed(2);
-                    console.log(cart[item].totalAmount)
-
-                    break;
-
-                }
-            }
-        }
-    };
     const totalCart = function () {
         var totalCart = 0;
         for (var item in cart) {
@@ -45,6 +23,25 @@ const Cart = () => {
         }
         setCart([...cart])
     }
+
+    const handleChange = ({ currentTarget }) => {
+        const { name, value } = currentTarget;
+        setRefresh(!refresh)
+        for (var item in cart) {
+            if (cart[item].product == name) {
+                cart[item].quantity = +value
+                if (cart[item].quantity == 0) {
+                    deleteItem(cart[item].product)
+                    break;
+                }
+                else {
+                    cart[item].totalAmount = +Number(cart[item].price * cart[item].quantity).toFixed(2);
+                    break;
+                }
+            }
+        }
+    };
+
     useEffect(() => { }, [refresh])
 
     return (
@@ -63,7 +60,7 @@ const Cart = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {cart.map((e, index) =>
+                                    {cart.map((e) =>
                                         <tr key={e.product}>
                                             <td>{e.name}</td>
                                             <td>
@@ -76,9 +73,7 @@ const Cart = () => {
                                                     placeholder={e.quantity}
                                                 />
                                             </td>
-                                            <td className=" text-center">
-                                                {e.totalAmount} €
-                                    </td>
+                                            <td className=" text-center">{e.totalAmount} €</td>
                                             <td className=" text-center">
                                                 <a className="badge badge-primary" onClick={() => deleteItem(e.product)}>
                                                     <em className="fa fa-times"></em>

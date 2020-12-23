@@ -5,6 +5,7 @@ import { CustomerContext } from '../Context/CustomerContext';
 import { LangContext } from '../Context/LangContext';
 import categoriesAPI from '../Services/categoriesAPI';
 import customersAPI from '../Services/customersAPI';
+import invoicesAPI from '../Services/invoicesAPI';
 import ordersAPI from '../Services/ordersAPI';
 import productsAPI from '../Services/productsAPI';
 import useLocalStorage from '../Services/useLocalStorage';
@@ -19,6 +20,7 @@ const StepForm = () => {
 
     const { lang } = useContext(LangContext);
     const { cart, setCart } = useContext(CartContext);
+    let [...bag] = cart;
     const [orderCart, setOrderCart] = useLocalStorage('cart', [])
     const [message, setMessage] = useLocalStorage('chat-message', [])
 
@@ -48,9 +50,59 @@ const StepForm = () => {
         city: "",
         phoneNumber: ""
     });
+
+    const [invoice, setInvoice] = useState({
+        amount: 0,
+        status: "SENT",
+        timeToReceive: new Date(),
+        customerEmail: ""
+    });
     const [orderInfo, setOrderInfo] = useState({ time: now });
 
-    let [...bag] = cart;
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        confirmRef.current.setAttribute("disabled", "")
+        try {
+            const rep = await customersAPI.register(customer);
+            confirmRef.current.removeAttribute("disabled")
+            toast("Le client : " + customer.firstName + " a été ajouté");
+            setErrors("");
+            handleSubmitInvoice()
+        } catch (error) {
+            console.error("Customer's form error")
+            toast("Erreur dans le formulaire !" + "", {
+                className: "bg-red-toast",
+            });
+            if (error.response.data.violations) {
+                setAway(0)
+                const apiErrors = {};
+                error.response.data.violations.forEach((violation) => {
+                    apiErrors[violation.propertyPath] = violation.message;
+                });
+                setErrors(apiErrors);
+            }
+        }
+    };
+
+    const handleSubmitInvoice = async () => {
+        invoice.customerEmail = customer.email
+        invoice.timeToReceive = orderInfo.time
+        try {
+            const rep = await invoicesAPI.add(invoice);
+            toast("Invoice " + invoice.customerEmail + " envoyé");
+            sendAllOrders()
+            // sendNotif()
+        } catch (error) {
+            console.error("Invoice's form error")
+        }
+    }
+
+    const sendAllOrders = () => {
+        setAway(step => step + 1)
+        for (let e in bag) {
+            handleSubmitOrder(formatedOrder(bag[e]))
+        }
+    }
 
     const formatedOrder = ({ name, price, totalAmount, ...bag }) => {
         bag.customerEmail = customer.email;
@@ -59,55 +111,13 @@ const StepForm = () => {
         bag.totalAmount = totalAmount;
         return bag
     }
-    const sendAllOrders = () => {
-        for (let e in bag) {
-            handleSubmitOrder(formatedOrder(bag[e]))
-        }
-    }
     const handleSubmitOrder = async (order) => {
         try {
             const rep = await ordersAPI.add(order);
             setOrderCart(cart)
-
-            toast(order.product + " a été ajouté");
-            console.log(rep)
+            toast("La commande de " + order.label + " a été ajoutée");
         } catch (error) {
-            console.log(error)
-            toast("Erreur dans le formulaire !" + "", {
-                className: "bg-red-toast",
-            });
-        }
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        confirmRef.current.setAttribute("disabled", "")
-        try {
-            const rep = await customersAPI.register(customer);
-            confirmRef.current.removeAttribute("disabled")
-            toast(customer.firstName + " a été ajouté");
-            setErrors("");
-            sendAllOrders()
-            console.log(rep)
-            setAway(step => step + 1);
-
-        } catch (error) {
-            console.log(error.response)
-            toast("Erreur dans le formulaire !" + "", {
-                className: "bg-red-toast",
-            });
-
-
-            if (error.response.data.violations) {
-                setAway(0)
-
-                const apiErrors = {};
-                error.response.data.violations.forEach((violation) => {
-                    apiErrors[violation.propertyPath] = violation.message;
-                });
-                setErrors(apiErrors);
-            }
+            console.error("Order's form error")
         }
     };
 
@@ -132,17 +142,18 @@ const StepForm = () => {
     //     SocketClient.sendToSocket("notifSend", "Nouvelle commande");
     // }
 
+    useEffect(() => {
+        fetchCat();
+        fetchProd();
+    }, [])
 
     const listCart = function () {
         var cartCopy = [];
         for (let i in cart) {
-
             let item = cart[i];
             let itemCopy = {};
             for (let p in item) {
-
                 itemCopy[p] = item[p];
-
             }
             itemCopy.totalAmount = +Number(item.price * item.quantity).toFixed(2);
             cartCopy.push(itemCopy)
@@ -158,47 +169,34 @@ const StepForm = () => {
             }
         }
         price = parseFloat(price)
-        console.log(price)
         var item = { product, name, price, quantity };
-
         cart.push(item);
     }
-    // Count cart 
-    const totalCount = function () {
-        var totalCount = 0;
-        for (var item in cart) {
-            totalCount += cart[item].quantity;
-        }
-        return totalCount;
+
+    const Next = (e) => {
+        e.preventDefault();
+        setAway(step => step + 1)
     }
-
-    useEffect(() => {
-        fetchCat();
-        fetchProd();
-    }, [])
-
+    const Back = (e) => {
+        e.preventDefault();
+        setAway(step => step - 1)
+    }
     const ButtonOrder = ({ children, next, back, disabled }) => {
         return (
             <div className="container">
                 {children}
-                <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setAway(step => step - 1) }}>{back}</button>
-                <button className="btn-primary btn float-right mt-4" onClick={(e) => {
-                    setAway(step => step + 1);
-                    e.preventDefault();
-                }} disabled={disabled}>{next}</button>
+                <button className="btn-primary btn float-left mt-4" onClick={Back}>{back}</button>
+                <button className="btn-primary btn float-right mt-4" onClick={Next} disabled={disabled}>{next}</button>
             </div>
         )
     }
 
     const oneTimeClick = (e) => {
         e.preventDefault()
-
         confirmRef.current.setAttribute("disabled", "")
-
     }
     function formOrder() {
         if (choose == 1) {
-
             // switch (there) {
             //   case 1:
             //     return (<>Apres emporter
@@ -213,13 +211,10 @@ const StepForm = () => {
             // }
         }
         else if (choose == 2) {
-
             switch (away) {
                 case 1: // Menu choice
                     return (
-                        <ButtonOrder back={lang.back} next={lang.next}
-                            disabled={!cart.length}
-                        >
+                        <ButtonOrder back={lang.back} next={lang.next} disabled={!cart.length}>
                             <MenuOrder products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
                         </ButtonOrder>
                     );
@@ -227,22 +222,16 @@ const StepForm = () => {
                     return (
                         <div className="container">
                             <OrderForm orderInfo={orderInfo} setOrderInfo={setOrderInfo} now={now} />
-                            <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setAway(step => step - 1) }}>{lang.back}</button>
-                            <button className="btn-primary btn float-right mt-4" onClick={(e) => {
-                                setAway(step => step + 1)
-                                e.preventDefault()
-                            }} >{lang.next}</button>
+                            <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
+                            <button className="btn-primary btn float-right mt-4" onClick={Next} >{lang.next}</button>
                         </div>
                     );
                 case 3: // Order summary
-                    if (!cart.length) {
-                        setAway(1);
-                    }
+                    if (!cart.length) setAway(1);
                     return (
-
                         <div className="container">
                             <OrderSummary orderInfo={orderInfo} />
-                            <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setAway(step => step - 1) }}>{lang.back}</button>
+                            <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
                             <button className="btn-primary btn float-right mt-4" ref={confirmRef} onClick={(e) => {
                                 handleSubmit(e)
                                 oneTimeClick(e)
@@ -253,18 +242,16 @@ const StepForm = () => {
                     return (
                         <div className="container">
                             <PaymentForm />
-                            <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setAway(step => step - 1) }}>{lang.back}</button>
+                            <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
                             <button className="btn-primary btn float-right mt-4" onClick={(e) => {
-                                sendNotif()
-                                console.log("Nouvelle commande")
                                 e.preventDefault();
                                 setAway(step => step + 1)
-                                setCart([])
+                                // setCart([])
                                 //Handle CHANGE STATUS COMMANDE TO PAY
                             }} >{lang.next}</button>
                         </div>
                     );
-                case 5: // Payment validation
+                case 5: // Chat validation
                     return (
                         <>
                             {/* <div className="container">
@@ -274,28 +261,27 @@ const StepForm = () => {
                         </>);
                 default: // Client informations
                     return (
-                        <>
-                            <div className="container">
-                                <CustomerForm errors={errors} />
-                                <button className="btn-primary btn float-left" onClick={() => setChoose(0)}>{lang.back}</button>
-                                <button className="btn-primary btn float-right" onClick={(e) => { e.preventDefault(); setAway(step => step + 1) }}
-                                    disabled={!(
-                                        customer.firstName &&
-                                        customer.lastName &&
-                                        customer.email &&
-                                        customer.zipcode &&
-                                        customer.city &&
-                                        customer.phoneNumber &&
-                                        customer.address
-                                    )}
-                                >{lang.next}</button>
+                        <div className="container">
+                            <CustomerForm errors={errors} />
+                            <button className="btn-primary btn float-left" onClick={(e) => { e.preventDefault(); setChoose(0) }}>{lang.back}</button>
+                            <button className="btn-primary btn float-right" onClick={Next}
+                                disabled={!(
+                                    customer.firstName &&
+                                    customer.lastName &&
+                                    customer.email &&
+                                    customer.zipcode &&
+                                    customer.city &&
+                                    customer.phoneNumber &&
+                                    customer.address
+                                )}
+                            >{lang.next}</button>
 
-                            </div>
-                        </>);
+                        </div>
+                    );
             };
         }
         else {
-            return (<>
+            return (
                 <div className="container d-flex justify-content-center ">
                     <div className="row align-items-center">
                         <div className="col">
@@ -308,19 +294,14 @@ const StepForm = () => {
                     <div className="d-flex justify-content-center align-items-center">
                     </div>
                 </div>
-            </>);
+            );
         }
     }
 
-
     return (
-        <>
-            <CustomerContext.Provider
-                value={{ customer, setCustomer }}
-            >
-                {formOrder()}
-            </CustomerContext.Provider>
-        </>
+        <CustomerContext.Provider value={{ customer, setCustomer }}>
+            {formOrder()}
+        </CustomerContext.Provider>
     );
 }
 

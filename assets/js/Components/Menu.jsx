@@ -1,12 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useState } from 'react';
-import PopupInfo from './PopupInfo';
-import { Button, OverlayTrigger, Popover, Tab, Tabs } from 'react-bootstrap';
+import { Tab, Tabs } from 'react-bootstrap';
 import { CartContext } from '../Context/CartContext';
-import ordersAPI from '../Services/ordersAPI';
-import { toast, ToastContainer, Zoom } from "react-toastify";
-
+import PopupInfo from './PopupInfo';
 
 const infoIcon = <FontAwesomeIcon icon={faInfoCircle} pull="right" className="infoIcon align-middle" fixedWidth />;
 
@@ -19,15 +16,15 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
             if (cart[i].product == product) return "selected"
         }
     }
-    const deleteItem = (product) => {
-        for (var item in cart) {
-            if (cart[item].product === product) {
-                cart.splice(item, 1);
-                break;
-            }
-        }
-        setCart([...cart])
-    }
+    // const deleteItem = (product) => {
+    //     for (var item in cart) {
+    //         if (cart[item].product === product) {
+    //             cart.splice(item, 1);
+    //             break;
+    //         }
+    //     }
+    //     setCart([...cart])
+    // }
 
     return (
         <>
@@ -43,13 +40,12 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
                                         <div className="col">
                                             <li onClick={() => {
                                                 addItemToCart(prod.id, prod.label, prod.price, 1); setCart(listCart);
-                                            }} className={"list-group-item d-flex justify-content-between align-items-center align-middle " + actif(prod.id)}>
+                                            }} className={"list-group-item d-flex justify-content-between align-items-center align-middle " + actif(prod.id)}
+                                            >
                                                 <span className="float-left">
                                                     <span>{prod.label}</span> {prod.description && <PopupInfo info={prod.description} />}
                                                 </span>
-                                                <span className="lead">
-                                                    {prod.price}€
-                                                </span>
+                                                <span className="lead">{prod.price}€</span>
                                             </li>
                                         </div>
                                     </div>
@@ -75,21 +71,15 @@ const MenuOrder = ({ products, categories, listCart, addItemToCart }) => {
             if (cart[i].product == product) return "selected"
         }
     }
-    const deleteItem = (product) => {
-        for (var item in cart) {
-            if (cart[item].product === product) {
-                cart.splice(item, 1);
-                break;
-            }
-        }
-        setCart([...cart])
-    }
-    const productNumber = (product) => {
-        for (var i in cart) {
-            if (cart[i].product == product) return cart[i].quantity + " x"
-        }
-    }
-
+    // const deleteItem = (product) => {
+    //     for (var item in cart) {
+    //         if (cart[item].product === product) {
+    //             cart.splice(item, 1);
+    //             break;
+    //         }
+    //     }
+    //     setCart([...cart])
+    // }
     return (
         <>
             <Tabs id="controlled-tab" activeKey={key} onSelect={(k) => setKey(k)}>
@@ -102,15 +92,12 @@ const MenuOrder = ({ products, categories, listCart, addItemToCart }) => {
                                         cat.id == prod.category.id &&
                                         <div className="row align-items-center" key={index}>
                                             <div className="col">
-
                                                 <li onClick={() => {
-                                                    addItemToCart(prod.id, prod.label, prod.price, 1)
-                                                    setCart(listCart);
-                                                }} className={"list-group-item d-flex justify-content-between align-items-center " + actif(prod.id)}>
+                                                    addItemToCart(prod.id, prod.label, prod.price, 1); setCart(listCart);
+                                                }} className={"list-group-item d-flex justify-content-between align-items-center " + actif(prod.id)}
+                                                >
                                                     <span> {prod.label} <PopupInfo info={prod.description}>{infoIcon}</PopupInfo></span>
-                                                    <span className="lead">
-                                                        {prod.price}€
-                                                </span>
+                                                    <span className="lead">{prod.price}€</span>
                                                 </li>
                                             </div>
                                         </div>

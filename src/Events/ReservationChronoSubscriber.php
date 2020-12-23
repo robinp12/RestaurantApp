@@ -37,6 +37,9 @@ class ReservationChronoSubscriber implements EventSubscriberInterface
             if (empty($reservation->getSentAt())) {
                 $reservation->setSentAt(new \DateTime());
             }
+            if (empty($reservation->getReservationAt())) {
+                $reservation->setReservationAt(new \DateTime());
+            }
         }
     }
 }

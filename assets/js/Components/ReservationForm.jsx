@@ -16,7 +16,6 @@ const ReservationForm = () => {
 
     const [orderInfo, setOrderInfo] = useState({ time: now, numberOfPeople: 2 });
 
-
     const [customer, setCustomer] = useState({
         firstName: "",
         lastName: "",
@@ -27,8 +26,6 @@ const ReservationForm = () => {
         phoneNumber: "",
     });
 
-    console.log(customer)
-    console.log(orderInfo)
     const [errors, setErrors] = useState({
         lastName: "",
         firstName: "",
@@ -45,22 +42,29 @@ const ReservationForm = () => {
             const rep = await customersAPI.register(customer);
             console.log(rep);
 
-            // reservationsAPI.add()
+            handleSubmitReservation()
         } catch (error) {
-            console.log(error)
-
+            console.error("Customer's form error")
         }
 
     }
 
-    const ButtonReservation = ({ children, next, back }) => {
-        return (
-            <div className="container">
-                {children}
-                <button className="btn-primary btn float-left" onClick={(e) => { e.preventDefault(); setStep(step => step - 1) }}>{back}</button>
-                <button className="btn-primary btn float-right" onClick={(e) => { e.preventDefault(); setStep(step => step + 1) }}>{next}</button>
-            </div>
-        )
+    const handleSubmitReservation = async () => {
+        try {
+            const rep = await reservationsAPI.add();
+            console.log(rep);
+        } catch (error) {
+            console.error("Reservation's form error")
+        }
+    }
+
+    const Back = (e) => {
+        e.preventDefault();
+        setStep(step => step - 1)
+    }
+    const Next = (e) => {
+        e.preventDefault();
+        setStep(step => step + 1)
     }
 
     function reserve() {
@@ -69,8 +73,8 @@ const ReservationForm = () => {
                 return (
                     <div className="container">
                         <CustomerForm errors={errors} />
-                        <button className="btn-primary btn float-left" onClick={(e) => { e.preventDefault(); setStep(step => step - 1) }}>{lang.back}</button>
-                        <button className="btn-primary btn float-right" onClick={(e) => { e.preventDefault(); setStep(step => step + 1) }}
+                        <button className="btn-primary btn float-left" onClick={Back}>{lang.back}</button>
+                        <button className="btn-primary btn float-right" onClick={Next}
                             disabled={!(
                                 customer.firstName &&
                                 customer.lastName &&
@@ -87,7 +91,7 @@ const ReservationForm = () => {
                 return (
                     <div className="container">
                         <OrderSummary reservation orderInfo={orderInfo} />
-                        <button className="btn-primary btn float-left" onClick={(e) => { e.preventDefault(); setStep(step => step - 1) }}>{lang.back}</button>
+                        <button className="btn-primary btn float-left" onClick={Back}>{lang.back}</button>
                         <button className="btn-primary btn float-right" onClick={(e) => { setStep(step => step + 1); handleSubmit(e) }}>{lang.confirm}</button>
                     </div>);
             case 3: // Reservation validation
@@ -108,7 +112,7 @@ const ReservationForm = () => {
                     <>
                         <div className="container">
                             <OrderForm reservation setOrderInfo={setOrderInfo} orderInfo={orderInfo} now={now} />
-                            <button className="btn-primary btn float-right" onClick={(e) => { setStep(step => step + 1); e.preventDefault() }}>{lang.next}</button>
+                            <button className="btn-primary btn float-right" onClick={Next}>{lang.next}</button>
                         </div>
                     </>);
         }

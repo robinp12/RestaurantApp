@@ -61,14 +61,14 @@ class Reservation
 
     /**
      * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="reservations")
-     * @ORM\JoinColumn(nullable=false)
      * @Groups({"reservations_read"})
-     * @Assert\NotBlank(message="Client obligatoire")
      */
+    // * @Assert\NotBlank(message="Client obligatoire")
     private $customer;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="Date obligatoire")
      */
     private $reservation_at;
 

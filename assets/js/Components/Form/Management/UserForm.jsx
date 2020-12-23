@@ -31,27 +31,22 @@ const UserForm = () => {
 
     const handleChange = ({ currentTarget }) => {
         const { name, value } = currentTarget;
+        if (name == "roles") {
+            setUsers({ ...users, [name]: [value] });
+        }
         setUsers({ ...users, [name]: value });
     };
-    const handleChangeRoles = ({ currentTarget }) => {
-        const { name, value } = currentTarget;
-        setUsers({ ...users, [name]: [value] });
-    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(users)
         try {
             const rep = await usersAPI.register(users);
             toast(users.firstName + " a été ajouté");
             setErrors("");
-            console.log(rep)
         } catch (error) {
-            console.log(error.response)
-            toast("Erreur dans le formulaire !" + "", {
-                className: "bg-red-toast",
-            });
+            console.error(error.response)
+            toast(error + "", { className: "bg-red" });
             if (error.response.data.violations) {
-
                 const apiErrors = {};
                 error.response.data.violations.forEach((violation) => {
                     apiErrors[violation.propertyPath] = violation.message;
@@ -122,7 +117,6 @@ const UserForm = () => {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div className="row m-1 mt-3 p-1 border border-dark">
                             <div className="col">
@@ -172,16 +166,13 @@ const UserForm = () => {
                                 </div>
                                 <div className="row">
                                     <div className="col-5 mb-2">
-
-                                        <Select onChange={handleChangeRoles} value={users.roles} name={"roles"} label="Rôles" error={errors.roles} defaut="">
+                                        <Select onChange={handleChange} value={users.roles} name={"roles"} label="Rôles" error={errors.roles} defaut="">
                                             {roles.map((role, index) => <option value={role} key={index}>{role}</option>)}
                                         </Select>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                         <div className="col">
                             <div className="row">
                                 <button

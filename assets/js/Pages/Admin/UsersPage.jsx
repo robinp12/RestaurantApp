@@ -8,30 +8,12 @@ import { toast } from "react-toastify";
 const UsersPage = ({ match, history }) => {
     const { id } = match.params
 
-    const [user, setUser] = useState({
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: undefined,
-    });
     const [users, setUsers] = useState([]);
     const [addUser, setAddUser] = useState(false);
     const [change, setChange] = useState(true);
 
-    const fetchUsers = async () => {
-        try {
-            const data = await usersAPI.getAllUsers();
-            setUsers(data);
-        } catch (error) {
-            console.log(error.response);
-            toast(error + "", {
-                className: "bg-red",
-            });
-        }
-    };
     const handleDelete = async (id) => {
         const originUsers = [...users];
-
         setUsers(users.filter(user => user.id !== id));
         try {
             await usersAPI.deleteUsers(id);
@@ -40,16 +22,25 @@ const UsersPage = ({ match, history }) => {
             });
         } catch (error) {
             setUsers(originUsers);
-            toast(error + "", {
-                className: "bg-red",
-            });
+            toast(error + "", { className: "bg-red" });
         }
     }
 
+    const fetchUsers = async () => {
+        try {
+            const data = await usersAPI.getAllUsers();
+            setUsers(data);
+        } catch (error) {
+            console.error(error.response);
+            toast(error + "", { className: "bg-red" });
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, [])
+
     const SingleUser = ({ userInfo }) => {
-
-        console.log(userInfo)
-
         const [user, setUser] = useState({
             firstName: userInfo.firstName,
             lastName: userInfo.lastName,
@@ -72,32 +63,26 @@ const UsersPage = ({ match, history }) => {
             city: "",
             phoneNumber: ""
         });
+
         const handleChange = ({ currentTarget }) => {
             const { name, value } = currentTarget;
+            if (name == roles) {
+                setUser({ ...user, [name]: [value] });
+            }
             setUser({ ...user, [name]: value });
         };
 
-        const handleChangeRoles = ({ currentTarget }) => {
-            const { name, value } = currentTarget;
-            setUser({ ...user, [name]: [value] });
-        };
         const handleSubmitChange = async (e) => {
             e.preventDefault();
             try {
                 const rep = await usersAPI.updateInfo(userInfo.id, user)
-                console.log(rep);
                 toast(user.firstName + " a été modifié");
-
                 setChange(!change)
                 setErrors("");
-
             } catch (error) {
-                console.log(error.response)
-                toast("Erreur dans le formulaire !" + "", {
-                    className: "bg-red-toast",
-                });
+                console.error(error.response)
+                toast(error + "", { className: "bg-red" });
                 if (error.response.data.violations) {
-
                     const apiErrors = {};
                     error.response.data.violations.forEach((violation) => {
                         apiErrors[violation.propertyPath] = violation.message;
@@ -123,7 +108,7 @@ const UsersPage = ({ match, history }) => {
                                 <Field label="Téléphone" name="phoneNumber" onChange={handleChange} error={errors.phoneNumber} value={user.phoneNumber} disabled={change} />
                                 <Field label="Email" name="email" onChange={handleChange} error={errors.email} value={user.email} disabled={change} />
                                 <Field label="Mot de passe" name="password" type="password" error={errors.password} placeholder="Nouveau mot de passe" onChange={handleChange} value={user.password} disabled={change} />
-                                <Select onChange={handleChangeRoles} value={user.roles} name={"roles"} label="Rôles" error={errors.roles} disabled>
+                                <Select onChange={handleChange} value={user.roles} name={"roles"} label="Rôles" error={errors.roles} disabled>
                                     {roles.map((role, index) => <option value={[role]} key={index}>{role}</option>)}
                                 </Select>
                             </div>
@@ -138,11 +123,9 @@ const UsersPage = ({ match, history }) => {
                         <div className="row mt-3">
                             <div className="col">
                                 {change ?
-
                                     <button className="btn btn-secondary float-left" onClick={() => setChange(!change)}>Modifier</button>
                                     :
                                     <button className="btn btn-secondary float-left" onClick={handleSubmitChange}>Enregistrer</button>
-
                                 }
                                 <button className="btn btn-primary float-right" onClick={() => handleDelete(user.id)} disabled={user.invoices?.length}>Supprimer</button>
                             </div>
@@ -152,12 +135,6 @@ const UsersPage = ({ match, history }) => {
             </div >
         );
     }
-
-
-
-    useEffect(() => {
-        fetchUsers();
-    }, [])
 
     return (
         <>
@@ -181,8 +158,6 @@ const UsersPage = ({ match, history }) => {
                                 <th scope="row" className="text-center">#{user.id}</th>
                                 <td className="text-center"> {user.firstName} {user.lastName.toUpperCase()}</td>
                                 <td align="center" className="text-center">
-                                    {console.log(users.length)}
-
                                     {users.length !== 1 &&
                                         <a className="btn btn-primary" onClick={() => handleDelete(user.id)}><em className="fa fa-trash"></em></a>
                                     }
@@ -203,8 +178,8 @@ const UsersPage = ({ match, history }) => {
                                 userInfo.id == id &&
                                 <div key={userInfo.id}>
                                     <SingleUser userInfo={userInfo} />
-                                </div>)}
-
+                                </div>
+                            )}
                         </>
                     }
                 </div>

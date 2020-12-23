@@ -3,7 +3,7 @@ import { CustomerContext } from '../../Context/CustomerContext';
 import { LangContext } from '../../Context/LangContext';
 import Field from './Input/Field';
 
-const CustomerForm = ({ errors }) => {
+const CustomerForm = ({ errors, setCustomerEmail }) => {
 
     const { lang } = useContext(LangContext);
     const { customer, setCustomer } = useContext(CustomerContext);

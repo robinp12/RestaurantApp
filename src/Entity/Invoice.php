@@ -86,7 +86,6 @@ class Invoice
     /**
      * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="invoices")
      * @Groups({"invoices_read"})
-     * @Assert\NotBlank(message="Obligatoire")
      */
     private $client;
 
