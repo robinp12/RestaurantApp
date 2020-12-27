@@ -74,7 +74,7 @@ const InvoicesPage = ({ match, history }) => {
 
                         </tbody>
                     </table>
-                    <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={invoices.length} onPageChanged={handleChangePage} />
+                    {itemsPerPage < invoices.length && <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={invoices.length} onPageChanged={handleChangePage} />}
                 </div>
                 <div className="col">
                     {invoices.map(invoice =>
@@ -96,7 +96,7 @@ const InvoicesPage = ({ match, history }) => {
                                                 {invoice?.orders.map((e) =>
                                                     <li key={e.id} className="list-group-item">{e.quantity + " x  " + e.label + " à " + e.price + "€"}</li>
                                                 )}
-                                                <li className="list-group-item text-center"><b> Prix Total : {invoice.amount}€ </b></li>
+                                                <li className="list-group-item text-center"><b> Prix Total : {invoice.totalAmount}€ </b></li>
                                             </ul>
                                         </div>
                                     </div>
