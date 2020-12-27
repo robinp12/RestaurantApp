@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import socketIOClient from "socket.io-client";
 import OrderChat from '../../Components/Form/OrderChat';
 import authAPI from '../../Services/authAPI';
@@ -9,39 +9,44 @@ const ENDPOINT = "http://localhost:3000";
 const socket = socketIOClient(ENDPOINT, {
     transports: ["websocket"],
 });
-socket.emit("login", "2@hot.com");
-
 
 const ChatPage = () => {
     const [users, setUsers] = useLocalStorage("chat-users", []);
     const [message, setMessage] = useLocalStorage('chat-message', [])
 
-    // socket.on("newuser", (e) => console.log(e));
+    const [selectedUser, setSelectedUser] = useState();
+
     useEffect(() => {
-        socket.on("receive", (data) => {
-            console.log(data)
-            setMessage((prev) => [...prev, data]);
-        });
-        socket.on("discousr", e => console.log(e))
+        socket.emit('login', { admin: authAPI.isAuth() });
+        socket.on("usersToAdmin", (e) => setUsers(e))
+        socket.on("msgToAdmin", e => setMessage((prev) => [...prev, e]))
+        setSelectedUser(users[0])
     }, [])
+
+    const send = function (e, { desc }) {
+        e.preventDefault();
+        socket.emit("send", { from: "admin", desc: desc, admin: authAPI.isAuth(), to: selectedUser });
+        setMessage(prev => [...prev, { admin: authAPI.isAuth(), desc: desc, to: selectedUser }]);
+    };
 
     return (
         <>
             <div className="row">
-                <div className="col-3">
+                <div className="col-4">
                     <div className="card mb-3">
-                        <h3 className="card-header">Liste</h3>
+                        <h3 className="card-header">Messages</h3>
                         <div className="card-body">
-                            <li className="list-group-item">Robin</li>
-                            {users.map(e =>
-                                <li className="list-group-item">{e}</li>
-
-                            )}
+                            {
+                                users.map((e, index) =>
+                                    <li key={index} className="list-group-item" onClick={() => setSelectedUser
+                                        (e)}>{e}</li>
+                                )
+                            }
                         </div>
                     </div>
                 </div>
                 <div className="col">
-                    <OrderChat admin={authAPI.isAuth()} socket={socket} message={message} />
+                    <OrderChat admin={authAPI.isAuth()} send={send} message={message} setMessage={setMessage} selectedUser={selectedUser} adminConnected={{ bool: 1 }} />
                 </div>
             </div>
         </>

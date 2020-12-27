@@ -12,7 +12,6 @@ const ENDPOINT = "http://localhost:3000";
 const socket = socketIOClient(ENDPOINT, {
     transports: ["websocket"],
 });
-socket.emit("login", "1@hot.com");
 
 const AboutPage = () => {
 
@@ -27,21 +26,27 @@ const AboutPage = () => {
         phoneNumber: "0493022156",
     })
 
+    let firstName = customer.firstName + 10 * Math.random().toFixed(1);
+    const [adminConnected, setAdminConnected] = useState({ msg: "", bool: 0 })
+
     const [message, setMessage] = useLocalStorage('chat-message', [])
 
     useEffect(() => {
-        socket.on("receive", (data) => {
-            console.log(data)
-            setMessage((prev) => [...prev, data]);
-        });
-        socket.on("discousr", e => console.log(e))
-
+        socket.emit('login', { email: customer.email, admin: authAPI.isAuth() });
+        socket.on("admin-co", e => setAdminConnected({ msg: e.msg, bool: e.bool }))
+        socket.on(customer.email, (data) => {
+            setMessage((prev) => [...prev, data]); console.log(data)
+        })
     }, [])
+
+    const send = function (e, { desc }) {
+        e.preventDefault();
+        socket.emit("send", { from: customer.email, desc: desc, admin: authAPI.isAuth(), to: "admin" });
+        setMessage(prev => [...prev, { from: customer.email, desc: desc }]);
+    };
     return (
         <>
             <Header title={lang.about} />
-
-
             <div className="row card-text">
                 <div className="col">
                     {/* <div id="mapid">
@@ -56,7 +61,8 @@ const AboutPage = () => {
                         </Marker> 
                         </Map>
                     </div> */}
-                    {/* <OrderChat customer={customer} admin={authAPI.isAuth()} socket={socket} message={message} setMessage={setMessage} /> */}
+                    {/* <div className={"alert alert-" + (!adminConnected.bool ? "primary" : "success")} role="alert">{adminConnected.msg}</div> */}
+                    {/* <OrderChat customer={customer} admin={authAPI.isAuth()} send={send} message={message} setMessage={setMessage} adminConnected={adminConnected} /> */}
                 </div>
                 <div className="col">
                     <div className="row">

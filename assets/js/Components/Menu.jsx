@@ -31,7 +31,7 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
             <div className="card-text">
                 <div className="row">
                     {categories.map((cat, index) =>
-                        <div key={index} className={"col-" + (index == 2 ? "12" : "6")}>
+                        <div key={index} className={"col-sm-12 col-md-" + (index == 2 ? "12" : "6")}>
                             <h4 className="display-5 my-3" id={cat.label}>{cat.label}</h4>
                             <ul className="list-group">
                                 {products.map((prod, index) =>
@@ -96,8 +96,12 @@ const MenuOrder = ({ products, categories, listCart, addItemToCart }) => {
                                                     addItemToCart(prod.id, prod.label, prod.price, 1); setCart(listCart);
                                                 }} className={"list-group-item d-flex justify-content-between align-items-center " + actif(prod.id)}
                                                 >
-                                                    <span> {prod.label} <PopupInfo info={prod.description}>{infoIcon}</PopupInfo></span>
-                                                    <span className="lead">{prod.price}€</span>
+                                                    <span className="justify-content-between mr-4">
+                                                        {prod.label}
+                                                        <span className="px-1"></span>
+                                                        {prod.description && <PopupInfo info={prod.description}><span>{infoIcon}</span></PopupInfo>}
+                                                    </span>
+                                                    <span className="lead ml-3">{prod.price}€</span>
                                                 </li>
                                             </div>
                                         </div>

@@ -2,10 +2,16 @@ import React, { useContext } from 'react';
 import { CustomerContext } from '../../Context/CustomerContext';
 import { LangContext } from '../../Context/LangContext';
 import Cart from '../Cart';
-const OrderSummary = ({ isReservation = false, reservation }) => {
+import Field from './Input/Field';
+const OrderSummary = ({ isReservation = false, reservation, setReservation }) => {
 
     const { lang } = useContext(LangContext);
     const { customer, setCustomer } = useContext(CustomerContext);
+
+    const handleChange = ({ currentTarget }) => {
+        const { name, value } = currentTarget;
+        setReservation({ ...reservation, [name]: value });
+    };
 
     return (
         <>
@@ -31,13 +37,33 @@ const OrderSummary = ({ isReservation = false, reservation }) => {
                         </div>
                     </div>
                 </div>
-                {!isReservation &&
-                    <div className="col d-flex flex-column border-left pl-4 ml-4">
-                        <h3>{lang.cart}</h3>
-                        <div className="row">
-                            <Cart />
-                        </div>
-                    </div>}
+                <div className="col d-flex flex-column border-left pl-4 ml-4">
+                    {!isReservation &&
+                        <>
+                            <h3>{lang.cart}</h3>
+                            <div className="row">
+                                <Cart />
+                            </div>
+                        </>
+                        ||
+                        <>
+                            <div className="form-group">
+                                <label htmlFor="comment">Commentaire</label>
+                                <textarea
+                                    value={reservation.comment}
+                                    name="comment"
+                                    onChange={handleChange}
+                                    maxLength="250"
+                                    className={"form-control"}
+                                    id="comment"
+                                    rows="5"
+                                    placeholder={"Ecrire un commmentaire à propos de la réservation ..."} />
+                            </div>
+                        </>
+                    }
+                </div>
+
+
             </div>
         </>);
 }

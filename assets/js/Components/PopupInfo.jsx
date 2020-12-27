@@ -7,7 +7,7 @@ const infoIcon = <a><FontAwesomeIcon icon={faInfoCircle} pull="right" className=
 
 const PopupInfo = ({ info }) => {
     return (
-        <Popup trigger={infoIcon} position="center left" closeOnDocumentClick defaultOpen={false} on={["hover"]} >
+        <Popup trigger={infoIcon} position="center left" closeOnDocumentClick defaultOpen={false} on={["hover"]}>
             <div className="popup p-2 bg-dark text-light">
                 <span>{info}</span>
             </div>

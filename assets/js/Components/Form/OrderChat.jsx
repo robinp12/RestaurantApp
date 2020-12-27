@@ -1,42 +1,48 @@
 import React, { useRef } from 'react';
 import useLocalStorage from '../../Services/useLocalStorage';
 
-const Message = ({ message, isAdmin }) => {
-    return (<>
-        <div>
-            {message?.map((e, index) =>
-                <div key={index} className={"row mx-2 " + (isAdmin(e.admin) && " " || "justify-content-end")}>
-                    <div className="col-7">
-                        <div className={"alert alert-dismissible " + (isAdmin(e.admin) && "alert-info" || "alert-warning")}>
-                            <h5 className="alert-heading">{e.name}</h5>
-                            <em>{e.desc}</em>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </div>
-    </>)
-}
-const OrderChat = ({ admin = false, customer = false, socket, message, setMessage }) => {
-
-    const [bag, setBag] = useLocalStorage('chat-cart', [{ product: 39, name: "Boulettes sauce bolognese", price: 16, quantity: 1, totalAmount: 16 }])
+const OrderChat = ({ admin = false, customer = false, message, setMessage, send, selectedUser, adminConnected }) => {
 
     const inputRef = useRef();
+    const [bag, setBag] = useLocalStorage('chat-cart', [{ product: 39, name: "Boulettes sauce bolognese", price: 16, quantity: 1, totalAmount: 16 }])
 
     const isAdmin = function (e) {
         if (admin) return !e;
         else return e
     }
-
-    const send = function (e, obj) {
-        e.preventDefault();
-        socket.emit("send", obj);
-    };
+    const Message = () => {
+        return (<>
+            <div>
+                {message.map((e, index) =>
+                    // (e.from || e.to) == selectedUser &&
+                    <div key={index} className={"row mx-2 " + (isAdmin(e.admin) && " " || "justify-content-end")}>
+                        <div className="col-7">
+                            {console.log(e)
+                            }
+                            <div className={"alert alert-dismissible " + (isAdmin(e.admin) && "alert-info" || "alert-warning")}>
+                                {/* <h5 className="alert-heading">{e.admin ? "Le Cheval Blanc" : (!e.from?.email ? "Moi" : e.from?.email)}</h5> */}
+                                <h5 className="alert-heading">{e.admin ? "Le Cheval Blanc" : e.from}</h5>
+                                <em>{e.desc}</em>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </>)
+    }
 
     return (
         <>
             <div className="card mb-3">
-                <h3 className="card-header"><span>Commande<button className="float-right btn btn-sm btn-primary" onClick={(e) => { e.preventDefault(); setMessage([]); setBag([]) }}>x</button></span></h3>
+                <h3 className="card-header">
+                    <span>Commande de {selectedUser}
+                        <button className="float-right btn btn-sm btn-primary"
+                            onClick={(e) => { e.preventDefault(); setMessage([]); setBag([]) }}
+                        >
+                            x
+                        </button>
+                    </span>
+                </h3>
                 <div className="row mb-2 pb-2 mb-2">
                     <div className="col">
                         <div className="card-body">
@@ -52,16 +58,16 @@ const OrderChat = ({ admin = false, customer = false, socket, message, setMessag
                         </ul>
                     </div>
                 </div>
-                <form onSubmit={(e) => send(e, { name: customer.firstName, desc: inputRef.current.value, admin: admin })}>
+                <form onSubmit={(e) => { send(e, { desc: inputRef.current.value }); e.currentTarget.reset() }}>
 
-                    <Message admin={admin} customer={customer} message={message} isAdmin={isAdmin} />
+                    <Message />
                     <div className="card-footer text-muted ">
                         <div className="row align-middle align-items-center">
                             <div className="col">
                                 <input className="form-control" ref={inputRef} placeholder="Ecris ton message"></input>
                             </div>
                             <div className="">
-                                <button className="btn btn-primary" type="submit">Envoyer</button>
+                                <button className="btn btn-primary" type="submit" disabled={!adminConnected.bool}>Envoyer</button>
                             </div>
                         </div>
                     </div>

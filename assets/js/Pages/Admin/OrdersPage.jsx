@@ -93,18 +93,18 @@ const OrdersPage = ({ match, history }) => {
                     )}
                 </div>
             </div>
-            {orders.map((order) =>
-                <Accordion defaultActiveKey={order.id} key={order.id}>
+            {/* {orders.map((order, index) =>
+                <Accordion defaultActiveKey={3} key={index}>
                     <Card>
-                        <Accordion.Toggle as={Card.Header} eventKey={order.id}>
+                        <Accordion.Toggle as={Card.Header} eventKey={3}>
                             Commande <b>{order.id}</b>
                         </Accordion.Toggle>
-                        <Accordion.Collapse eventKey={order.id}>
+                        <Accordion.Collapse eventKey={index}>
                             <Card.Body>{order.label}</Card.Body>
                         </Accordion.Collapse>
                     </Card>
                 </Accordion>
-            )}
+            )} */}
         </>
     );
 }

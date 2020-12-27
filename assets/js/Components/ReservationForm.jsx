@@ -115,7 +115,7 @@ const ReservationForm = () => {
             case 2: // Reservation summary
                 return (
                     <div className="container">
-                        <OrderSummary isReservation reservation={reservation} />
+                        <OrderSummary isReservation reservation={reservation} setReservation={setReservation} />
                         <button className="btn-primary btn float-left" onClick={Back}>{lang.back}</button>
                         <button className="btn-primary btn float-right" ref={reserveConfirm} onClick={(e) => {
                             handleSubmit(e);

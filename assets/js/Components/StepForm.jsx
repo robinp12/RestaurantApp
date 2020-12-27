@@ -85,7 +85,6 @@ const StepForm = () => {
         invoice.customerEmail = customer.email
         invoice.timeToReceive = orderInfo.reservationAt
         confirmRef.current.setAttribute("disabled", "")
-
         try {
             const rep = await invoicesAPI.add(invoice);
             confirmRef.current.removeAttribute("disabled")

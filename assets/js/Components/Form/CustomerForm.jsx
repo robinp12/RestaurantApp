@@ -16,7 +16,7 @@ const CustomerForm = ({ errors, setCustomerEmail }) => {
     return (
         <>
             <div className="row">
-                <div className="col">
+                <div className="col-sm-12 col-md-6">
                     <Field
                         label={lang.lastName}
                         name="lastName"
@@ -26,7 +26,7 @@ const CustomerForm = ({ errors, setCustomerEmail }) => {
                         error={errors.lastName}
                     />
                 </div>
-                <div className="col">
+                <div className="col-sm-12 col-md-6">
                     <Field
                         label={lang.firstName}
                         name="firstName"
@@ -52,7 +52,7 @@ const CustomerForm = ({ errors, setCustomerEmail }) => {
                 </div>
             </div>
             <div className="row">
-                <div className="col">
+                <div className="col-sm-12 col-md-6">
                     <Field
                         label={lang.address}
                         name="address"
@@ -61,6 +61,9 @@ const CustomerForm = ({ errors, setCustomerEmail }) => {
                         placeholder={lang.address}
                         error={errors.address}
                     />
+                </div>
+                <div className="col-sm-12 col-md-6">
+
                     <Field
                         type="number"
                         label={lang.zipcode}
@@ -71,7 +74,10 @@ const CustomerForm = ({ errors, setCustomerEmail }) => {
                         error={errors.zipcode}
                     />
                 </div>
-                <div className="col">
+            </div>
+            <div className="row">
+                <div className="col-sm-12 col-md-6">
+
                     <Field
                         label={lang.city}
                         name="city"
@@ -80,6 +86,9 @@ const CustomerForm = ({ errors, setCustomerEmail }) => {
                         placeholder={lang.city}
                         error={errors.city}
                     />
+                </div>
+                <div className="col-sm-12 col-md-6">
+
                     <Field
                         label={lang.phoneNumber}
                         name="phoneNumber"

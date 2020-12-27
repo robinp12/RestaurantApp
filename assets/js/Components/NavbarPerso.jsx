@@ -10,6 +10,7 @@ const NavbarPerso = ({ history }) => {
 
   const { language, setLanguage, lang } = useContext(LangContext);
   const { isAuth } = useContext(AuthContext);
+  const [width, setWidth] = useState(window.innerWidth)
 
   const [show, setShow] = useState(true);
   const popover = (
@@ -98,13 +99,16 @@ const NavbarPerso = ({ history }) => {
             <Nav.Link className="nav-item" href="#commandes">Commandes pour cuisto</Nav.Link>
             <Nav.Link className="nav-item" href="#commandes">Affichage map resto</Nav.Link>
             <Nav.Link className="nav-item" href="#reservations">Reservations</Nav.Link>
-            <Nav.Link className="nav-item" href="#factures">Factures</Nav.Link>
-            <Nav.Link className="nav-item" href="#clients">Clients</Nav.Link>
             <Nav.Link className="nav-item" href="#chatadmin">Chat</Nav.Link>
             <NavDropdown title="Gestion" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#utilisateurs">Utilisateurs</NavDropdown.Item>
+              <NavDropdown.Item href="#commandes">Commandes</NavDropdown.Item>
+              <NavDropdown.Item href="#factures">Factures</NavDropdown.Item>
+              <NavDropdown.Item href="#clients">Clients</NavDropdown.Item>
+
               <NavDropdown.Divider />
               <NavDropdown.Item href="#manage">Menus</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#utilisateurs">Utilisateurs</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         }

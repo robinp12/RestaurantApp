@@ -20,38 +20,57 @@ const ReservationManagement = ({ match, history }) => {
 
         }
     }
+    const handleDelete = async (id) => {
+        const originValue = [...reservations];
+
+        setReservations(reservations.filter(user => user.id !== id));
+        try {
+            await reservationsAPI.deleteReservations(id)
+            history.replace("/reservations/" + reservations[reservations.length - 1 - 1].i)
+
+        } catch (error) {
+            setReservations(originValue);
+        }
+    }
 
     useEffect(() => {
         fetchAllReservations()
     }, [])
+    const zeroPad = (num) => '#' + String(num).padStart(5, '0');
 
     return (
         <>
             <div className="row">
                 <div className="col-12-sm col-4-md">
-                    <table className="table table-hover">
+                    <table className="table table-responsive-md table-hover ">
                         <thead className="thead-dark">
                             <tr>
-                                <th className=" align-middle">Numéro réservation</th>
-                                <th>Client</th>
-                                <th>Nombre de personne</th>
-                                <th>Heure d'envoi</th>
-
+                                <th className="text-center hidden-xs">ID</th>
+                                <th className="text-center">Client</th>
+                                <th className="text-center">Nombre de personne</th>
+                                <th className="text-center">Heure de réservation</th>
+                                <th className="text-center">Description</th>
+                                <th className="text-center"><em className="fa fa-cog"></em></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {reservations.map(reservation => <tr key={reservation.id} onClick={() => {
-                                history.replace("/utilisateurs/" + reservation.id)
-                            }}>
-                                {console.log(reservation)
-                                }
-                                <td>{reservation.chrono}</td>
-                                <td>{reservation.customer?.firstName} {reservation.customer?.lastName}</td>
-                                <td>{reservation.peopleNumber}</td>
-                                <td>{reservation.sentAt}</td>
+                            {reservations.map(reservation => <tr key={reservation.id}
+                                onClick={() => history.replace("/reservations/" + reservation.chrono)}
+                            >
+                                <th scope="row" className="text-center align-middle">{zeroPad(reservation.chrono)}</th>
+                                <td className="text-center align-middle">{reservation.customer?.firstName} {reservation.customer?.lastName} </td>
+                                <td className="text-center align-middle">{reservation.peopleNumber} </td>
+                                <td className="text-center align-middle">{new Date(reservation.reservation_at).toLocaleString()}</td>
+                                <td className="text-center align-middle">{reservation.comment}</td>
+                                <td align="center">
+                                    <a className="btn btn-secondary"><em className="fa fa-pencil"></em></a>
+                                    <a className="btn btn-primary" onClick={() => handleDelete(reservation.id)}><em className="fa fa-trash"></em></a>
+                                </td>
                             </tr>)}
+
                         </tbody>
                     </table>
+
                 </div>
                 <div className="col">
 
