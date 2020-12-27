@@ -3,7 +3,7 @@ import Header from '../Components/Header';
 import StepForm from '../Components/StepForm';
 import { LangContext } from '../Context/LangContext';
 
-const OrderPage = () => {
+const OrderPage = ({ match }) => {
 
   const { lang } = useContext(LangContext);
 
@@ -13,7 +13,7 @@ const OrderPage = () => {
       <div className="container">
         <div className="row justify-content-center">
           <form className="d-flex blockStep">
-            <StepForm />
+            <StepForm match={match} />
           </form>
         </div>
       </div>

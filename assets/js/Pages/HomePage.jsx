@@ -12,25 +12,10 @@ const HomePage = () => {
 
     const { lang } = useContext(LangContext);
 
-    const [time, setTime] = useState(new Date());
-    const [file, setFile] = useState();
-
     const TEXT_STYLE = {
         fontSize: "2.2vw"
     };
 
-    const refContainer = useRef();
-
-
-    const oneTimeClick = (e) => {
-        e.preventDefault()
-
-        refContainer.current.setAttribute("disabled", "")
-        setTimeout(() => {
-            refContainer.current.removeAttribute("disabled")
-        }, 1000);
-
-    }
 
     return (
         <>
@@ -85,12 +70,13 @@ const HomePage = () => {
                         <div className="col">
                             <div className="card-text">
 
-                                <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-                                <p className="lead">
-                                    <button className="btn btn-primary btn-lg" ref={refContainer} onClick={oneTimeClick} href="#" role="button">Learn more</button>
-                                </p>                            </div>
-                            <a href="#" className="card-link">Card link</a>
-                            <a href="#" className="card-link">Another link</a>
+                                <p>Bienvenue sur le site du Cheval Blanc. <br />
+                                Vous pouvez sur ce site passer une commande en ligne.</p>
+                                <a className="btn btn-primary" href="#menu" role="a">
+                                    Voir la carte
+                                    </a>
+                                <a href="#apropos" className="card-link mx-3">À propos</a>
+                            </div>
                         </div>
                     </div>
                 </div>

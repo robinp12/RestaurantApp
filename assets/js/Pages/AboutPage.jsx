@@ -48,7 +48,7 @@ const AboutPage = () => {
         <>
             <Header title={lang.about} />
             <div className="row card-text">
-                <div className="col">
+                <div className="col-sm-12 col-md-6">
                     {/* <div id="mapid">
                         <Map center={[50.503439, 4.855911]} zoom={8}>
                         <TileLayer
@@ -64,7 +64,7 @@ const AboutPage = () => {
                     {/* <div className={"alert alert-" + (!adminConnected.bool ? "primary" : "success")} role="alert">{adminConnected.msg}</div> */}
                     {/* <OrderChat customer={customer} admin={authAPI.isAuth()} send={send} message={message} setMessage={setMessage} adminConnected={adminConnected} /> */}
                 </div>
-                <div className="col">
+                <div className="col-sm-12 col-md-6">
                     <div className="row">
                         <div className="col">
                             <address>
@@ -73,12 +73,13 @@ const AboutPage = () => {
                                 Chaussée de Dinant, 26
                                 <br />5530 Spontin
                                     <br />
-                                <abbr title="Phone">N: </abbr> 083 69 96 19
+                                <i className="fa fa-phone fa-lg" aria-hidden="true"></i> <a href="tel:083 69 96 19">083 69 96 19</a> <br />
 
-                                <abbr title="Phone">N: </abbr> 0475 31 93 24
+                                <i className="fa fa-mobile fa-lg" aria-hidden="true"></i>  <a href="tel:0475 31 93 24">0475 31 93 24</a>
 
-                                    <br />
-                                <a href="mailto:cavalo.branco@skynet.be">cavalo.branco@skynet.be</a>
+                                <br />
+                                <i className="fa fa-facebook-square fa-lg" aria-hidden="true"></i> <a href="https://www.facebook.com/LeChevalBlancSpontin">Le Cheval Blanc Spontin</a><br />
+                                <i className="fa fa-envelope-o fa-lg" aria-hidden="true"></i> <a href="mailto:cavalo.branco@skynet.be">cavalo.branco@skynet.be</a>
                             </address>
                         </div>
                     </div>

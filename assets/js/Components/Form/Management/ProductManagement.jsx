@@ -6,6 +6,7 @@ import Field from "../Input/Field";
 import Select from "../Input/Select";
 import { toast } from "react-toastify";
 import Axios from "axios";
+import ProductForm from "./ProductForm";
 
 
 let cle;
@@ -17,17 +18,9 @@ const ProductManagement = ({ setRefresh, refresh }) => {
 
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
+    const [update, setUpdate] = useState(false);
 
     const [product, setProduct] = useState({
-        label: "",
-        description: "",
-        price: "",
-        picture: "",
-        category: "api/categories/52"
-    });
-
-
-    const [errors, setErrors] = useState({
         label: "",
         description: "",
         price: "",
@@ -35,38 +28,6 @@ const ProductManagement = ({ setRefresh, refresh }) => {
         category: ""
     });
 
-    const handleChange = ({ currentTarget }) => {
-        const { name, value } = currentTarget;
-        if (name == "price") {
-            setProduct({ ...product, [name]: value });
-        }
-        else {
-            setProduct({ ...product, [name]: value });
-        }
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log(product)
-        try {
-            const rep = await productsAPI.add(product);
-            toast(product.label + " a été ajouté");
-            setRefresh(!refresh);
-            setErrors("");
-        } catch (error) {
-            console.log(error.response.data)
-            toast("Erreur dans le formulaire !" + "", {
-                className: "bg-red",
-            });
-            if (error.response.data.violations) {
-                const apiErrors = {};
-                error.response.data.violations.forEach((violation) => {
-                    apiErrors[violation.propertyPath] = violation.message;
-                });
-                setErrors(apiErrors);
-            }
-        }
-    };
 
     const fetchCategories = async () => {
         try {
@@ -115,69 +76,8 @@ const ProductManagement = ({ setRefresh, refresh }) => {
 
     return (
         <>
-            <div className="col-6">
-                <form className="form"
-                    onSubmit={handleSubmit}
-                >
-                    <div className="row m-1 p-3 border">
-                        <div className="col">
-                            <div className="row">
-                                <div className="col">
-                                    <Field
-                                        label="Nom du produit"
-                                        name="label"
-                                        value={product.label}
-                                        onChange={handleChange}
-                                        placeholder="Produit"
-                                        error={errors.label}
-                                    />
-                                </div>
-                                <div className="col-4">
-                                    <Field
-                                        label="Prix"
-                                        name="price"
-                                        value={product.price}
-                                        onChange={handleChange}
-                                        placeholder="Prix"
-                                        type="number"
-                                        error={errors.price}
-                                    />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-7">
-                                    <Field
-                                        label="Description du produit"
-                                        name="description"
-                                        value={product.description}
-                                        onChange={handleChange}
-                                        placeholder="Description"
-                                        error={errors.description}
-                                    />
-                                </div>
-                                <div className="col-5">
-                                    <Select
-                                        label="Nom de la catégorie"
-                                        name="category"
-                                        value={product.category}
-                                        onChange={handleChange}
-                                        placeholder="Catégorie"
-                                        error={errors.category}
-                                    >
-                                        {categories.map((category, index) => <option value={"/api/categories/" + category.id} key={index}>{category.label}</option>)}
-                                    </Select>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col">
-                                    <button className="btn-primary btn float-right" type="submit" disabled={false}>Ajouter</button>
-                                </div>
-                                {/* <input type="file" onChange={selectFile} />
-                                <button onClick={upload}>Upload</button> */}
-                            </div>
-                        </div>
-                    </div>
-                </form>
+            <div className="col-sm-12 col-md-6">
+                <ProductForm categories={categories} refresh={refresh} setRefresh={setRefresh} product={product} setProduct={setProduct} update={update} setUpdate={setUpdate} />
             </div>
             <div className="col">
                 <Tabs id="controlled-tab" activeKey={key} onSelect={(k) => setKey(k)}>
@@ -203,7 +103,7 @@ const ProductManagement = ({ setRefresh, refresh }) => {
                                             <td className="text-center align-middle">{prod.description}</td>
                                             {/* <td>{prod.category.label}</td> */}
                                             <td align="center">
-                                                <a className="btn btn-secondary"><em className="fa fa-pencil"></em></a>
+                                                <a className="btn btn-secondary" onClick={() => { setProduct(prod); setUpdate(true) }}><em className="fa fa-pencil"></em></a>
                                                 <a className="btn btn-primary" onClick={() => handleDeleteProduct(prod.id)}><em className="fa fa-trash"></em></a>
                                             </td>
                                         </tr>

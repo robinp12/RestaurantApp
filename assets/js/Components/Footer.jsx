@@ -19,22 +19,24 @@ const Footer = ({ history }) => {
         <>
             {/* Composant pour le footer */}
             <div className="row justify-content-between footer my-3">
-                <small className="text-muted">
+                <div className="col-sm-12 col-md-4">
                     <button className={"btn btn-light btn-sm mr-3"} onClick={() => setLanguage(!language)}>{language && <><b>FR</b>|EN</> || <><b>EN</b>|FR</>}</button>
-                    © Copyright 2020 Le Cheval Blanc - All rights reserved
-                </small>
-                <small className="text-muted">
-                    Application developped by <b>Robin Paquet</b>
-                </small>
-                {!isAuth &&
-                    <a href="#connexion" className="small">
-                        Connexion
-                </a>
-                    ||
-                    <a onClick={handleLogout} className="small">
-                        Deconnexion
-                </a>
-                }
+                </div>
+                <div className="col-sm-12 col-md-4 text-center">
+                    <small className="text-muted">
+                        Application developped by <b>Robin Paquet</b><br />
+                    </small>
+                    <small className="text-muted">
+                        © Copyright 2020 Le Cheval Blanc - All rights reserved
+                    </small>
+                </div>
+                <div className="col-sm-12 col-md-4 text-right">
+                    {!isAuth &&
+                        <a href="#connexion" className="small">Connexion</a>
+                        ||
+                        <a onClick={handleLogout} href="#" className="small">Deconnexion</a>
+                    }
+                </div>
             </div>
         </>
     );

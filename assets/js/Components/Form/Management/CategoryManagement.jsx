@@ -21,6 +21,7 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
     const handleChange = ({ currentTarget }) => {
         const { name, value } = currentTarget;
         setCategory({ ...category, [name]: value });
+        setErrors({ ...errors, [name]: "" });
     };
     const handleChangeCategory = async (id, e) => {
         const { value } = e.currentTarget;
@@ -98,7 +99,7 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                     <div className="row m-1 p-3 border">
                         <div className="col">
                             <div className="row">
-                                <div className="col">
+                                <div className="col-sm-12 col-md-7">
                                     <Field
                                         label="Nom de catégorie"
                                         name="label"
@@ -109,7 +110,7 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                                         error={errors.label}
                                     />
                                 </div>
-                                <div className="col-5">
+                                <div className="col-sm-12 col-md-5">
                                     <Select
                                         label="Position dans le menu"
                                         name="position"
@@ -142,10 +143,7 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                             <th className="text-center align-middle hidden-xs">ID</th>
                             <th className="text-center align-middle">Position</th>
                             <th className="text-center align-middle">Catégorie</th>
-
-                            <th className="text-center align-middle">
-                                <a className="btn btn-sm btn-secondary" onClick={() => setEditable(!editable)}><em className="fa fa-pencil"></em></a>
-                            </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -154,13 +152,12 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                             <tr key={index}>
                                 <td className="text-center align-middle">{cat.id}</td>
                                 <td className="text-center align-middle">
-                                    <div className="col-md-5 mx-auto">
+                                    <div className="col-md-8 mx-auto">
                                         <Select
                                             name="position"
                                             onChange={(e) => { handleChangeCategory(cat.id, e) }}
                                             placeholder="Position"
                                             defaut={cat.position}
-                                            disabled={!editable}
                                         >
                                             {arr.map((arr) =>
                                                 !categories.map(cat => cat.position).includes(arr) &&
@@ -172,7 +169,7 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                                 <td className="text-center align-middle">{cat.label}</td>
                                 {/* <td>{prod.category.label}</td> */}
                                 <td align="center">
-                                    {editable && <a className="btn btn-primary" onClick={() => handleDeleteCategory(cat.id)}><em className="fa fa-trash"></em></a>}
+                                    <a className="btn btn-primary" onClick={() => handleDeleteCategory(cat.id)}><em className="fa fa-trash"></em></a>
                                 </td>
                             </tr>
                         )}

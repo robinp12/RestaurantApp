@@ -16,7 +16,10 @@ import PaymentForm from './Form/PaymentForm';
 import { MenuOrder } from './Menu';
 
 let now = new Date(new Date().setHours(new Date().getHours() + 1)).toISOString().slice(0, 16);
-const StepForm = () => {
+const StepForm = ({ match }) => {
+
+    const { id } = match.params
+    console.log(id)
 
     const { lang } = useContext(LangContext);
     const { cart, setCart } = useContext(CartContext);
@@ -30,7 +33,8 @@ const StepForm = () => {
     const confirmRef = useRef();
     const [away, setAway] = useState(0);
     const [choose, setChoose] = useState(0);
-    // const [there, setThere] = useState(0);
+    const [there, setThere] = useState(0);
+
 
     const [customer, setCustomer] = useState({
         firstName: "",
@@ -55,8 +59,10 @@ const StepForm = () => {
         amount: 0,
         status: "SENT",
         timeToReceive: new Date(),
-        customerEmail: ""
+        customerEmail: "",
+        table: id
     });
+
     const [orderInfo, setOrderInfo] = useState({ reservationAt: now });
 
     const handleSubmit = async (e) => {
@@ -143,6 +149,9 @@ const StepForm = () => {
     useEffect(() => {
         fetchCat();
         fetchProd();
+        if (id) {
+            setChoose(1);
+        }
     }, [])
 
     const listCart = function () {
@@ -195,18 +204,24 @@ const StepForm = () => {
     }
     function formOrder() {
         if (choose == 1) {
-            // switch (there) {
-            //   case 1:
-            //     return (<>Apres emporter
-            //       <button className="btn-primary btn" onClick={() => setThere(step => step - 1)}>{lang.back}</button>
-            //     </>);
-            //   default:
-            //     return (
-            //       <>
-            //         <button className="btn-primary btn float-left" onClick={() => setChoose(0)}>{lang.back}</button>
-            //         <button className="btn-primary btn float-right" onClick={() => setThere(step => step + 1)}>{lang.next}</button>
-            //       </>);
-            // }
+            switch (there) {
+                case 1:
+                    return (
+                        <div className="container">
+                            <OrderSummary reservation={invoice.table} takeAway />
+                            <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setThere(step => step - 1) }}>{lang.back}</button>
+                            <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); setThere(step => step + 1) }}>{lang.next}</button>
+                        </div>
+                    );
+                default:
+                    return (
+                        <div className="container">
+                            <MenuOrder products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
+                            <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setChoose(0) }}>{lang.back}</button>
+                            <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); setThere(step => step + 1) }} disabled={!cart.length}>{lang.next}</button>
+                        </div>
+                    );
+            }
         }
         else if (choose == 2) {
             switch (away) {
@@ -282,11 +297,11 @@ const StepForm = () => {
             return (
                 <div className="container d-flex justify-content-center ">
                     <div className="row align-items-center">
+                        {/* <div className="col">
+                            <a className="btn btn-block borderButt text-primary my-2 border-primary" onClick={() => setChoose(1)}>{lang.there}</a>
+                        </div> */}
                         <div className="col">
-                            <a className="btn borderButt text-primary my-2 border-primary p-5" onClick={() => setChoose(1)}><h3>{lang.there}</h3></a>
-                        </div>
-                        <div className="col">
-                            <a className="btn borderButt text-dark my-2 border-dark p-5" onClick={() => { setChoose(2); }}><h3>{lang.takeAway}</h3></a>
+                            <a className="btn btn-block borderButt text-dark my-2 border-dark" onClick={() => { setChoose(2); }}>{lang.takeAway}</a>
                         </div>
                     </div>
                     <div className="d-flex justify-content-center align-items-center">

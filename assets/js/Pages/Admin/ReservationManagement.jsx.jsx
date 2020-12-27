@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import Pagination from '../../Components/Pagination';
 import reservationsAPI from '../../Services/reservationsAPI';
 
 const ReservationManagement = ({ match, history }) => {
@@ -8,13 +9,14 @@ const ReservationManagement = ({ match, history }) => {
 
     const [showCat, setShowCat] = useState(true);
     const [reservations, setReservations] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const fetchAllReservations = async () => {
 
         try {
             const data = await reservationsAPI.getAllReservations();
-
             setReservations(data);
+            history.replace("/reservations/" + data[0]?.id)
         } catch (error) {
             console.log(error.response)
 
@@ -36,43 +38,70 @@ const ReservationManagement = ({ match, history }) => {
     useEffect(() => {
         fetchAllReservations()
     }, [])
+    const handleChangePage = (page) => {
+        setCurrentPage(page)
+    }
+    const itemsPerPage = 10;
+    const paginated = Pagination.getData(reservations, currentPage, itemsPerPage)
+
     const zeroPad = (num) => '#' + String(num).padStart(5, '0');
 
     return (
         <>
             <div className="row">
-                <div className="col-12-sm col-4-md">
+                <div className="col">
                     <table className="table table-responsive-md table-hover ">
                         <thead className="thead-dark">
                             <tr>
-                                <th className="text-center hidden-xs">ID</th>
-                                <th className="text-center">Client</th>
-                                <th className="text-center">Nombre de personne</th>
-                                <th className="text-center">Heure de réservation</th>
-                                <th className="text-center">Description</th>
-                                <th className="text-center"><em className="fa fa-cog"></em></th>
+                                <th className="text-center align-middle hidden-xs">ID</th>
+                                <th className="text-center align-middle">Client</th>
+                                <th className="text-center align-middle">Nombre de personne</th>
+                                <th className="text-center align-middle">Heure de réservation</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {reservations.map(reservation => <tr key={reservation.id}
-                                onClick={() => history.replace("/reservations/" + reservation.chrono)}
+                            {paginated.map(reservation => <tr key={reservation.id}
+                                onClick={() => history.replace("/reservations/" + reservation.id)}
                             >
                                 <th scope="row" className="text-center align-middle">{zeroPad(reservation.chrono)}</th>
                                 <td className="text-center align-middle">{reservation.customer?.firstName} {reservation.customer?.lastName} </td>
                                 <td className="text-center align-middle">{reservation.peopleNumber} </td>
                                 <td className="text-center align-middle">{new Date(reservation.reservation_at).toLocaleString()}</td>
-                                <td className="text-center align-middle">{reservation.comment}</td>
-                                <td align="center">
-                                    <a className="btn btn-secondary"><em className="fa fa-pencil"></em></a>
-                                    <a className="btn btn-primary" onClick={() => handleDelete(reservation.id)}><em className="fa fa-trash"></em></a>
-                                </td>
                             </tr>)}
 
                         </tbody>
                     </table>
+                    {itemsPerPage < reservations.length && <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={reservations.length} onPageChanged={handleChangePage} />}
 
                 </div>
                 <div className="col">
+                    {reservations.map(reservation =>
+                        reservation.id == id &&
+                        <div key={reservation.id} className="card mb-3">
+                            <h3 className="card-header">
+                                <span>Réservation <b>{reservation.id}</b></span>
+                            </h3>
+                            {console.log(reservation)
+                            }
+                            <div className="card-body">
+                                <div className="row">
+                                    <div className="col-sm-12 col-md-6">
+                                        <span> Client : {reservation.customer.firstName} {reservation.customer.lastName}</span><br />
+                                        <span> Email : {reservation.customerEmail}</span><br />
+                                        <span> Nombre de personne : {reservation.peopleNumber}</span><br />
+                                        <span> Date de réservation : {new Date(reservation.reservation_at).toLocaleString()}</span><br />
+                                    </div>
+                                    <div className="col-sm-12 col-md-6">
+                                        <span> Date d'envoi : {new Date(reservation.sentAt).toLocaleString()}</span><br />
+                                        <span> Commentaire : <br />
+                                            {reservation.comment}</span>
+                                    </div>
+                                </div>
+                                <button className="btn btn-secondary">{"Modifier"}</button>
+                                <button onClick={() => handleDelete(reservation.id)} className="btn btn-primary float-right">Supprimer</button>
+                            </div>
+                        </div>
+                    )}
 
                 </div>
             </div>

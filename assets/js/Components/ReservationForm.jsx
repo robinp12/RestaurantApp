@@ -138,9 +138,9 @@ const ReservationForm = () => {
             default: // Order informations
                 return (
                     <>
-                        <div className="container">
+                        <div className="container text-center">
                             <OrderForm isReservation setReservation={setReservation} reservation={reservation} now={now} />
-                            <button className="btn-primary btn float-right" onClick={Next}>{lang.next}</button>
+                            <button className="btn-primary btn" onClick={Next}>{lang.next}</button>
                         </div>
                     </>);
         }

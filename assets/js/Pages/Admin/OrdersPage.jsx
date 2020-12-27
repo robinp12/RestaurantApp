@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Accordion, Card } from 'react-bootstrap';
+import Pagination from '../../Components/Pagination';
 import ordersAPI from '../../Services/ordersAPI';
 
 const OrdersPage = ({ match, history }) => {
@@ -10,11 +10,14 @@ const OrdersPage = ({ match, history }) => {
 
     const [orders, setOrders] = useState([]);
     const [change, setChange] = useState(false);
+    const [last, setLast] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
 
     const fetchAllOrders = async () => {
         try {
             const data = await ordersAPI.getAllOrders();
             setOrders(data);
+            history.replace("/commandes/" + data[0]?.id)
         } catch (error) {
             console.log(error.response);
         }
@@ -36,6 +39,12 @@ const OrdersPage = ({ match, history }) => {
             setOrders(originOrders);
         }
     }
+    const handleChangePage = (page) => {
+        setCurrentPage(page)
+    }
+    const itemsPerPage = 20;
+    const paginated = Pagination.getData(orders, currentPage, itemsPerPage)
+
     const zeroPad = (num) => '#' + num;
 
     return (
@@ -45,7 +54,6 @@ const OrdersPage = ({ match, history }) => {
                     <table className="table table-responsive-md table-hover ">
                         <thead className="thead-dark">
                             <tr>
-                                <th className="text-center"><em className="fa fa-cog"></em></th>
                                 <th className="text-center hidden-xs">ID</th>
                                 <th className="text-center">Produit</th>
                                 <th className="text-center">Client</th>
@@ -53,11 +61,7 @@ const OrdersPage = ({ match, history }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map(order => <tr key={order.id} onClick={() => history.replace("/commandes/" + order.id)}>
-                                <td align="center">
-                                    <a className="btn btn-secondary"><em className="fa fa-pencil"></em></a>
-                                    <a className="btn btn-primary" onClick={() => handleDelete(order.id)}><em className="fa fa-trash"></em></a>
-                                </td>
+                            {paginated.map(order => <tr key={order.id} onClick={() => history.replace("/commandes/" + order.id)}>
                                 <th scope="row" className="text-center align-middle">{zeroPad(order.id)}</th>
                                 <td className="text-center align-middle">{order.label} </td>
                                 <td className="text-center align-middle">{order.customer_email} </td>
@@ -66,30 +70,27 @@ const OrdersPage = ({ match, history }) => {
 
                         </tbody>
                     </table>
+                    {itemsPerPage < orders.length && <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={orders.length} onPageChanged={handleChangePage} />}
+
                 </div>
                 <div className="col">
                     {orders.map(order =>
-                        order.id == id &&
-                        <div key={order.id}>
-                            <h2>Commande <b>{order.id}</b></h2>
-                            <div className="container form">
-                                <div className="row justify-content-center">
-                                    <div className="col">
-                                        <span>Produit : {order.label}</span><br />
-                                        <span>Quantité: {order.quantity} x {order.price}€</span><br />
-                                        <span>Montant total: {order.totalAmount}€</span><br />
-                                        <span>Client: {order.customer_email}</span><br />
-                                    </div>
-                                    <div className="col">
-                                        {/* <span>Client : {order.customer.firstName} {order.customer.lastName}</span><br /> */}
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <button className="btn btn-secondary" onClick={() => setChange(!change)}>{!change ? "Modifier" : "Valider"}</button>
-                                    <button className="btn btn-primary" onClick={() => handleDelete(order.id)}>Supprimer</button>
-                                </div>
+                        ((order.id <= id) && (order.id > id - 5)) &&
+                        <div key={order.id} className="card mb-3">
+                            <h3 className="card-header">
+                                <span>Commande <b>{order.id}</b></span>
+                            </h3>
+                            <div className="card-body">
+                                <span> Produit : <b>{order.label}</b></span><br />
+                                <span> Quantité : <b>{order.quantity}</b></span><br />
+                                <span> Prix : {order.price}€</span><br />
+                                <span> Mail : {order.customer_email}</span><br />
+                                <span className="float-right lead"> <b>Prix total : {order.totalAmount}€</b></span><br />
+                                <button className="btn btn-secondary" onClick={() => setChange(!change)}>{!change ? "Modifier" : "Valider"}</button>
+                                <button className="btn btn-primary" onClick={() => handleDelete(order.id)}>Supprimer</button>
                             </div>
-                        </div >
+                        </div>
+
                     )}
                 </div>
             </div>

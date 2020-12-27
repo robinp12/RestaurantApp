@@ -15,7 +15,8 @@ const ManagementPage = () => {
         return (
             <>
                 <div className={className}>
-                    <h4>{title} <button className="btn btn-dark btn-sm ml-3" onClick={() => setShow(!show)}>{show ? "-" : "+"}</button></h4>
+                    <h4>{title} <button className="btn btn-dark btn-sm ml-3" onClick={() => setShow(!show)}>{show ? <i className="fa fa-caret-down" aria-hidden="true"></i> : <i className="fa fa-caret-right" aria-hidden="true"></i>
+                    }</button></h4>
                 </div>
                 <div className="row">
                     {show && <>{children}</>}

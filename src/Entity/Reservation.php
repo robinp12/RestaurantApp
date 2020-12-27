@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *  @ApiResource(
  *  normalizationContext={
  *      "groups"={"reservations_read"}
- *  }
+ *  }, attributes={"order": {"id":"desc"}}
  * )
  * @UniqueEntity("chrono", message="Déjà existant")
  */

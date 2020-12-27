@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Nav, Navbar, NavDropdown, OverlayTrigger, Popover } from 'react-bootstrap';
 import { AuthContext } from "../Context/AuthContext";
 import { CartContext } from "../Context/CartContext";
@@ -10,9 +10,8 @@ const NavbarPerso = ({ history }) => {
 
   const { language, setLanguage, lang } = useContext(LangContext);
   const { isAuth } = useContext(AuthContext);
-  const [width, setWidth] = useState(window.innerWidth)
 
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const popover = (
     <Popover id="popover-basic">
       <Popover.Title><h4 className="m-1">Panier</h4></Popover.Title>
@@ -21,7 +20,7 @@ const NavbarPerso = ({ history }) => {
         {(history.location.pathname !== "/commander") &&
           <div className="row">
             <div className="col">
-              <a href="#commander" className="btn btn-sm btn-primary justify-content-end btn-block">Commander</a>
+              <a href="#commander" onClick={() => setShow(false)} className="btn btn-sm btn-primary justify-content-end btn-block">Commander</a>
             </div>
           </div>
         }
@@ -29,20 +28,8 @@ const NavbarPerso = ({ history }) => {
     </Popover>
   );
 
-  const timeout = async () => {
-    if (cart) {
-      await setTimeout(() => {
-        setShow(false);
-      }, 4000);
-    }
-  }
-
-  useEffect(() => {
-    timeout()
-  }, [cart.length])
-
   return (
-    <Navbar fixed="top" bg="dark" variant="dark" collapseOnSelect expand="lg" >
+    <Navbar fixed="top" bg="dark" variant="dark" collapseOnSelect={true} expand="lg" onToggle={() => setShow(false)}>
       <Navbar.Brand href="#home">
         <img
           alt=""
@@ -52,14 +39,22 @@ const NavbarPerso = ({ history }) => {
           className="d-inline-block align-top"
         /></Navbar.Brand>
 
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Toggle aria-controls="basic-navbar-nav text-primary border-primary ml-1">
+        {!isAuth &&
+          <>
+            {cart.length &&
+              <b><em className="fa fa-shopping-cart "></em> {cart.length}</b>
+            }
+          </>
+        }
+      </Navbar.Toggle>
       <Navbar.Collapse id="basic-navbar-nav">
         {!isAuth &&
           <>
             <Nav className="mr-auto nav-item">
               <NavDropdown title={lang.theMenu} id="basic-nav-dropdown">
-                <NavDropdown.Item href="#menu">{lang.foods}</NavDropdown.Item>
-                <NavDropdown.Item href="#menu">{lang.drinks}</NavDropdown.Item>
+                <NavDropdown.Item href="#menu#foods">{lang.foods}</NavDropdown.Item>
+                <NavDropdown.Item href="#menu#drinks">{lang.drinks}</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">{"..."}</NavDropdown.Item>
                 {/* <NavDropdown.Item href="#action/3.4">{lang.suggestions}</NavDropdown.Item> */}
@@ -73,10 +68,9 @@ const NavbarPerso = ({ history }) => {
                   {cart.length &&
                     <>
                       <Nav.Link className="btn text-light mr-1" href="#reserver">{lang.toReserve}</Nav.Link>
-
-                      <OverlayTrigger trigger="click" placement="bottom" overlay={popover} show={show} transition>
+                      <OverlayTrigger trigger="click" placement="bottom" show={show} overlay={popover} transition>
                         <Nav.Link className="nav-item btn btn-dark text-primary border-primary ml-1" onClick={() => setShow(!show)}>
-                          <b><em className="fa fa-shopping-cart"></em> {lang.cart} : {cart.length}</b>
+                          <b><em className="fa fa-shopping-cart fa-lg"></em> {lang.cart} : {cart.length}</b>
                         </Nav.Link>
                       </OverlayTrigger>
                     </>

@@ -16,7 +16,7 @@ const OrderChat = ({ admin = false, customer = false, message, setMessage, send,
                 {message.map((e, index) =>
                     // (e.from || e.to) == selectedUser &&
                     <div key={index} className={"row mx-2 " + (isAdmin(e.admin) && " " || "justify-content-end")}>
-                        <div className="col-7">
+                        <div className="col-sm-12 col-md-7">
                             {console.log(e)
                             }
                             <div className={"alert alert-dismissible " + (isAdmin(e.admin) && "alert-info" || "alert-warning")}>
@@ -39,18 +39,19 @@ const OrderChat = ({ admin = false, customer = false, message, setMessage, send,
                         <button className="float-right btn btn-sm btn-primary"
                             onClick={(e) => { e.preventDefault(); setMessage([]); setBag([]) }}
                         >
-                            x
+                            <i className="fa fa-trash " aria-hidden="true"></i>
+
                         </button>
                     </span>
                 </h3>
                 <div className="row mb-2 pb-2 mb-2">
-                    <div className="col">
+                    <div className="col-sm-12 col-md-6">
                         <div className="card-body">
                             <h5 className="card-title">{customer.firstName} {customer.lastName}</h5>
                             <h6 className="card-subtitle text-muted">Tel : {customer.phoneNumber}</h6>
                         </div>
                     </div>
-                    <div className="col">
+                    <div className="col-sm-12 col-md-6">
                         <ul className="list-group list-group-flush">
                             {bag.map((e, index) =>
                                 <li key={index} className="list-group-item">{e.name} : {e.quantity}x</li>
@@ -67,7 +68,7 @@ const OrderChat = ({ admin = false, customer = false, message, setMessage, send,
                                 <input className="form-control" ref={inputRef} placeholder="Ecris ton message"></input>
                             </div>
                             <div className="">
-                                <button className="btn btn-primary" type="submit" disabled={!adminConnected.bool}>Envoyer</button>
+                                <button className="btn btn-primary" type="submit" disabled={!adminConnected.bool}><i className="fa fa-paper-plane " aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>

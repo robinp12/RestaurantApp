@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import {
   HashRouter,
@@ -31,6 +31,8 @@ import MenuPage from "./Pages/MenuPage";
 import OrderPage from "./Pages/OrderPage";
 import ReservationPage from "./Pages/ReservationPage";
 import authAPI from "./Services/authAPI";
+import categoriesAPI from "./Services/categoriesAPI";
+import productsAPI from "./Services/productsAPI";
 
 {
   /* Routes sécurisées */
@@ -48,6 +50,7 @@ const PrivateRoute = ({ path, component }) => {
     <Redirect to="/connexion" />
   );
 };
+
 const App = () => {
   const [isAuth, setIsAuth] = useState(authAPI.isAuth());
   const NavbarWithRouter = withRouter(NavbarPerso);
@@ -62,6 +65,19 @@ const App = () => {
   } else {
     lang = en;
   }
+
+  const fetchCatProd = async () => {
+    try {
+      await productsAPI.getAllProducts();
+      await categoriesAPI.getAllCategories();
+    } catch (error) {
+      console.error("Preload Products & Categories failed");
+    }
+  };
+
+  useEffect(() => {
+    fetchCatProd();
+  }, []);
 
   // client.listenToSocket("notifReceiv", authAPI.isAuth());
 
@@ -116,7 +132,7 @@ const App = () => {
                         render={(props) => <ReservationPage {...props} />}
                       />
                       <Route
-                        path="/commander"
+                        path="/commander/:id?"
                         render={(props) => <OrderPage {...props} />}
                       />
                       <Route

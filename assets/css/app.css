@@ -76,8 +76,8 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 1vh;
   border-width: 0.2vh;
 }
-.btnblock:hover {
-  box-shadow: lightgray 2px 2px 5px 0.5px;
+.btn-block:hover {
+  box-shadow: rgb(231, 231, 231) 2px 2px 5px 0.5px;
   border-radius: 4px;
 }
 .body {
@@ -141,26 +141,40 @@ used to vertically center elements, may need modification if you're not using de
   line-height: 34px;
 }
 input[type="text"]:disabled {
-  background-color: rgb(250, 250, 250);
+  background-color: rgb(240, 240, 240);
 }
 input[type="password"]:disabled {
-  background-color: rgb(250, 250, 250);
+  background-color: rgb(240, 240, 240);
 }
 select[disabled]:disabled {
-  background-color: rgb(250, 250, 250);
+  background-color: rgb(240, 240, 240);
 }
 .borderButt {
-  border: 1.5px solid;
+  border: 0.1rem solid;
   min-width: 13vw;
+  padding: 4vw 3vw;
+  margin: 1vh;
+  font-size: x-large;
 }
 /* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
+/* input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
+} */
 
 /* Firefox */
-input[type="number"] {
+/* input[type="number"] {
   -moz-appearance: textfield;
+} */
+.form-control.is-invalid {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  border-color: #dc3545;
+}
+.form-control.is-invalid:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+.invalid-feedback {
+  color: #dc3545;
 }

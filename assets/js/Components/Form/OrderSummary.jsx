@@ -3,7 +3,7 @@ import { CustomerContext } from '../../Context/CustomerContext';
 import { LangContext } from '../../Context/LangContext';
 import Cart from '../Cart';
 import Field from './Input/Field';
-const OrderSummary = ({ isReservation = false, reservation, setReservation }) => {
+const OrderSummary = ({ isReservation = false, reservation, setReservation, takeAway }) => {
 
     const { lang } = useContext(LangContext);
     const { customer, setCustomer } = useContext(CustomerContext);
@@ -19,25 +19,32 @@ const OrderSummary = ({ isReservation = false, reservation, setReservation }) =>
                 <div className="col">
                     <h3>{lang.information}</h3>
                     <div className="row">
-                        <div className="col-xs-6 col-sm-6 col-md-6">
-                            <address>
-                                <strong>{customer.firstName} {customer.lastName}</strong>
-                                <br />
-                                {customer.address}
-                                <br />{customer.zipcode} {customer.city}
-                                <br />
-                                <abbr title="Phone">N: </abbr>{customer.phoneNumber}
-                                <br />
-                                <a>{customer.email}</a>
-                            </address>
+                        <div className="col mr-4">
+                            {customer.email && <>
+                                <address>
+                                    <strong>{customer.firstName} {customer.lastName}</strong>
+                                    <br />
+                                    {customer.address}
+                                    <br />{customer.zipcode} {customer.city}
+                                    <br />
+                                    <><abbr title="Phone">N: </abbr>{customer.phoneNumber}</>
+                                    <br />
+                                    <a>{customer.email}</a>
+                                </address>
+                            </>
+                                ||
+                                <>
+                                    <h5><em>{"Table"} : <b>{reservation}</b></em></h5>
+                                </>
+                            }
                             <p>
-                                <em>{lang.date} : <b>{new Date(reservation.reservationAt).toLocaleString().slice(0, -3)}</b></em><br />
+                                {!takeAway && <><em>{lang.date} : <b>{new Date(reservation.reservationAt).toLocaleString().slice(0, -3)}</b></em><br /></>}
                                 {isReservation && (<span>{lang.peopleNumber} : <b>{reservation.peopleNumber}</b></span>)}
                             </p>
                         </div>
                     </div>
                 </div>
-                <div className="col d-flex flex-column border-left pl-4 ml-4">
+                <div className="col d-flex flex-column pl-4">
                     {!isReservation &&
                         <>
                             <h3>{lang.cart}</h3>

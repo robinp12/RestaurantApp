@@ -1,11 +1,8 @@
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
 import { CartContext } from '../Context/CartContext';
 import PopupInfo from './PopupInfo';
 
-const infoIcon = <FontAwesomeIcon icon={faInfoCircle} pull="right" className="infoIcon align-middle" fixedWidth />;
 
 const Menu = ({ products, categories, listCart, addItemToCart }) => {
 
@@ -43,7 +40,9 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
                                             }} className={"list-group-item d-flex justify-content-between align-items-center align-middle " + actif(prod.id)}
                                             >
                                                 <span className="float-left">
-                                                    <span>{prod.label}</span> {prod.description && <PopupInfo info={prod.description} />}
+                                                    <span>{prod.label}</span>
+                                                    <span className="px-1"></span>
+                                                    {prod.description && <PopupInfo info={prod.description} />}
                                                 </span>
                                                 <span className="lead">{prod.price}€</span>
                                             </li>
@@ -99,7 +98,8 @@ const MenuOrder = ({ products, categories, listCart, addItemToCart }) => {
                                                     <span className="justify-content-between mr-4">
                                                         {prod.label}
                                                         <span className="px-1"></span>
-                                                        {prod.description && <PopupInfo info={prod.description}><span>{infoIcon}</span></PopupInfo>}
+                                                        {prod.description && <PopupInfo info={prod.description} />
+                                                        }
                                                     </span>
                                                     <span className="lead ml-3">{prod.price}€</span>
                                                 </li>
@@ -117,3 +117,4 @@ const MenuOrder = ({ products, categories, listCart, addItemToCart }) => {
 }
 
 export { Menu, MenuOrder };
+

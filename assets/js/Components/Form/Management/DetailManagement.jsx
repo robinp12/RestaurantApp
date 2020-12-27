@@ -16,6 +16,7 @@ const DetailManagement = ({ setRefresh, refresh }) => {
     const handleChange = ({ currentTarget }) => {
         const { name, value } = currentTarget;
         setDetail({ ...detail, [name]: value });
+        setErrors({ ...errors, [name]: "" });
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -106,7 +107,7 @@ const DetailManagement = ({ setRefresh, refresh }) => {
                 </form>
             </div>
             <div className="col">
-                <table className="table table-responsive-md table-hover ">
+                <table className="table table-hover ">
                     <thead className="thead-dark">
                         <tr>
                             <th className="text-center hidden-xs">ID</th>

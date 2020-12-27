@@ -76,7 +76,7 @@ const Cart = () => {
                                             <td className=" text-center">{e.totalAmount} €</td>
                                             <td className=" text-center">
                                                 <a className="badge badge-primary" onClick={() => deleteItem(e.product)}>
-                                                    <em className="fa fa-times"></em>
+                                                    <em className="fa fa-times fa-sm"></em>
                                                 </a>
                                             </td>
                                         </tr>

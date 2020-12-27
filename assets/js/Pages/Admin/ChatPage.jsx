@@ -32,7 +32,7 @@ const ChatPage = () => {
     return (
         <>
             <div className="row">
-                <div className="col-4">
+                <div className="col-sm-12 col-md-4">
                     <div className="card mb-3">
                         <h3 className="card-header">Messages</h3>
                         <div className="card-body">
