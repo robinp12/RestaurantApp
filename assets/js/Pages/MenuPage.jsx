@@ -14,6 +14,7 @@ const MenuPage = () => {
     const [categories, setCategories] = useState([]);
     const { lang } = useContext(LangContext);
     const { cart, setCart } = useContext(CartContext);
+    const [load, setLoad] = useState(true);
 
 
     const listCart = function () {
@@ -51,6 +52,7 @@ const MenuPage = () => {
             const cat = await categoriesAPI.getAllCategories();
             setProducts(prod);
             setCategories(cat);
+            setLoad(false)
         } catch (error) {
             console.log(error.response);
         }
@@ -63,7 +65,7 @@ const MenuPage = () => {
     return (
         <>
             <Header title={lang.theMenu} bool={false} />
-            {!products.length &&
+            {load &&
                 <Loader />
                 ||
                 <Menu products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />

@@ -13,6 +13,8 @@ const UsersPage = ({ match, history }) => {
     const [users, setUsers] = useState([]);
     const [addUser, setAddUser] = useState(false);
     const [change, setChange] = useState(true);
+    const [load, setLoad] = useState(true);
+
 
     const handleDelete = async (id) => {
         const originUsers = [...users];
@@ -32,6 +34,7 @@ const UsersPage = ({ match, history }) => {
         try {
             const data = await usersAPI.getAllUsers();
             setUsers(data);
+            setLoad(false)
         } catch (error) {
             console.error(error.response);
             toast(error + "", { className: "bg-red" });
@@ -150,7 +153,7 @@ const UsersPage = ({ match, history }) => {
 
     return (
         <>
-            {!users.length &&
+            {load &&
                 <Loader />
                 ||
                 <div className="row">

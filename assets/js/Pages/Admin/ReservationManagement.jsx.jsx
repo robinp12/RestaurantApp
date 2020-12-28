@@ -12,12 +12,14 @@ const ReservationManagement = ({ match, history }) => {
     const [showCat, setShowCat] = useState(true);
     const [reservations, setReservations] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [load, setLoad] = useState(true);
 
     const fetchAllReservations = async () => {
 
         try {
             const data = await reservationsAPI.getAllReservations();
             setReservations(data);
+            setLoad(false);
             history.replace("/reservations/" + data[0]?.id)
         } catch (error) {
             console.log(error.response)
@@ -50,7 +52,7 @@ const ReservationManagement = ({ match, history }) => {
 
     return (
         <>
-            {!paginated.length &&
+            {load &&
                 <Loader />
                 ||
                 <div className="row">

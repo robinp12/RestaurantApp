@@ -18,7 +18,7 @@ const InvoicesPage = ({ match, history }) => {
     const [refresh, setRefresh] = useState();
     const [changedStatus, setChangedStatus] = useState({ status: "" });
     const [currentPage, setCurrentPage] = useState(1);
-
+    const [load, setLoad] = useState(true);
     const itemsPerPage = 10;
 
     const filtered = invoices.filter(c =>
@@ -35,6 +35,7 @@ const InvoicesPage = ({ match, history }) => {
             const data = await invoicesAPI.getAllInvoices();
             setInvoices(data);
             history.replace("/factures/" + data[0]?.id)
+            setLoad(false);
         } catch (error) {
             console.log(error.response);
         }
@@ -79,7 +80,7 @@ const InvoicesPage = ({ match, history }) => {
 
     return (
         <>
-            {!paginatedInvoices.length &&
+            {load &&
                 <Loader />
                 ||
                 <div className="row">

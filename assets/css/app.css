@@ -65,7 +65,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .blockStep {
   background-color: whitesmoke;
   min-width: 50vw;
-  min-height: 35vh;
+  min-height: 30vh;
   padding: 4vh 4vw;
   box-shadow: lightslategrey 1px 1px 5px 0.1px;
   border-radius: 8px;

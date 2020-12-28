@@ -12,11 +12,14 @@ const CustomersPage = ({ match, history }) => {
     const [search, setSearch] = useState("");
     const [change, setChange] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    const [load, setLoad] = useState(true);
+
 
     const fetchCustomers = async () => {
         try {
             const data = await customersAPI.getAllcustomers();
             setCustomers(data);
+            setLoad(false)
         } catch (error) {
             console.log(error.response);
         }
@@ -125,7 +128,7 @@ const CustomersPage = ({ match, history }) => {
 
     return (
         <>
-            {!paginated.length &&
+            {load &&
                 <Loader />
                 ||
                 <div className="row">

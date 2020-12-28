@@ -15,6 +15,8 @@ const OrdersPage = ({ match, history }) => {
     const [change, setChange] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [show, setShow] = useLocalStorage("show-orders", false);
+    const [load, setLoad] = useState(true);
+
 
     const paddingNumber = (num) => '#' + num;
 
@@ -23,6 +25,7 @@ const OrdersPage = ({ match, history }) => {
             const data = await ordersAPI.getAllOrders();
             setOrders(data);
             if (!id) history.replace("/commandes/" + data[0]?.id)
+            setLoad(false);
         } catch (error) {
             console.log(error.response);
         }
@@ -53,7 +56,7 @@ const OrdersPage = ({ match, history }) => {
     return (
         <>
 
-            {!paginated.length &&
+            {load &&
                 <Loader />
                 ||
                 <div className="row">
