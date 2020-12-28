@@ -42,7 +42,6 @@ const UserForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(users)
 
         try {
             const rep = await usersAPI.register(users);
@@ -59,8 +58,6 @@ const UserForm = () => {
             }
         }
     };
-
-    console.log(users)
 
     const [roles, setRoles] = useState([
         'ROLE_ADMIN',

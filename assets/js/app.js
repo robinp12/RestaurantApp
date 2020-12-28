@@ -23,6 +23,7 @@ import ConnexionPage from "./Pages/Admin/ConnexionPage";
 import CustomersPage from "./Pages/Admin/CustomersPage";
 import InvoicesPage from "./Pages/Admin/InvoicesPage";
 import MenuManagement from "./Pages/Admin/MenuManagement";
+import MiniMapPage from "./Pages/Admin/MiniMapPage";
 import OrdersPage from "./Pages/Admin/OrdersPage";
 import ReservationManagement from "./Pages/Admin/ReservationManagement.jsx";
 import UsersPage from "./Pages/Admin/UsersPage";
@@ -113,6 +114,7 @@ const App = () => {
                         component={OrdersPage}
                       />
                       <PrivateRoute path="/manage" component={MenuManagement} />
+                      <PrivateRoute path="/map" component={MiniMapPage} />
                       <PrivateRoute path="/chatadmin" component={ChatPage} />
                       {isAuth && <Redirect path={"/connexion"} to="/" />}
                       <Route

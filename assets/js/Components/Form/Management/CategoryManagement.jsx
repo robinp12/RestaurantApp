@@ -35,13 +35,11 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(category)
         try {
             const rep = await categoriesAPI.add(category);
             toast(category.label + " a été ajouté");
             setErrors("");
             setRefresh(!refresh);
-            console.log(rep)
         } catch (error) {
             toast("Erreur dans le formulaire !" + "", {
                 className: "bg-red-toast",

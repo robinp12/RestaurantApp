@@ -38,15 +38,23 @@ class OrderInvoiceSubscriber implements EventSubscriberInterface
         $method = $event->getRequest()->getMethod();
         if ($order instanceof Order && $method === "POST") {
             $order_customer_email = $order->getCustomerEmail();
-            // Si l'email de la commande est lié à un client existant
-            if ($this->invoice_repository->findOneBy(["customer_email" => $order_customer_email])) {
-                $this_customer = $this->customerRepository->findOneBy(["email" => $order_customer_email], ["id" => "DESC"]);
-                $this_invoice =  $this->invoice_repository->findOneBy(["customer_email" => $order_customer_email], ["id" => "DESC"]);
+            $order_table = $order->getOrderTable();
+            if ($order_table) {
+                $this_invoice =  $this->invoice_repository->findOneBy(["invoiceTable" => $order_table], ["id" => "DESC"]);
                 $this_invoice->setAmount($this_invoice->getAmount() + $order->getTotalAmount());
                 $this_invoice->addOrder($order);
-                $this_invoice->setClient($this_customer);
+                $this_invoice->setInvoiceTable($order_table);
             } else {
-                dd("Client non existant pour cet email, impossible de créer une commande");
+                // Si l'email de la commande est lié à un client existant
+                if ($this->invoice_repository->findOneBy(["customer_email" => $order_customer_email])) {
+                    $this_customer = $this->customerRepository->findOneBy(["email" => $order_customer_email], ["id" => "DESC"]);
+                    $this_invoice =  $this->invoice_repository->findOneBy(["customer_email" => $order_customer_email], ["id" => "DESC"]);
+                    $this_invoice->setAmount($this_invoice->getAmount() + $order->getTotalAmount());
+                    $this_invoice->addOrder($order);
+                    $this_invoice->setClient($this_customer);
+                } else {
+                    dd("Client non existant pour cet email, impossible de créer une commande");
+                }
             }
         }
     }

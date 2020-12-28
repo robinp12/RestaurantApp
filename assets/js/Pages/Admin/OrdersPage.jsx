@@ -76,6 +76,7 @@ const OrdersPage = ({ match, history }) => {
                                             <th className="text-center hidden-xs">ID</th>
                                             <th className="text-center">Produit</th>
                                             <th className="text-center">Quantité</th>
+                                            <th className="text-center">Table</th>
                                             <th className="text-center">Montant total</th>
                                         </tr>
                                     </thead>
@@ -84,6 +85,7 @@ const OrdersPage = ({ match, history }) => {
                                             <th scope="row" className="text-center align-middle {">{paddingNumber(order.id)}</th>
                                             <td className="text-center align-middle">{order.label} </td>
                                             <td className="text-center align-middle">{order.quantity} </td>
+                                            <td className="text-center align-middle">{order.orderTable || <>À emporter</>} </td>
                                             <td className="text-center align-middle">{order.totalAmount}€</td>
                                         </tr>)}
 
@@ -100,15 +102,27 @@ const OrdersPage = ({ match, history }) => {
                                 <h3 className="card-header">
                                     <span>Commande <b>{order.id}</b></span>
                                 </h3>
+                                {console.log(order)
+                                }
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col">
                                             <span> Produit : <b>{order.label}</b></span><br />
                                             <span> Quantité : <b>{order.quantity}</b></span><br />
                                             <span> Prix : {order.price}€</span><br />
-                                            <span> Mail : {order.customer_email}</span><br />
-                                            <span className="float-right lead"> <b>Prix total : {order.totalAmount}€</b></span><br />
+                                            {order.customer_email !== "@" && <><span> Mail : {order.customer_email}</span><br /></> || <></>}
+                                            {order.orderTable && <><span> Table : <b>{order.orderTable}</b></span><br /></> || <></>}
                                         </div>
+                                        <div className="col text-right">
+                                            {(order.customer_email === "@" || order.orderTable) && <b className="">Sur place</b> || <b className="">À emporter</b>}<br />
+                                        </div>
+                                    </div>
+                                    <div className="row ">
+                                        <div className="col text-right">
+                                            <span className="lead"> <b>Prix total : {order.totalAmount}€</b></span>
+
+                                        </div>
+
                                     </div>
                                     <button className="btn btn-primary" onClick={() => handleDelete(order.id)}>Supprimer</button>
                                     <button className="btn btn-secondary float-right" onClick={() => setChange(!change)}>{!change ? "Modifier" : "Valider"}</button>

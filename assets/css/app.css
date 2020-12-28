@@ -184,3 +184,6 @@ input::-webkit-inner-spin-button {
 .actif2 {
   background-color: rgba(0, 0, 0, 0.035);
 }
+.svg {
+  overflow: scroll;
+}

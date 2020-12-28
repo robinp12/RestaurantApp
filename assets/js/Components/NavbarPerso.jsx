@@ -30,7 +30,7 @@ const NavbarPerso = ({ history }) => {
 
   return (
     <Navbar fixed="top" bg="dark" variant="dark" collapseOnSelect={true} expand="lg" onToggle={() => setShow(false)}>
-      <Navbar.Brand href="#home">
+      <Navbar.Brand href={!isAuth && "#home" || ""}>
         <img
           alt=""
           src="/logo.png"
@@ -91,7 +91,7 @@ const NavbarPerso = ({ history }) => {
           ||
           <Nav className="mr-auto nav-item">
             <Nav.Link className="nav-item" href="#commandes">Commandes</Nav.Link>
-            <Nav.Link className="nav-item text-muted" href="#commandes">Affichage map resto</Nav.Link>
+            <Nav.Link className="nav-item text-muted" href="#map">Map</Nav.Link>
             <Nav.Link className="nav-item" href="#reservations">Reservations</Nav.Link>
             <Nav.Link className="nav-item" href="#chatadmin">Chat</Nav.Link>
             <NavDropdown title="Gestion" id="basic-nav-dropdown">

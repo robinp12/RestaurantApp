@@ -19,7 +19,6 @@ let now = new Date(new Date().setHours(new Date().getHours() + 1)).toISOString()
 const StepForm = ({ match }) => {
 
     const { id } = match.params
-    console.log(id)
 
     const { lang } = useContext(LangContext);
     const { cart, setCart } = useContext(CartContext);
@@ -59,8 +58,8 @@ const StepForm = ({ match }) => {
         amount: 0,
         status: "SENT",
         timeToReceive: new Date(),
-        customerEmail: "",
-        table: id
+        customerEmail: "@",
+        invoiceTable: +id || 0
     });
 
     const [orderInfo, setOrderInfo] = useState({ reservationAt: now });
@@ -88,7 +87,7 @@ const StepForm = ({ match }) => {
     };
 
     const handleSubmitInvoice = async () => {
-        invoice.customerEmail = customer.email
+        invoice.customerEmail = (customer.email ? customer.email : invoice.customerEmail)
         invoice.timeToReceive = orderInfo.reservationAt
         confirmRef.current.setAttribute("disabled", "")
         try {
@@ -110,10 +109,11 @@ const StepForm = ({ match }) => {
     }
 
     const formatedOrder = ({ name, price, totalAmount, ...bag }) => {
-        bag.customerEmail = customer.email;
+        bag.customerEmail = (customer.email ? customer.email : invoice.customerEmail);
         bag.label = name;
         bag.price = parseFloat(price, 10);
         bag.totalAmount = totalAmount;
+        bag.orderTable = +id || 0;
         return bag
     }
     const handleSubmitOrder = async (order) => {
@@ -197,6 +197,8 @@ const StepForm = ({ match }) => {
             </div>
         )
     }
+    console.log(cart)
+    console.log(invoice)
 
     const oneTimeClick = (e) => {
         e.preventDefault()
@@ -208,9 +210,13 @@ const StepForm = ({ match }) => {
                 case 1:
                     return (
                         <div className="container">
-                            <OrderSummary reservation={invoice.table} takeAway />
+                            <OrderSummary reservation={invoice.invoiceTable} takeAway />
                             <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setThere(step => step - 1) }}>{lang.back}</button>
-                            <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); setThere(step => step + 1) }}>{lang.next}</button>
+                            <button className="btn-primary btn float-right mt-4" ref={confirmRef} onClick={(e) => {
+                                handleSubmitInvoice()
+                                e.preventDefault()
+                                oneTimeClick(e)
+                            }}>{lang.next}</button>
                         </div>
                     );
                 default:

@@ -89,6 +89,13 @@ class Invoice
      */
     private $client;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"invoices_read"})
+     * @Assert\NotBlank(message="Obligatoire")
+     */
+    private $invoiceTable;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -210,6 +217,18 @@ class Invoice
     public function setClient(?Customer $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getInvoiceTable(): ?int
+    {
+        return $this->invoiceTable;
+    }
+
+    public function setInvoiceTable(int $invoiceTable): self
+    {
+        $this->invoiceTable = $invoiceTable;
 
         return $this;
     }

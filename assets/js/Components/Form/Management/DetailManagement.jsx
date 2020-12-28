@@ -20,13 +20,11 @@ const DetailManagement = ({ setRefresh, refresh }) => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(detail)
         try {
             const rep = await detailsAPI.add(detail);
             toast(detail.label + " ajouté");
             setErrors("");
             setRefresh(!refresh);
-            console.log(rep)
         } catch (error) {
             toast("Erreur dans le formulaire !" + "", {
                 className: "bg-red-toast",
@@ -44,7 +42,6 @@ const DetailManagement = ({ setRefresh, refresh }) => {
     const fetchDetails = async () => {
         try {
             const data = await detailsAPI.getAllDetails();
-
             setDetails(data);
         } catch (error) {
             console.log(error.response);

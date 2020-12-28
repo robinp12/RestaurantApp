@@ -4,13 +4,14 @@ import ContentLoader from "react-content-loader";
 const ThreeDots = (props) => (
     <>
         <div className="row">
-            <div className="col text-center">
+            <div className="col text-center ">
+
                 <ContentLoader
                     viewBox="0 0 400 190"
-                    height={250}
-                    width={600}
                     speed={1}
                     backgroundColor="grey"
+                    height={300}
+                    width={300}
                     {...props}
                 >
                     <circle cx="150" cy="86" r="9" />

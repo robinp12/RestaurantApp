@@ -61,7 +61,6 @@ const CustomersPage = ({ match, history }) => {
             e.preventDefault();
             try {
                 const rep = await customersAPI.updateInfo(customerInfo.id, customer)
-                console.log(rep);
                 setChange(!change)
             } catch (error) {
                 console.error(error);

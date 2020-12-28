@@ -72,6 +72,13 @@ class Order
      */
     private $customer_email;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"orders_read","invoices_read"})
+     * @Assert\NotBlank(message="Obligatoire")
+     */
+    private $orderTable;
+
     public function __construct()
     {
         $this->id_product = new ArrayCollection();
@@ -152,6 +159,18 @@ class Order
     public function setPrice(float $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getOrderTable(): ?int
+    {
+        return $this->orderTable;
+    }
+
+    public function setOrderTable(int $orderTable): self
+    {
+        $this->orderTable = $orderTable;
 
         return $this;
     }
