@@ -9,7 +9,7 @@ const Pagination = ({ currentPage, itemsPerPage, length, onPageChanged }) => {
     }
 
     return (
-        <div>
+        <div className="row justify-content-center">
             <ul className="pagination pagination-sm">
                 <li className={"page-item" + (currentPage === 1 && " disabled")}>
                     <button className="page-link" onClick={() => onPageChanged(prev => prev - 1)}>&laquo;</button>
@@ -20,8 +20,6 @@ const Pagination = ({ currentPage, itemsPerPage, length, onPageChanged }) => {
                     </li>
                 )}
                 <li className={"page-item" + (currentPage === pageCount && " disabled")}>
-                    {console.log(currentPage, pageCount)
-                    }
                     <button className="page-link" onClick={() => onPageChanged(prev => prev + 1)}>&raquo;</button>
                 </li>
             </ul>

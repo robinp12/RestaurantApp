@@ -178,3 +178,9 @@ input::-webkit-inner-spin-button {
 .invalid-feedback {
   color: #dc3545;
 }
+.actif {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+.actif2 {
+  background-color: rgba(0, 0, 0, 0.035);
+}

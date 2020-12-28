@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { toast } from "react-toastify";
 import Field from '../../Components/Form/Input/Field';
 import Pagination from '../../Components/Pagination';
+import Loader from '../../Components/Loader';
 import customersAPI from "../../Services/customersAPI";
 
 const CustomersPage = ({ match, history }) => {
 
     const { id } = match.params
     const [customers, setCustomers] = useState([]);
+    const [search, setSearch] = useState("");
     const [change, setChange] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -108,45 +110,57 @@ const CustomersPage = ({ match, history }) => {
         fetchCustomers();
     }, [])
 
-    const handleChangePage = (page) => {
-        setCurrentPage(page)
+    const handleChangePage = (page) => setCurrentPage(page);
+
+    const handleSearch = ({ currentTarget }) => {
+        setSearch(currentTarget.value)
+        setCurrentPage(1)
     }
     const itemsPerPage = 10;
-    const paginated = Pagination.getData(customers, currentPage, itemsPerPage)
+    const filtered = customers.filter(c =>
+        c.firstName.toLowerCase().includes(search.toLowerCase()) ||
+        c.lastName.toLowerCase().includes(search.toLowerCase()) ||
+        c.email.toLowerCase().includes(search.toLowerCase())
+    );
+    const paginated = Pagination.getData(filtered, currentPage, itemsPerPage)
 
     return (
         <>
-            <div className="row">
-                <div className="col-sm-12 col-md-4">
-                    <table className="table table-hover ">
-                        <thead className="thead-dark">
-                            <tr>
-                                <th className="text-center hidden-xs">ID</th>
-                                <th className="text-center">Client</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {paginated.map((customer, index) =>
-                                (typeof (customer.id) != "undefined") &&
-                                < tr key={index} onClick={() => history.replace("/clients/" + customer.id)}>
-                                    <th scope="row" className="text-center align-middle">#{customer.id}</th>
-                                    <td className="text-center align-middle">{customer.firstName} {customer.lastName?.toUpperCase()}</td>
-                                </tr>)}
-                        </tbody>
-                    </table>
-                    {itemsPerPage < customers.length && <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={customers.length} onPageChanged={handleChangePage} />}
+            {!paginated.length &&
+                <Loader />
+                ||
+                <div className="row">
+                    <div className="col-sm-12 col-md-4">
+                        <Field placeholder={"Chercher un client ..."} onChange={handleSearch} value={search} className="form-control" />
+                        <table className="table table-hover ">
+                            <thead className="thead-dark">
+                                <tr>
+                                    <th className="text-center hidden-xs">ID</th>
+                                    <th className="text-center">Client</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {paginated.map((customer, index) =>
+                                    (typeof (customer.id) != "undefined") &&
+                                    < tr key={index} onClick={() => history.replace("/clients/" + customer.id)}>
+                                        <th scope="row" className="text-center align-middle">#{customer.id}</th>
+                                        <td className="text-center align-middle">{customer.firstName} {customer.lastName?.toUpperCase()}</td>
+                                    </tr>)}
+                            </tbody>
+                        </table>
+                        {itemsPerPage < paginated.length && <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={filtered.length} onPageChanged={handleChangePage} />}
 
-                </div>
-                <div className="col">
-                    {customers.map((customerInfo, index) => (
-                        (typeof (customerInfo.id) != "undefined") &&
-                        customerInfo.id == id &&
-                        <div key={index}>
-                            <SingleCustomer customerInfo={customerInfo} />
-                        </div>))
-                    }
-                </div>
-            </div>
+                    </div>
+                    <div className="col">
+                        {customers.map((customerInfo, index) => (
+                            (typeof (customerInfo.id) != "undefined") &&
+                            customerInfo.id == id &&
+                            <div key={index}>
+                                <SingleCustomer customerInfo={customerInfo} />
+                            </div>))
+                        }
+                    </div>
+                </div>}
         </>
     );
 }

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Header from '../Components/Header';
+import Loader from '../Components/Loader';
 import { Menu } from '../Components/Menu';
 import categoriesAPI from '../Services/categoriesAPI';
 import { LangContext } from '../Context/LangContext';
@@ -62,7 +63,11 @@ const MenuPage = () => {
     return (
         <>
             <Header title={lang.theMenu} bool={false} />
-            <Menu products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
+            {!products.length &&
+                <Loader />
+                ||
+                <Menu products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
+            }
         </>
     );
 }

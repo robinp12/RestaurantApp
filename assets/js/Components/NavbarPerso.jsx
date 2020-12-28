@@ -90,12 +90,11 @@ const NavbarPerso = ({ history }) => {
           </>
           ||
           <Nav className="mr-auto nav-item">
-            <Nav.Link className="nav-item text-muted" href="#commandes">Commandes pour cuisto</Nav.Link>
+            <Nav.Link className="nav-item" href="#commandes">Commandes</Nav.Link>
             <Nav.Link className="nav-item text-muted" href="#commandes">Affichage map resto</Nav.Link>
             <Nav.Link className="nav-item" href="#reservations">Reservations</Nav.Link>
             <Nav.Link className="nav-item" href="#chatadmin">Chat</Nav.Link>
             <NavDropdown title="Gestion" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#commandes">Commandes</NavDropdown.Item>
               <NavDropdown.Item href="#factures">Factures</NavDropdown.Item>
               <NavDropdown.Item href="#clients">Clients</NavDropdown.Item>
 

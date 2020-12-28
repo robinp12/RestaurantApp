@@ -4,6 +4,8 @@ import Select from '../../Components/Form/Input/Select';
 import UserForm from '../../Components/Form/Management/UserForm';
 import usersAPI from '../../Services/usersAPI';
 import { toast } from "react-toastify";
+import Loader from '../../Components/Loader';
+
 
 const UsersPage = ({ match, history }) => {
     const { id } = match.params
@@ -148,47 +150,50 @@ const UsersPage = ({ match, history }) => {
 
     return (
         <>
-            <div className="row">
-                <div className="col-sm-12 col-md-4">
-                    <table className="table table-responsive-md table-hover ">
-                        <thead className="thead-dark">
-                            <tr>
-                                <th className="text-center hidden-xs align-middle">ID</th>
-                                <th className="text-center align-middle">Utilisateur</th>
-                                <th className="text-center align-middle">
-                                    <button onClick={() => setAddUser(!addUser)} className="btn btn-primary float-right"><i className="fa fa-user-plus fa-lg" aria-hidden="true"></i></button>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {users.map((user, index) => <tr key={user.id} onClick={() => {
-                                history.replace("/utilisateurs/" + user.id)
-                                setAddUser(false)
-                            }}>
-                                <th scope="row" className="text-center">#{user.id}</th>
-                                <td className="text-center"> {user.firstName} {user.lastName.toUpperCase()}</td>
-                                <td></td>
-                            </tr>)}
-                        </tbody>
-                    </table>
-                </div>
-                <div className="col">
-                    {addUser &&
-                        <>
-                            <UserForm />
-                        </>
-                        ||
-                        <>
-                            {users.map(userInfo =>
-                                userInfo.id == id &&
-                                <div key={userInfo.id}>
-                                    <SingleUser userInfo={userInfo} />
-                                </div>
-                            )}
-                        </>
-                    }
-                </div>
-            </div>
+            {!users.length &&
+                <Loader />
+                ||
+                <div className="row">
+                    <div className="col-sm-12 col-md-4">
+                        <table className="table table-responsive-md table-hover ">
+                            <thead className="thead-dark">
+                                <tr>
+                                    <th className="text-center hidden-xs align-middle">ID</th>
+                                    <th className="text-center align-middle">Utilisateur</th>
+                                    <th className="text-center align-middle">
+                                        <button onClick={() => setAddUser(!addUser)} className="btn btn-primary float-right"><i className="fa fa-user-plus fa-lg" aria-hidden="true"></i></button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users.map((user, index) => <tr key={user.id} onClick={() => {
+                                    history.replace("/utilisateurs/" + user.id)
+                                    setAddUser(false)
+                                }}>
+                                    <th scope="row" className="text-center">#{user.id}</th>
+                                    <td className="text-center"> {user.firstName} {user.lastName.toUpperCase()}</td>
+                                    <td></td>
+                                </tr>)}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="col">
+                        {addUser &&
+                            <>
+                                <UserForm />
+                            </>
+                            ||
+                            <>
+                                {users.map(userInfo =>
+                                    userInfo.id == id &&
+                                    <div key={userInfo.id}>
+                                        <SingleUser userInfo={userInfo} />
+                                    </div>
+                                )}
+                            </>
+                        }
+                    </div>
+                </div>}
         </>
     );
 }

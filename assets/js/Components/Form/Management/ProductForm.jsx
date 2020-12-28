@@ -16,12 +16,10 @@ const ProductForm = ({ categories, refresh, setRefresh, product, setProduct, upd
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(product)
         if (update) {
             product.category = "/api/categories/" + product.category.id
             try {
                 const rep = await productsAPI.updateInfo(product.id, product)
-                console.log(rep)
                 toast(product.label + " a été modifié");
                 setRefresh(!refresh);
                 setErrors("");
@@ -62,16 +60,6 @@ const ProductForm = ({ categories, refresh, setRefresh, product, setProduct, upd
         }
         setErrors({ ...errors, [name]: "" });
     };
-    const handleUpdate = () => {
-        setProduct({
-            label: "",
-            description: "",
-            price: "",
-            picture: "",
-            category: ""
-        });
-        setUpdate(false);
-    }
 
     return (
         <>
@@ -129,7 +117,7 @@ const ProductForm = ({ categories, refresh, setRefresh, product, setProduct, upd
                         </div>
                         <div className="row float-right">
                             <div className="col float-right">
-                                {update && <button className="btn-secondary btn" onClick={() => handleUpdate()} disabled={false}>{"Annuler"}</button>}
+                                {update && <button className="btn-secondary btn" onClick={() => ProductForm.update(setProduct, setUpdate)} disabled={false}>{"Annuler"}</button>}
                                 <button className="btn-primary btn" type="submit" disabled={false}>{!update ? "Ajouter" : "Enregister"}</button>
                             </div>
                             {/* <input type="file" onChange={selectFile} />
@@ -142,4 +130,15 @@ const ProductForm = ({ categories, refresh, setRefresh, product, setProduct, upd
         </>
     );
 };
+
+ProductForm.update = (setProduct, setUpdate) => {
+    setProduct({
+        label: "",
+        description: "",
+        price: "",
+        picture: "",
+        category: ""
+    });
+    setUpdate(false);
+}
 export default ProductForm;

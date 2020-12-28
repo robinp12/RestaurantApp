@@ -72,7 +72,7 @@ const ProductManagement = ({ setRefresh, refresh }) => {
     useEffect(() => {
         fetchCategories();
         fetchProducts();
-    }, [refresh])
+    }, [])
 
     return (
         <>

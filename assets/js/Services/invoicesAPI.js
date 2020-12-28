@@ -15,7 +15,7 @@ function add(invoice) {
   });
 }
 // Modification
-function update(id, value, invoices) {
+function update(id, invoices) {
   return Axios.put(INVOICES_API + "/" + id, {
     ...invoices,
     // position: value,
