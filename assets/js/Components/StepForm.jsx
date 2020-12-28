@@ -59,7 +59,7 @@ const StepForm = ({ match }) => {
         status: "SENT",
         timeToReceive: new Date(),
         customerEmail: "@",
-        invoiceTable: +id || 0
+        invoiceTable: id < 15 ? +id : 0
     });
 
     const [orderInfo, setOrderInfo] = useState({ reservationAt: now });
@@ -113,7 +113,7 @@ const StepForm = ({ match }) => {
         bag.label = name;
         bag.price = parseFloat(price, 10);
         bag.totalAmount = totalAmount;
-        bag.orderTable = +id || 0;
+        bag.orderTable = id < 15 ? +id : 0;
         return bag
     }
     const handleSubmitOrder = async (order) => {
@@ -149,7 +149,7 @@ const StepForm = ({ match }) => {
     useEffect(() => {
         fetchCat();
         fetchProd();
-        if (id) {
+        if (id <= 15) {
             setChoose(1);
         }
     }, [])
@@ -197,8 +197,6 @@ const StepForm = ({ match }) => {
             </div>
         )
     }
-    console.log(cart)
-    console.log(invoice)
 
     const oneTimeClick = (e) => {
         e.preventDefault()
