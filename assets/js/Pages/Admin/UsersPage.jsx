@@ -169,7 +169,7 @@ const UsersPage = ({ match, history }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {users.map((user, index) => <tr key={user.id} onClick={() => {
+                                {users.map((user) => <tr key={user.id} onClick={() => {
                                     history.replace("/utilisateurs/" + user.id)
                                     setAddUser(false)
                                 }}>

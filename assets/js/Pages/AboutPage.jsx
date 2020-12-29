@@ -49,6 +49,9 @@ const AboutPage = () => {
             <Header title={lang.about} />
             <div className="row card-text">
                 <div className="col-sm-12 col-md-6">
+                    <iframe width="100%" height="350" frameBorder="0"
+                        src="https://www.google.com/maps/embed/v1/place?q=le%20cheval%20blanc%20spontin&key=AIzaSyD447e5QbLc2blHJchrtHoVouRz1YN8pNI" allowFullScreen></iframe>
+
                     {/* <div id="mapid">
                         <Map center={[50.503439, 4.855911]} zoom={8}>
                         <TileLayer
