@@ -19,11 +19,10 @@ const ProductForm = ({ categories, refresh, setRefresh, product, setProduct, upd
         if (update) {
             product.category = "/api/categories/" + product.category.id
             try {
-                const rep = await productsAPI.updateInfo(product.id, product)
+                await productsAPI.updateInfo(product.id, product)
                 toast(product.label + " a été modifié");
                 setRefresh(!refresh);
                 setErrors("");
-
             } catch (error) {
                 console.error(error)
             }
@@ -31,15 +30,13 @@ const ProductForm = ({ categories, refresh, setRefresh, product, setProduct, upd
 
         else {
             try {
-                const rep = await productsAPI.add(product);
+                await productsAPI.add(product);
                 toast(product.label + " a été ajouté");
                 setRefresh(!refresh);
                 setErrors("");
             } catch (error) {
                 console.log(error.response.data)
-                toast("Erreur dans le formulaire !" + "", {
-                    className: "bg-red",
-                });
+                toast("Erreur dans le formulaire !" + "");
                 if (error.response.data.violations) {
                     const apiErrors = {};
                     error.response.data.violations.forEach((violation) => {

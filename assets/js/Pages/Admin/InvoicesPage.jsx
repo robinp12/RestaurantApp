@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { toast } from "react-toastify";
+import Field from '../../Components/Form/Input/Field';
+import Select from '../../Components/Form/Input/Select';
+import Loader from '../../Components/Loader';
 import Pagination from '../../Components/Pagination';
 import invoicesAPI from "../../Services/invoicesAPI";
-import { toast } from "react-toastify";
-import { Link } from 'react-router-dom';
-import Select from '../../Components/Form/Input/Select';
-import Field from '../../Components/Form/Input/Field';
-import Loader from '../../Components/Loader';
 
 const InvoicesPage = ({ match, history }) => {
 
@@ -16,17 +16,9 @@ const InvoicesPage = ({ match, history }) => {
 
     const [change, setChange] = useState(false);
     const [refresh, setRefresh] = useState();
-    const [changedStatus, setChangedStatus] = useState({ status: "" });
     const [currentPage, setCurrentPage] = useState(1);
     const [load, setLoad] = useState(true);
     const itemsPerPage = 10;
-
-    const filtered = invoices.filter(c =>
-        c.customer_email.toLowerCase().includes(search.toLowerCase()) ||
-        c.client.firstName.toLowerCase().includes(search.toLowerCase()) ||
-        c.client.lastName.toLowerCase().includes(search.toLowerCase())
-    );
-    const paginatedInvoices = Pagination.getData(filtered, currentPage, itemsPerPage)
 
     const paddingNumber = (num) => '#' + String(num).padStart(5, '0');
 
@@ -34,7 +26,7 @@ const InvoicesPage = ({ match, history }) => {
         try {
             const data = await invoicesAPI.getAllInvoices();
             setInvoices(data);
-            history.replace("/factures/" + data[0]?.id)
+            if (!id) history.replace("/factures/" + data[0]?.id)
             setLoad(false);
         } catch (error) {
             console.log(error.response);
@@ -68,6 +60,13 @@ const InvoicesPage = ({ match, history }) => {
                 return "Envoyé";
         }
     }
+    const filtered = invoices.filter(c =>
+        c.client?.email.toLowerCase().includes(search.toLowerCase()) ||
+        c.client?.firstName.toLowerCase().includes(search.toLowerCase()) ||
+        c.client?.lastName.toLowerCase().includes(search.toLowerCase()) ||
+        status(c.status).toLowerCase().includes(search.toLowerCase())
+    );
+    const paginatedInvoices = Pagination.getData(filtered, currentPage, itemsPerPage)
     const [statusList, setStatusList] = useState([
         'PAID',
         'SENT',
@@ -96,10 +95,10 @@ const InvoicesPage = ({ match, history }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {paginatedInvoices.map(invoice => <tr key={invoice.id}
+                                {paginatedInvoices.map(invoice => <tr key={invoice.id} className={invoice.id == id ? "actif" : ""}
                                     onClick={() => history.replace("/factures/" + invoice.id)}
                                 >
-                                    <th scope="row" className="text-center align-middle">{paddingNumber(invoice.chrono)}</th>
+                                    <th scope="row" className="text-center align-middle">{paddingNumber(invoice.id)}</th>
                                     <td className="text-center align-middle">{status(invoice.status)} </td>
                                     <td className="text-center align-middle lead">{invoice.amount}€</td>
                                 </tr>)}
@@ -118,8 +117,15 @@ const InvoicesPage = ({ match, history }) => {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-sm-12 col-md-6">
-                                            <span>Client : <Link to={`/clients/${invoice.client?.id}`}> {invoice.client?.firstName} {invoice.client?.lastName}</Link></span><br />
+                                            <span>{invoice.invoiceTable && <b>Sur place</b> || <b>À emporter</b>}</span><br />
+                                            <span>{invoice.invoiceTable &&
+                                                <>Table : <b>{invoice.invoiceTable}</b></>
+                                                ||
+                                                <><span>Client : <Link to={`/clients/${invoice.client?.id}`}> {invoice.client?.firstName} {invoice.client?.lastName}</Link></span></>
+                                            }</span><br />
+
                                             <span>Emis le {new Date(invoice.sentAt).toLocaleString()}</span><br /><br />
+
                                             {change &&
                                                 <Select defaut={status(invoice.status)} label={"Status :"} name="status" onChange={(e) => handleChangeStatus(invoice.id, e.currentTarget.value)}>
                                                     {statusList.map((statu, index) => <option value={statu} key={index}>{status(statu)}</option>)}

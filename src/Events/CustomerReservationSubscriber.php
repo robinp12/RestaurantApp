@@ -33,14 +33,14 @@ class CustomerReservationSubscriber implements EventSubscriberInterface
         $reservation = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
         if ($reservation instanceof Reservation && $method === "POST") {
-            $reservation_customer_email = $reservation->getCustomerEmail();
-            // Si l'email de la réservation est lié à un client existant
-            if ($this->repositoryCustomer->findOneBy(["email" => $reservation_customer_email])) {
-                $this_customer = $this->repositoryCustomer->findOneBy(["email" => $reservation_customer_email], ["id" => "DESC"]);
-                $reservation->setCustomer($this_customer);
-            } else {
-                dd("Client non existant pour cet email, impossible de créer une reservation");
-            }
+            // $reservation_customer_email = $reservation->getCustomerEmail();
+            // // Si l'email de la réservation est lié à un client existant
+            // if ($this->repositoryCustomer->findOneBy(["email" => $reservation_customer_email])) {
+            //     // $this_customer = $this->repositoryCustomer->findOneBy(["email" => $reservation_customer_email], ["id" => "DESC"]);
+            //     // $reservation->setCustomer($this_customer);
+            // } else {
+            //     dd("Client non existant pour cet email, impossible de créer une reservation");
+            // }
             // $email = (new Email())
             //     ->from('test42@gmail.com')
             //     ->to('test42@gmail.com')

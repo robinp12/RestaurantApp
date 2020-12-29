@@ -3,7 +3,9 @@ import { CustomerContext } from '../../Context/CustomerContext';
 import { LangContext } from '../../Context/LangContext';
 import Cart from '../Cart';
 import Field from './Input/Field';
-const OrderSummary = ({ isReservation = false, reservation, setReservation, takeAway }) => {
+import QrCode from "qrcode.react";
+import { URL } from '../../../config';
+const OrderSummary = ({ isReservation = false, reservation, setReservation, takeAway, toPrint = false }) => {
 
     const { lang } = useContext(LangContext);
     const { customer, setCustomer } = useContext(CustomerContext);
@@ -17,7 +19,13 @@ const OrderSummary = ({ isReservation = false, reservation, setReservation, take
         <>
             <div className="row">
                 <div className="col">
-                    <h3>{lang.information}</h3>
+                    {!toPrint &&
+                        <h3>{lang.information}</h3>
+                        ||
+                        isReservation &&
+                        <h3>{lang.reservationConfirmation}</h3>
+                        ||
+                        <h3>{lang.orderConfirmation}</h3>}
                     <div className="row">
                         <div className="col mr-4">
                             {customer.email && <>
@@ -39,7 +47,11 @@ const OrderSummary = ({ isReservation = false, reservation, setReservation, take
                             }
                             <p>
                                 {!takeAway && <><em>{lang.date} : <b>{new Date(reservation.reservationAt).toLocaleString().slice(0, -3)}</b></em><br /></>}
-                                {isReservation && (<span>{lang.peopleNumber} : <b>{reservation.peopleNumber}</b></span>)}
+                                {isReservation && (<>
+                                    <span>{lang.peopleNumber} : <b>{reservation.peopleNumber}</b></span><br />
+                                    {toPrint && <span>{"Commentaire"} : <br /><b>{reservation.comment}</b></span>}
+                                </>
+                                )}
                             </p>
                         </div>
                     </div>
@@ -53,7 +65,7 @@ const OrderSummary = ({ isReservation = false, reservation, setReservation, take
                             </div>
                         </>
                         ||
-                        <>
+                        <>{!toPrint &&
                             <div className="form-group">
                                 <label htmlFor="comment">Commentaire</label>
                                 <textarea
@@ -65,7 +77,26 @@ const OrderSummary = ({ isReservation = false, reservation, setReservation, take
                                     id="comment"
                                     rows="5"
                                     placeholder={"Ecrire un commmentaire à propos de la réservation ..."} />
+                            </div> ||
+                            <div className="form-group">
+                                <QrCode
+                                    value={
+                                        "RESERVATION" + "\n" +
+                                        customer.lastName + " " + customer.firstName +
+                                        "\n" +
+                                        customer.email +
+                                        "\n" +
+                                        "Tel :" + customer.phoneNumber +
+                                        "\n" +
+                                        `Personnes : ${reservation.peopleNumber}` +
+                                        "\n" +
+                                        `Date : ${new Date(reservation.reservationAt).toLocaleString().slice(0, -3)}`
+                                        + "\n \n" +
+                                        "Commentaire : " + reservation.comment
+                                    }
+                                />
                             </div>
+                        }
                         </>
                     }
                 </div>

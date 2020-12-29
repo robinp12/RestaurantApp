@@ -96,11 +96,13 @@ class Customer
 
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="customer")
+     * @Groups({"customers_read"})
      */
     private $reservations;
 
     /**
      * @ORM\OneToMany(targetEntity=Invoice::class, mappedBy="client")
+     * @Groups({"customers_read"})
      */
     private $invoices;
 

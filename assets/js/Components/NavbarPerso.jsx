@@ -44,6 +44,9 @@ const NavbarPerso = ({ history }) => {
           <>
             {cart.length &&
               <b><em className="fa fa-shopping-cart "></em> {cart.length}</b>
+              ||
+              <i className="fa fa-bars" aria-hidden="true"></i>
+
             }
           </>
         }

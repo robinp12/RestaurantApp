@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from "react-toastify";
+import Field from '../../Components/Form/Input/Field';
+import Loader from '../../Components/Loader';
 import Pagination from '../../Components/Pagination';
 import reservationsAPI from '../../Services/reservationsAPI';
-import Loader from '../../Components/Loader';
 
 const ReservationManagement = ({ match, history }) => {
 
     const { id } = match.params
 
-    const [showCat, setShowCat] = useState(true);
     const [reservations, setReservations] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [load, setLoad] = useState(true);
+    const [search, setSearch] = useState("");
+
 
     const fetchAllReservations = async () => {
 
@@ -23,16 +25,16 @@ const ReservationManagement = ({ match, history }) => {
             history.replace("/reservations/" + data[0]?.id)
         } catch (error) {
             console.log(error.response)
-
         }
     }
     const handleDelete = async (id) => {
         const originValue = [...reservations];
 
-        setReservations(reservations.filter(user => user.id !== id));
+        setReservations(reservations.filter(reservation => reservation.id !== id));
         try {
             await reservationsAPI.deleteReservations(id)
-            history.replace("/reservations/" + reservations[reservations.length - 1 - 1].i)
+            toast("Réservation n°" + id + " supprimé");
+            history.replace("/reservations/" + reservations[0].id)
 
         } catch (error) {
             setReservations(originValue);
@@ -46,7 +48,17 @@ const ReservationManagement = ({ match, history }) => {
         setCurrentPage(page)
     }
     const itemsPerPage = 10;
-    const paginated = Pagination.getData(reservations, currentPage, itemsPerPage)
+
+    const handleSearch = ({ currentTarget }) => {
+        setSearch(currentTarget.value)
+        setCurrentPage(1)
+    }
+    const filtered = reservations.filter(c =>
+        c.customer.firstName.toLowerCase().includes(search.toLowerCase()) ||
+        c.customer.lastName.toLowerCase().includes(search.toLowerCase()) ||
+        c.customer.email.toLowerCase().includes(search.toLowerCase())
+    );
+    const paginated = Pagination.getData(filtered, currentPage, itemsPerPage)
 
     const paddingNumber = (num) => '#' + String(num).padStart(5, '0');
 
@@ -57,6 +69,8 @@ const ReservationManagement = ({ match, history }) => {
                 ||
                 <div className="row">
                     <div className="col">
+                        <Field placeholder={"Chercher une réservation ..."} onChange={handleSearch} value={search} className="form-control" />
+
                         <table className="table table-responsive-md table-hover ">
                             <thead className="thead-dark">
                                 <tr>
@@ -67,10 +81,10 @@ const ReservationManagement = ({ match, history }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {paginated.map(reservation => <tr key={reservation.id}
+                                {paginated.map(reservation => <tr key={reservation.id} className={reservation.id == id ? "actif" : ""}
                                     onClick={() => history.replace("/reservations/" + reservation.id)}
                                 >
-                                    <th scope="row" className="text-center align-middle">{paddingNumber(reservation.chrono)}</th>
+                                    <th scope="row" className="text-center align-middle">{paddingNumber(reservation.id)}</th>
                                     <td className="text-center align-middle">{reservation.customer?.firstName} {reservation.customer?.lastName} </td>
                                     <td className="text-center align-middle">{reservation.peopleNumber} </td>
                                     <td className="text-center align-middle">{new Date(reservation.reservation_at).toLocaleString()}</td>

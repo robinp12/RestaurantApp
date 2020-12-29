@@ -55,22 +55,15 @@ class Order
     /**
      * @ORM\Column(type="float")
      * @Groups({"orders_read","invoices_read"})
-     * @Assert\NotBlank(message="Obligatoire")
-     * @Assert\PositiveOrZero(message="Invalide")
      */
     private $totalAmount;
 
     /**
      * @ORM\ManyToOne(targetEntity=Invoice::class, inversedBy="orders")
-     */
-    private $invoice;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     * @Groups({"orders_read","invoices_read"})
+     * @Groups({"orders_read"})
      * @Assert\NotBlank(message="Obligatoire")
      */
-    private $customer_email;
+    private $invoice;
 
     /**
      * @ORM\Column(type="integer")
@@ -110,7 +103,7 @@ class Order
 
     public function setTotalAmount(float $totalAmount): self
     {
-        $this->totalAmount = $totalAmount;
+        $this->totalAmount = $this->price * $this->quantity;
 
         return $this;
     }
@@ -123,18 +116,6 @@ class Order
     public function setInvoice(?Invoice $invoice): self
     {
         $this->invoice = $invoice;
-
-        return $this;
-    }
-
-    public function getCustomerEmail(): ?string
-    {
-        return $this->customer_email;
-    }
-
-    public function setCustomerEmail(string $customer_email): self
-    {
-        $this->customer_email = $customer_email;
 
         return $this;
     }

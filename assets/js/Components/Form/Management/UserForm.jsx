@@ -1,9 +1,8 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import usersAPI from "../../../Services/usersAPI";
 import Field from "../Input/Field";
 import Select from "../Input/Select";
-import { toast } from "react-toastify";
-
 
 const UserForm = () => {
     const [users, setUsers] = useState({
@@ -44,11 +43,11 @@ const UserForm = () => {
         e.preventDefault();
 
         try {
-            const rep = await usersAPI.register(users);
+            await usersAPI.register(users);
             toast(users.firstName + " a été ajouté");
             setErrors("");
         } catch (error) {
-            toast(error + "", { className: "bg-red" });
+            toast(error + "");
             if (error.response.data.violations) {
                 const apiErrors = {};
                 error.response.data.violations.forEach((violation) => {

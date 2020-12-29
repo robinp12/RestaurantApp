@@ -28,7 +28,7 @@ class Invoice
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"invoices_read"})
+     * @Groups({"invoices_read","orders_read"})
      */
     private $id;
 
@@ -77,15 +77,8 @@ class Invoice
     private $timeToReceive;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Groups({"invoices_read"})
-     * @Assert\NotBlank(message="Email obligatoire")
-     */
-    private $customer_email;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="invoices")
-     * @Groups({"invoices_read"})
+     * @Groups({"invoices_read","orders_read"})
      */
     private $client;
 
@@ -193,18 +186,6 @@ class Invoice
     public function setTimeToReceive(\DateTimeInterface $timeToReceive): self
     {
         $this->timeToReceive = $timeToReceive;
-
-        return $this;
-    }
-
-    public function getCustomerEmail(): ?string
-    {
-        return $this->customer_email;
-    }
-
-    public function setCustomerEmail(string $customer_email): self
-    {
-        $this->customer_email = $customer_email;
 
         return $this;
     }

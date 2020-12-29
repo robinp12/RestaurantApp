@@ -1,4 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
+import ReactToPrint from 'react-to-print';
+import { toast } from "react-toastify";
 import CustomerForm from '../Components/Form/CustomerForm';
 import OrderForm from '../Components/Form/OrderForm';
 import OrderSummary from '../Components/Form/OrderSummary';
@@ -6,16 +8,14 @@ import { CustomerContext } from '../Context/CustomerContext';
 import { LangContext } from '../Context/LangContext';
 import customersAPI from '../Services/customersAPI';
 import reservationsAPI from '../Services/reservationsAPI';
-import { toast } from "react-toastify";
 
 
-let now = new Date(new Date().setHours(new Date().getHours() + 1)).toISOString().slice(0, 16);
+let now = new Date().toISOString().slice(0, 16);
 
 const ReservationForm = () => {
     const [step, setStep] = useState(0);
     const { lang } = useContext(LangContext);
     const reserveConfirm = useRef();
-
 
     const [customer, setCustomer] = useState({
         firstName: "",
@@ -39,8 +39,7 @@ const ReservationForm = () => {
 
     const [reservation, setReservation] = useState({
         peopleNumber: 2,
-        customerEmail: "",
-        reservationAt: now,
+        reservationAt: "",
         comment: "",
     })
 
@@ -48,7 +47,7 @@ const ReservationForm = () => {
         e.preventDefault();
         try {
             const rep = await customersAPI.register(customer);
-            handleSubmitReservation()
+            handleSubmitReservation(rep.data.id)
         } catch (error) {
             console.error("Customer's form error")
             if (error.response.data.violations) {
@@ -60,15 +59,12 @@ const ReservationForm = () => {
                 setErrors(apiErrors);
             }
         }
-
     }
 
-    const handleSubmitReservation = async () => {
-        reservation.customerEmail = customer.email;
+    const handleSubmitReservation = async (id) => {
+        reservation.customer = "/api/customers/" + id;
         reservation.peopleNumber = parseInt(reservation.peopleNumber);
-
         reserveConfirm.current.setAttribute("disabled", "")
-
         try {
             const rep = await reservationsAPI.add(reservation);
             reserveConfirm.current.removeAttribute("disabled")
@@ -91,6 +87,7 @@ const ReservationForm = () => {
         e.preventDefault();
         setStep(step => step + 1)
     }
+    const componentRef2 = useRef();
 
     function reserve() {
         switch (step) {
@@ -126,12 +123,14 @@ const ReservationForm = () => {
                 return (
                     <>
                         <div className="container">
-                            <h3>{lang.orderConfirmation}</h3>
-                            <div className="row">
-                                <div className="col d-flex flex-column m-2">
-                                </div>
+                            <div ref={componentRef2}>
+                                <OrderSummary isReservation reservation={reservation} setReservation={setReservation} toPrint={true} />
                             </div>
-                            <button className="btn-primary btn float-right" onClick={() => setStep(0)}>OK</button>
+                            <ReactToPrint bodyClass={"m-5 p-5"}
+                                trigger={() => <a className="btn-outline-primary btn float-right">{lang.print}</a>}
+                                content={() => componentRef2.current}
+                                documentTitle={"Réservation-Le-Cheval-Blanc"}
+                            />
                         </div>
                     </>);
 
@@ -139,6 +138,8 @@ const ReservationForm = () => {
                 return (
                     <>
                         <div className="container text-center">
+                            {console.log(reservation.reservationAt)
+                            }
                             <OrderForm isReservation setReservation={setReservation} reservation={reservation} now={now} />
                             <button className="btn-primary btn" onClick={Next}>{lang.next}</button>
                         </div>

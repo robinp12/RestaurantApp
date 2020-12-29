@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import ReactToPrint from 'react-to-print';
 import { toast } from "react-toastify";
 import { CartContext } from '../Context/CartContext';
 import { CustomerContext } from '../Context/CustomerContext';
@@ -15,8 +16,8 @@ import OrderSummary from './Form/OrderSummary';
 import PaymentForm from './Form/PaymentForm';
 import { MenuOrder } from './Menu';
 
-let now = new Date(new Date().setHours(new Date().getHours() + 1)).toISOString().slice(0, 16);
-const StepForm = ({ match }) => {
+let now = new Date().toISOString().slice(0, 16);
+const StepForm = ({ match, setWhere }) => {
 
     const { id } = match.params
 
@@ -33,6 +34,7 @@ const StepForm = ({ match }) => {
     const [away, setAway] = useState(0);
     const [choose, setChoose] = useState(0);
     const [there, setThere] = useState(0);
+    const [confirmed, setConfirmed] = useState(false);
 
 
     const [customer, setCustomer] = useState({
@@ -58,18 +60,17 @@ const StepForm = ({ match }) => {
         amount: 0,
         status: "SENT",
         timeToReceive: new Date(),
-        customerEmail: "@",
         invoiceTable: id < 15 ? +id : 0
     });
 
-    const [orderInfo, setOrderInfo] = useState({ reservationAt: now });
+    const [orderInfo, setOrderInfo] = useState({ reservationAt: "" });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const rep = await customersAPI.register(customer);
             setErrors("");
-            handleSubmitInvoice()
+            handleSubmitInvoice(rep.data.id)
         } catch (error) {
             console.error("Customer's form error")
             toast("Erreur dans le formulaire !" + "", {
@@ -86,39 +87,44 @@ const StepForm = ({ match }) => {
         }
     };
 
-    const handleSubmitInvoice = async () => {
-        invoice.customerEmail = (customer.email ? customer.email : invoice.customerEmail)
+    const handleSubmitInvoice = async (id = 0) => {
         invoice.timeToReceive = orderInfo.reservationAt
+        if (id !== 0) invoice.client = "/api/customers/" + id;
         confirmRef.current.setAttribute("disabled", "")
         try {
             const rep = await invoicesAPI.add(invoice);
             confirmRef.current.removeAttribute("disabled")
             toast("Commande envoyée");
-            sendAllOrders()
+            sendAllOrders(rep.data.id)
+            setConfirmed(true)
             // sendNotif()
         } catch (error) {
             console.error("Invoice's form error")
         }
     }
 
-    const sendAllOrders = () => {
+    const sendAllOrders = (id) => {
         setAway(step => step + 1)
         for (let e in bag) {
-            handleSubmitOrder(formatedOrder(bag[e]))
+            handleSubmitOrder(formatedOrder(bag[e]), id)
         }
     }
 
     const formatedOrder = ({ name, price, totalAmount, ...bag }) => {
-        bag.customerEmail = (customer.email ? customer.email : invoice.customerEmail);
         bag.label = name;
         bag.price = parseFloat(price, 10);
         bag.totalAmount = totalAmount;
         bag.orderTable = id < 15 ? +id : 0;
         return bag
     }
-    const handleSubmitOrder = async (order) => {
+    const handleSubmitOrder = async (order, id) => {
+        order.invoice = "/api/invoices/" + id;
+        console.log(order.invoice)
+
         try {
             const rep = await ordersAPI.add(order);
+            console.log(rep)
+
             setOrderCart(cart)
         } catch (error) {
             console.error("Order's form error")
@@ -151,6 +157,7 @@ const StepForm = ({ match }) => {
         fetchProd();
         if (id <= 15) {
             setChoose(1);
+            setWhere(1)
         }
     }, [])
 
@@ -202,20 +209,34 @@ const StepForm = ({ match }) => {
         e.preventDefault()
         confirmRef.current.setAttribute("disabled", "")
     }
+    const componentRef = useRef();
+    const componentRef2 = useRef();
+
     function formOrder() {
         if (choose == 1) {
             switch (there) {
                 case 1:
-                    return (
-                        <div className="container">
-                            <OrderSummary reservation={invoice.invoiceTable} takeAway />
-                            <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setThere(step => step - 1) }}>{lang.back}</button>
-                            <button className="btn-primary btn float-right mt-4" ref={confirmRef} onClick={(e) => {
-                                handleSubmitInvoice()
-                                e.preventDefault()
-                                oneTimeClick(e)
-                            }}>{lang.next}</button>
+                    return (<>
+                        <div className="container" >
+                            <div ref={componentRef}>
+                                <OrderSummary reservation={invoice.invoiceTable} takeAway toPrint={confirmed} />
+                            </div>
+                            {!confirmed &&
+                                <>
+                                    <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setThere(step => step - 1) }}>{lang.back}</button>
+                                    <button className="btn-primary btn float-right mt-4" ref={confirmRef} onClick={(e) => {
+                                        handleSubmitInvoice()
+                                        oneTimeClick(e)
+                                    }}>{lang.confirm}</button>
+                                </> ||
+                                <ReactToPrint bodyClass={"m-5 p-5"}
+                                    trigger={() => <a className="btn-secondary btn float-right mt-4">Imprimer</a>}
+                                    content={() => componentRef.current}
+                                    documentTitle={"Facture-Le-Cheval-Blanc"}
+                                />
+                            }
                         </div>
+                    </>
                     );
                 default:
                     return (
@@ -237,6 +258,7 @@ const StepForm = ({ match }) => {
                     );
                 case 2: // Order informations
                     return (
+
                         <div className="container">
                             <OrderForm reservation={orderInfo} setReservation={setOrderInfo} now={now} />
                             <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
@@ -271,10 +293,18 @@ const StepForm = ({ match }) => {
                 case 5: // Chat validation
                     return (
                         <>
-                            {/* <div className="container">
-                                <OrderChat admin={authAPI.isAuth()} socket={socket} message={message} />
-                                <button className="btn-primary btn float-right" onClick={() => { setChoose(0); setAway(0); }}>OK</button>
-                            </div> */}
+                            <div className="container">
+                                <div ref={componentRef2}>
+                                    <OrderSummary reservation={orderInfo} toPrint />
+                                </div>
+                                <ReactToPrint bodyClass={"m-5 p-5"}
+                                    trigger={() => <a className="btn-secondary btn float-right">{lang.print}</a>}
+                                    content={() => componentRef2.current}
+                                    documentTitle={"Facture-Le-Cheval-Blanc"}
+                                />
+                                {/* <OrderChat admin={authAPI.isAuth()} socket={socket} message={message} /> */}
+                                {/* <button className="btn-primary btn float-right" onClick={() => { setChoose(0); setAway(0); }}>OK</button> */}
+                            </div>
                         </>);
                 default: // Client informations
                     return (
@@ -305,7 +335,7 @@ const StepForm = ({ match }) => {
                             <a className="btn btn-block borderButt text-primary my-2 border-primary" onClick={() => setChoose(1)}>{lang.there}</a>
                         </div> */}
                         <div className="col">
-                            <a className="btn btn-block borderButt text-dark my-2 border-dark" onClick={() => { setChoose(2); }}>{lang.takeAway}</a>
+                            <a className="btn btn-block borderButt text-dark my-2 border-dark" onClick={() => { setChoose(2); setWhere(2) }}>{lang.takeAway}</a>
                         </div>
                     </div>
                     <div className="d-flex justify-content-center align-items-center">

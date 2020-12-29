@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from "react-toastify";
 import Field from '../../Components/Form/Input/Field';
-import Pagination from '../../Components/Pagination';
 import Loader from '../../Components/Loader';
+import Pagination from '../../Components/Pagination';
 import customersAPI from "../../Services/customersAPI";
 
 const CustomersPage = ({ match, history }) => {
@@ -13,7 +13,6 @@ const CustomersPage = ({ match, history }) => {
     const [change, setChange] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [load, setLoad] = useState(true);
-
 
     const fetchCustomers = async () => {
         try {
@@ -32,15 +31,11 @@ const CustomersPage = ({ match, history }) => {
         setCustomers(customers.filter(customer => customer.id !== id));
         try {
             await customersAPI.deletecustomers(id);
-            toast("Client n°" + id + " supprimé", {
-                className: "bg-red",
-            });
-            history.replace("/clients/" + customers[customers.length - 1 - 1].id)
+            toast("Client n°" + id + " supprimé");
+            history.replace("/clients/" + customers[0].id)
         } catch (error) {
             setCustomers(originCustomers);
-            toast(error + "", {
-                className: "bg-red",
-            });
+            toast(error + "");
         }
     }
 
@@ -98,7 +93,7 @@ const CustomersPage = ({ match, history }) => {
                                         :
                                         <button className="btn btn-secondary float-left" onClick={handleSubmitChange}>Enregistrer</button>
                                     }
-                                    <button className="btn btn-primary float-right" onClick={() => handleDelete(customer.id)} disabled={customer.invoices?.length}>Supprimer</button>
+                                    <button className="btn btn-primary float-right" onClick={() => handleDelete(customerInfo.id)} disabled={customerInfo.invoices?.length || customerInfo.reservations?.length}>Supprimer</button>
                                 </div>
                             </div>
                         </div>
@@ -144,7 +139,7 @@ const CustomersPage = ({ match, history }) => {
                             <tbody>
                                 {paginated.map((customer, index) =>
                                     (typeof (customer.id) != "undefined") &&
-                                    < tr key={index} onClick={() => history.replace("/clients/" + customer.id)}>
+                                    < tr key={index} onClick={() => history.replace("/clients/" + customer.id)} className={customer.id == id ? "actif" : ""}>
                                         <th scope="row" className="text-center align-middle">#{customer.id}</th>
                                         <td className="text-center align-middle">{customer.firstName} {customer.lastName?.toUpperCase()}</td>
                                     </tr>)}

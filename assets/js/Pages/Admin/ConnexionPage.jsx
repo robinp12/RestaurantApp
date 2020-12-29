@@ -2,9 +2,8 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import Field from "../../Components/Form/Input/Field";
 import Header from '../../Components/Header';
-import authAPI from "../../Services/authAPI";
 import { AuthContext } from "../../Context/AuthContext";
-
+import authAPI from "../../Services/authAPI";
 
 const ConnexionPage = ({ history }) => {
 
@@ -15,7 +14,6 @@ const ConnexionPage = ({ history }) => {
         password: ""
     });
     const [error, setError] = useState("");
-
 
     //Mise ne place dans le state
     const handleChange = ({ currentTarget }) => {
@@ -30,7 +28,7 @@ const ConnexionPage = ({ history }) => {
             setError("");
             setIsAuth(true);
             toast("Connecté ! " + authAPI.getCurrent().firstName);
-            history.replace("/clients");
+            history.replace("/commandes");
         } catch (error) {
             toast("Mauvais identifiants", {
                 className: "bg-red-toast",

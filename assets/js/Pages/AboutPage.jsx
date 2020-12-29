@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import ReactToPrint from 'react-to-print';
 import "react-toastify/dist/ReactToastify.css";
 import socketIOClient from "socket.io-client";
-import OrderChat from '../Components/Form/OrderChat';
 import Header from '../Components/Header';
 import { LangContext } from '../Context/LangContext';
 import authAPI from '../Services/authAPI';
 import useLocalStorage from '../Services/useLocalStorage';
+
 
 const ENDPOINT = "http://localhost:3000";
 
@@ -13,7 +14,7 @@ const socket = socketIOClient(ENDPOINT, {
     transports: ["websocket"],
 });
 
-const AboutPage = () => {
+const AboutPage = ({ ref }) => {
 
     const { lang } = useContext(LangContext);
     const [customer, setCustomer] = useState({
@@ -44,10 +45,17 @@ const AboutPage = () => {
         socket.emit("send", { from: customer.email, desc: desc, admin: authAPI.isAuth(), to: "admin" });
         setMessage(prev => [...prev, { from: customer.email, desc: desc }]);
     };
+
+    const componentRef = useRef();
+
     return (
         <>
             <Header title={lang.about} />
-            <div className="row card-text">
+            <ReactToPrint
+                trigger={() => <button>Print this out!</button>}
+                content={() => componentRef.current}
+            />
+            <div className="row card-text" ref={componentRef}>
                 <div className="col-sm-12 col-md-6">
                     <iframe width="100%" height="350" frameBorder="0"
                         src="https://www.google.com/maps/embed/v1/place?q=le%20cheval%20blanc%20spontin&key=AIzaSyD447e5QbLc2blHJchrtHoVouRz1YN8pNI" allowFullScreen></iframe>
@@ -97,8 +105,6 @@ const AboutPage = () => {
                     </div>
                 </div>
             </div>
-
-
         </>
     );
 }

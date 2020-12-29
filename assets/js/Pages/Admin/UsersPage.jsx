@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from "react-toastify";
 import Field from '../../Components/Form/Input/Field';
 import Select from '../../Components/Form/Input/Select';
 import UserForm from '../../Components/Form/Management/UserForm';
-import usersAPI from '../../Services/usersAPI';
-import { toast } from "react-toastify";
 import Loader from '../../Components/Loader';
+import usersAPI from '../../Services/usersAPI';
 
 
 const UsersPage = ({ match, history }) => {
@@ -15,18 +15,17 @@ const UsersPage = ({ match, history }) => {
     const [change, setChange] = useState(true);
     const [load, setLoad] = useState(true);
 
-
     const handleDelete = async (id) => {
         const originUsers = [...users];
         setUsers(users.filter(user => user.id !== id));
         try {
             await usersAPI.deleteUsers(id);
-            toast("Utilisateur n°" + id + " supprimé", {
-                className: "bg-red",
-            });
+            history.replace("/utilisateurs/" + users[0].id)
+
+            toast("Utilisateur n°" + id + " supprimé");
         } catch (error) {
             setUsers(originUsers);
-            toast(error + "", { className: "bg-red" });
+            toast(error + "");
         }
     }
 
@@ -37,7 +36,7 @@ const UsersPage = ({ match, history }) => {
             setLoad(false)
         } catch (error) {
             console.error(error.response);
-            toast(error + "", { className: "bg-red" });
+            toast(error + "");
         }
     };
 
@@ -90,7 +89,7 @@ const UsersPage = ({ match, history }) => {
                 setErrors("");
             } catch (error) {
                 console.error(error.response)
-                toast(error + "", { className: "bg-red" });
+                toast(error + "");
                 if (error.response.data.violations) {
                     const apiErrors = {};
                     error.response.data.violations.forEach((violation) => {
