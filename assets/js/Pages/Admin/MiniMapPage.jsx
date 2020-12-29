@@ -18,11 +18,11 @@ const MiniMapPage = () => {
 
     const isOccuped = (table) => {
         for (let e in invoices) {
-
-            let isToday = new Date(invoices[e].sentAt).getDate() == new Date().getDate();
+            let isToday = new Date(invoices[e].sentAt).toLocaleDateString() == new Date().toLocaleDateString();
             if (isToday && invoices[e].invoiceTable) {
+
                 // Occupé pour les 2 prochaines heures
-                if (new Date().getHours() <= new Date(invoices[e].sentAt).getHours() + 2) {
+                if (new Date() <= new Date(new Date(invoices[e].sentAt).setMinutes(new Date(invoices[e].sentAt).getMinutes() + 90))) {
                     if (invoices[e].invoiceTable === table) {
                         return invoices[e];
                     }
