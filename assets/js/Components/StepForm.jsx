@@ -262,7 +262,7 @@ const StepForm = ({ match, setWhere }) => {
                         <div className="container">
                             <OrderForm reservation={orderInfo} setReservation={setOrderInfo} now={now} />
                             <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
-                            <button className="btn-primary btn float-right mt-4" onClick={Next} >{lang.next}</button>
+                            <button className="btn-primary btn float-right mt-4" onClick={Next} disabled={!orderInfo.reservationAt}>{lang.next}</button>
                         </div>
                     );
                 case 3: // Order summary

@@ -141,7 +141,8 @@ const ReservationForm = () => {
                             {console.log(reservation.reservationAt)
                             }
                             <OrderForm isReservation setReservation={setReservation} reservation={reservation} now={now} />
-                            <button className="btn-primary btn" onClick={Next}>{lang.next}</button>
+                            <button className="btn-primary btn" onClick={Next} disabled={!reservation.reservationAt}>{lang.next}</button>
+
                         </div>
                     </>);
         }
