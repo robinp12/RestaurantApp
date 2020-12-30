@@ -14,6 +14,9 @@ function add(reservation) {
     return response;
   });
 }
+function sendMail(reservation) {
+  return Axios.post("/reserve-confirm/" + reservation);
+}
 // Modification
 function update(id, value, reservations) {
   return Axios.put(RESERVATIONS_API + "/" + id, {
@@ -76,6 +79,7 @@ function deleteReservations(id) {
 
 export default {
   add,
+  sendMail,
   update,
   findReservation,
   getAllReservations,

@@ -1,3 +1,4 @@
+import Axios from 'axios';
 import React, { useContext, useRef, useState } from 'react';
 import ReactToPrint from 'react-to-print';
 import { toast } from "react-toastify";
@@ -67,7 +68,13 @@ const ReservationForm = () => {
         reserveConfirm.current.setAttribute("disabled", "")
         try {
             const rep = await reservationsAPI.add(reservation);
-            reserveConfirm.current.removeAttribute("disabled")
+            try {
+                //Envoi du mail de confirmation
+                await reservationsAPI.sendMail(rep.data.id);
+                reserveConfirm.current.removeAttribute("disabled");
+            } catch (error) {
+                console.error("Error on email sending")
+            }
             toast("Réservation envoyée");
             setStep(step => step + 1);
         } catch (error) {
@@ -112,7 +119,7 @@ const ReservationForm = () => {
             case 2: // Reservation summary
                 return (
                     <div className="container">
-                        <OrderSummary isReservation reservation={reservation} setReservation={setReservation} />
+                        <OrderSummary isReservation reservation={reservation} id={id} setReservation={setReservation} />
                         <button className="btn-primary btn float-left" onClick={Back}>{lang.back}</button>
                         <button className="btn-primary btn float-right" ref={reserveConfirm} onClick={(e) => {
                             handleSubmit(e);

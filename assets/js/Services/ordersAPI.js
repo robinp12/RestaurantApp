@@ -14,6 +14,11 @@ function add(order) {
     return response;
   });
 }
+
+function sendMail(order) {
+  return Axios.post("/order-confirm/" + order);
+}
+
 // Récuperer un order pour la page profil
 async function findOrder(id) {
   // const cachedOrders = await Cache.get("orders");
@@ -61,4 +66,5 @@ export default {
   findOrder,
   getAllOrders,
   deleteOrders,
+  sendMail,
 };

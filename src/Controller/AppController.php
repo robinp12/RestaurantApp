@@ -4,26 +4,31 @@ namespace App\Controller;
 
 use App\Entity\Invoice;
 use App\Repository\InvoiceRepository;
+use App\Repository\ReservationRepository;
+use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mime\Email;
-
-
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class AppController extends AbstractController
 {
 
     private $mailer;
     private $invoice_repository;
+    private $reservation_repository;
 
 
-    public function __construct(MailerInterface $mailer, InvoiceRepository $invoice_repository)
+    public function __construct(MailerInterface $mailer, InvoiceRepository $invoice_repository, ReservationRepository $reservation_repository)
     {
         $this->mailer = $mailer;
         $this->invoice_repository = $invoice_repository;
+        $this->reservation_repository = $reservation_repository;
     }
     /**
      * @Route("/", name="app")
@@ -33,31 +38,80 @@ class AppController extends AbstractController
         return $this->render('app/index.html.twig', []);
     }
     /**
-     * @Route("/confirmation", name="confirm")
+     * @Route("/order-confirm/{id}", name="order-confirm", methods={"POST"})
      */
-    public function confirm()
+    public function orderConfirm(int $id)
     {
-
-        $email = "robin-be@hotmail.com";
-
-        if ($this->invoice_repository->findOneBy(["customer_email" => $email])) {
-            // // $this_customer = $this->customerRepository->findOneBy(["email" => $email], ["id" => "DESC"]);
-            // $this_invoice =  $this->invoice_repository->findOneBy(["customer_email" => $email], ["id" => "DESC"]);
-
-            // foreach ($this_invoice->getOrders() as $value) {
-            //     "<tr><td>" . $value->getLabel() . "</td><td>" . $value->getQuantity() . "</td><td>" . $value->getPrice() . " €</td><td></td></tr>";
-            // }
-            // dump($this_invoice);
-            // $email = (new TemplatedEmail())
-            //     ->from('admin@shop-lechevalblanc.be')
-            //     ->to($email)
-            //     ->priority(Email::PRIORITY_HIGH)
-            //     ->subject('Confirmation de commande')
-            //     ->htmlTemplate('emails/confirmation.html.twig')
-            //     ->context(['totalAmount' => $this_invoice->getAmount(), 'orders' => $this_invoice->getOrders()]);
-
-            // $this->mailer->send($email);
-            dd("Mail envoyé");
+        $invoice = $this->invoice_repository->findOneBy(["id" => $id]);
+        $date = new DateTime();
+        if ($invoice->getClient()) {
+            if ($invoice->getSentAt() >= $date->modify("-4 minutes")) {
+                $email = (new TemplatedEmail())
+                    ->from('admin@shop-lechevalblanc.be')
+                    ->cc('admin@shop-lechevalblanc.be')
+                    ->to($invoice->getClient()->getEmail())
+                    ->priority(Email::PRIORITY_HIGH)
+                    ->subject('Confirmation de commande')
+                    ->htmlTemplate('emails/orderConfirmation.html.twig')
+                    ->context(['totalAmount' => $invoice->getAmount(), 'orders' => $invoice->getOrders()]);
+                $this->mailer->send($email);
+                return new Response;
+            }
+        } else {
+            return new Response;
         }
+        return $this->redirectToRoute("app");
+    }
+    /**
+     * @Route("/reserve-confirm/{id}", name="reserve-confirm", methods={"POST"})
+     */
+    public function reserveConfirm(int $id)
+    {
+        $reservation = $this->reservation_repository->findOneBy(["id" => $id]);
+        $encodedid = base64_encode("nb." . $reservation->getPeopleNumber() . "~id@" . $id);
+        $date = new DateTime();
+        if ($reservation) {
+            if ($reservation->getSentAt() >= $date->modify("-4 minutes")) {
+                $email = (new TemplatedEmail())
+                    ->from('admin@shop-lechevalblanc.be')
+                    ->cc('admin@shop-lechevalblanc.be')
+                    ->to($reservation->getCustomer()->getEmail())
+                    ->priority(Email::PRIORITY_HIGH)
+                    ->subject('Confirmation de réservation')
+                    ->htmlTemplate('emails/reserveConfirmation.html.twig')
+                    ->context([
+                        'id' => $reservation->getId(),
+                        'encodedid' => $encodedid,
+                        'peopleNumber' => $reservation->getPeopleNumber(),
+                        'comment' => $reservation->getComment(),
+                        'reservationAt' => $reservation->getReservationAt(),
+                        'client' => $reservation->getCustomer()
+                    ]);
+                $this->mailer->send($email);
+                return new Response;
+            }
+        }
+        return $this->redirectToRoute("app");
+    }
+    /**
+     * @Route("/reserve/{id}/delete", name="reserve-delete", methods={"GET"})
+     */
+    public function reserveDelete(string $id, ReservationRepository $reservation_repository)
+    {
+        $decodedid = base64_decode($id);
+        $delete = substr(strstr($decodedid, '@'), 1);
+        $reservation = $reservation_repository->find($delete);
+        $date = new DateTime();
+        if ($reservation) {
+            if ($reservation->getReservationAt() >= $date->modify("-50 minutes")) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($reservation);
+                $entityManager->flush();
+                echo ("<h1>Votre réservation a correctement été supprimée</h1>");
+            }
+        } else {
+            return $this->redirectToRoute("app");
+        }
+        return new Response;
     }
 }

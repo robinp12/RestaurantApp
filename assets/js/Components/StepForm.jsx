@@ -63,7 +63,7 @@ const StepForm = ({ match, setWhere }) => {
         invoiceTable: id < 15 ? +id : 0
     });
 
-    const [orderInfo, setOrderInfo] = useState({ reservationAt: "" });
+    const [orderInfo, setOrderInfo] = useState({ reservationAt: new Date() });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -117,14 +117,20 @@ const StepForm = ({ match, setWhere }) => {
         bag.orderTable = id < 15 ? +id : 0;
         return bag
     }
+    var i = 0;
     const handleSubmitOrder = async (order, id) => {
         order.invoice = "/api/invoices/" + id;
-        console.log(order.invoice)
-
         try {
-            const rep = await ordersAPI.add(order);
-            console.log(rep)
-
+            await ordersAPI.add(order);
+            i++
+            if (bag.length == i) {
+                try {
+                    //Envoi du mail de confirmation 
+                    // await ordersAPI.sendMail(id);
+                } catch (error) {
+                    console.error("Error on mail sending")
+                }
+            }
             setOrderCart(cart)
         } catch (error) {
             console.error("Order's form error")
@@ -242,7 +248,6 @@ const StepForm = ({ match, setWhere }) => {
                     return (
                         <div className="container">
                             <MenuOrder products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
-                            <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setChoose(0) }}>{lang.back}</button>
                             <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); setThere(step => step + 1) }} disabled={!cart.length}>{lang.next}</button>
                         </div>
                     );

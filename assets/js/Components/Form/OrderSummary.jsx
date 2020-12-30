@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import QrCode from "qrcode.react";
+import React, { useContext, useEffect, useState } from 'react';
+import { API_URL } from "../../../config";
 import { CustomerContext } from '../../Context/CustomerContext';
 import { LangContext } from '../../Context/LangContext';
 import Cart from '../Cart';
-import Field from './Input/Field';
-import QrCode from "qrcode.react";
-import { URL } from '../../../config';
 const OrderSummary = ({ isReservation = false, reservation, setReservation, takeAway, toPrint = false }) => {
 
     const { lang } = useContext(LangContext);

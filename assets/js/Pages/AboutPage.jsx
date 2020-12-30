@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import ReactToPrint from 'react-to-print';
+import React, { useContext, useEffect, useState } from 'react';
 import "react-toastify/dist/ReactToastify.css";
 import socketIOClient from "socket.io-client";
 import Header from '../Components/Header';
@@ -46,16 +45,12 @@ const AboutPage = ({ ref }) => {
         setMessage(prev => [...prev, { from: customer.email, desc: desc }]);
     };
 
-    const componentRef = useRef();
 
     return (
         <>
             <Header title={lang.about} />
-            <ReactToPrint
-                trigger={() => <button>Print this out!</button>}
-                content={() => componentRef.current}
-            />
-            <div className="row card-text" ref={componentRef}>
+
+            <div className="row card-text" >
                 <div className="col-sm-12 col-md-6">
                     <iframe width="100%" height="350" frameBorder="0"
                         src="https://www.google.com/maps/embed/v1/place?q=le%20cheval%20blanc%20spontin&key=AIzaSyD447e5QbLc2blHJchrtHoVouRz1YN8pNI" allowFullScreen></iframe>
