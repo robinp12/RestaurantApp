@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import "react-toastify/dist/ReactToastify.css";
 import socketIOClient from "socket.io-client";
 import Header from '../Components/Header';
+import Stripe from '../Components/Stripe';
 import { LangContext } from '../Context/LangContext';
 import authAPI from '../Services/authAPI';
 import useLocalStorage from '../Services/useLocalStorage';
@@ -69,6 +70,7 @@ const AboutPage = ({ ref }) => {
                     </div> */}
                     {/* <div className={"alert alert-" + (!adminConnected.bool ? "primary" : "success")} role="alert">{adminConnected.msg}</div> */}
                     {/* <OrderChat customer={customer} admin={authAPI.isAuth()} send={send} message={message} setMessage={setMessage} adminConnected={adminConnected} /> */}
+                    <Stripe />
                 </div>
                 <div className="col-sm-12 col-md-6">
                     <div className="row">

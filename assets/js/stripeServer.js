@@ -1,15 +1,18 @@
-const stripe = require("stripe")("sk_test_4eC39HqLyjWDarjtT1zdp7dc");
+import Stripe from "@stripe/stripe-js";
+
+const stripe = new Stripe("sk_test_4eC39HqLyjWDarjtT1zdp7dc");
+
+// const stripe = require("stripe")("sk_test_4eC39HqLyjWDarjtT1zdp7dc");
 const { default: Axios } = require("axios");
-Axios;
 const YOUR_DOMAIN = "http://localhost:3000/checkout";
 
-const f = async () => {
-  const session = await stripe.checkout.sessions.create({
+export default async (req, res) => {
+  await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: [
       {
         price_data: {
-          currency: "usd",
+          currency: "eur",
           product_data: {
             name: "Stubborn Attachments",
             images: ["https://i.imgur.com/EHyR2nP.png"],
