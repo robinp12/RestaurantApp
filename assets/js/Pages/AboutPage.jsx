@@ -70,7 +70,7 @@ const AboutPage = ({ ref }) => {
                     </div> */}
                     {/* <div className={"alert alert-" + (!adminConnected.bool ? "primary" : "success")} role="alert">{adminConnected.msg}</div> */}
                     {/* <OrderChat customer={customer} admin={authAPI.isAuth()} send={send} message={message} setMessage={setMessage} adminConnected={adminConnected} /> */}
-                    <PaymentForm />
+                    {/* <PaymentForm /> */}
                 </div>
                 <div className="col-sm-12 col-md-6">
                     <div className="row">
