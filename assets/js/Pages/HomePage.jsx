@@ -1,12 +1,7 @@
-import React, { useContext, useState } from "react";
-import Field from "../Components/Form/Input/Field";
+import React, { useContext } from "react";
+import { Carousel } from "react-bootstrap";
 import Header from "../Components/Header";
 import { LangContext } from "../Context/LangContext";
-import moment from "moment";
-import { Button, Carousel, OverlayTrigger, Popover } from "react-bootstrap";
-import Axios from "axios";
-import productsAPI from "../Services/productsAPI";
-import { useRef } from "react";
 
 const HomePage = () => {
 
