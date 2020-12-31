@@ -21,30 +21,14 @@ export default function CheckoutForm({ id, setAway }) {
                 setClientSecret(data.data.client_secret);
             });
     }, []);
-    const CARD_ELEMENT_OPTIONS = {
-        style: {
-            base: {
-                color: '#32325d',
-                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                fontSmoothing: 'antialiased',
-                fontSize: '16px',
-                '::placeholder': {
-                    color: '#aab7c4'
-                }
-            },
-            invalid: {
-                color: '#fa755a',
-                iconColor: '#fa755a'
-            }
-        }
-    };
+
     const cardStyle = {
         style: {
             base: {
                 color: "#32325d",
                 fontFamily: 'Arial, sans-serif',
                 fontSmoothing: "antialiased",
-                fontSize: "16px",
+                fontSize: "12px",
                 "::placeholder": {
                     color: "#32325d"
                 }
@@ -88,8 +72,8 @@ export default function CheckoutForm({ id, setAway }) {
     };
     return (
         <>
-            <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
-            <button onClick={handleSubmit} className="btn btn-primary m-1 mt-3 stripe" disabled={processing || disabled || succeeded} id="submit" >
+            <CardElement id="card-element" className="bg-light m-1 p-3" options={cardStyle} onChange={handleChange} />
+            <button onClick={handleSubmit} className="btn btn-primary mt-3 stripe" disabled={processing || disabled || succeeded} id="submit" >
                 <span id="button-text">
                     {processing ? (<div className="spinner" id="spinner"></div>) : ("Payer")}
                 </span>

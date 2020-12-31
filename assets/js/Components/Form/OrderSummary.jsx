@@ -76,7 +76,16 @@ const OrderSummary = ({ isReservation = false, reservation, setReservation, take
                                     rows="5"
                                     placeholder={"Ecrire un commmentaire à propos de la réservation ..."} />
                             </div> ||
-                            <div className="form-group">
+                            <></>
+                        }
+                        </>
+                    }
+                </div>
+                {isReservation && <>
+
+                    {toPrint &&
+                        <div className="form-group">
+                            <div className="row"><div className="col mt-5 mr-5">
                                 <QrCode
                                     value={
                                         "RESERVATION" + "\n" +
@@ -93,12 +102,8 @@ const OrderSummary = ({ isReservation = false, reservation, setReservation, take
                                         "Commentaire : " + reservation.comment
                                     }
                                 />
-                            </div>
-                        }
-                        </>
-                    }
-                </div>
-
+                            </div></div>
+                        </div>}</>}
 
             </div>
         </>);

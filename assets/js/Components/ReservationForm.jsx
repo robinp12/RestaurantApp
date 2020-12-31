@@ -70,7 +70,7 @@ const ReservationForm = () => {
             const rep = await reservationsAPI.add(reservation);
             try {
                 //Envoi du mail de confirmation
-                // await reservationsAPI.sendMail(rep.data.id);
+                await reservationsAPI.sendMail(rep.data.id);
                 reserveConfirm.current.removeAttribute("disabled");
             } catch (error) {
                 console.error("Error on email sending")

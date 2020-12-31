@@ -38,7 +38,7 @@ security:
       pattern: ^/api/invoices
       anonymous: true
       stateless: true
-      methods: [POST]
+      methods: [POST, PUT]
     reservations:
       pattern: ^/api/reservations
       anonymous: true

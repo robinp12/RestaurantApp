@@ -64,7 +64,7 @@ const StepForm = ({ match, setWhere }) => {
         invoiceTable: id < 15 ? +id : 0
     });
 
-    const [orderInfo, setOrderInfo] = useState({ reservationAt: new Date() });
+    const [orderInfo, setOrderInfo] = useState({ reservationAt: "" });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -213,6 +213,7 @@ const StepForm = ({ match, setWhere }) => {
         if (choose == 1) {
             switch (there) {
                 case 1:
+                    orderInfo.reservationAt = new Date();
                     return (<>
                         <div className="container" >
                             <div ref={componentRef}>

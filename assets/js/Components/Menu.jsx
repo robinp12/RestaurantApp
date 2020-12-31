@@ -10,7 +10,9 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
 
     const actif = (product) => {
         for (var i in cart) {
-            if (cart[i].product == product) return "selected"
+            if (cart[i].product == product) {
+                return cart[i].quantity
+            }
         }
     }
     // const deleteItem = (product) => {
@@ -37,14 +39,16 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
                                         <div className="col">
                                             <li onClick={() => {
                                                 addItemToCart(prod.id, prod.label, prod.price, 1); setCart(listCart);
-                                            }} className={"list-group-item d-flex justify-content-between align-items-center align-middle " + actif(prod.id)}
+                                            }} className={"list-group-item d-flex justify-content-between align-items-center align-middle " + (actif(prod.id) && "selected" || "")}
                                             >
                                                 <span className="float-left">
                                                     <span>{prod.label}</span>
                                                     <span className="px-1"></span>
                                                     {prod.description && <PopupInfo info={prod.description} />}
                                                 </span>
-                                                <span className="lead">{prod.price}€</span>
+                                                <span className="lead">
+                                                    <small className={"mr-2"}> {actif(prod.id) && actif(prod.id) + "x"}</small>
+                                                    {prod.price}€</span>
                                             </li>
                                         </div>
                                     </div>
@@ -67,7 +71,9 @@ const MenuOrder = ({ products, categories, listCart, addItemToCart }) => {
 
     const actif = (product) => {
         for (var i in cart) {
-            if (cart[i].product == product) return "selected"
+            if (cart[i].product == product) {
+                return cart[i].quantity
+            }
         }
     }
     // const deleteItem = (product) => {
@@ -101,7 +107,10 @@ const MenuOrder = ({ products, categories, listCart, addItemToCart }) => {
                                                         {prod.description && <PopupInfo info={prod.description} />
                                                         }
                                                     </span>
-                                                    <span className="lead ml-3">{prod.price}€</span>
+                                                    <span className="lead ml-3">
+                                                        <small className={"mr-2"}> {actif(prod.id) && actif(prod.id) + "x"}</small>
+
+                                                        {prod.price}€</span>
                                                 </li>
                                             </div>
                                         </div>

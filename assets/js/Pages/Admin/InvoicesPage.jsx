@@ -57,7 +57,7 @@ const InvoicesPage = ({ match, history }) => {
             case "CANCELLED":
                 return "Supprimé";
             default:
-                return "Envoyé";
+                return "En attente";
         }
     }
     const filtered = invoices.filter(c =>
@@ -147,16 +147,21 @@ const InvoicesPage = ({ match, history }) => {
                                         </div>
                                     </div>
                                     <div className="row justify-content-between">
-                                        {invoice.status !== "PAID" &&
-                                            <button className="btn btn-primary" onClick={() => handleChangeStatus(invoice.id, "PAID")}>Payer</button>
-                                            ||
-                                            <button className="btn btn-link" disabled>{status(invoice.status)}</button>
-                                        }
-                                        {!change ?
-                                            <button className="btn btn-secondary" onClick={() => setChange(!change)}>{"Modifier"}</button>
-                                            :
-                                            <button className="btn btn-secondary" onClick={() => { setChange(!change) }}>{"Valider"}</button>
-                                        }
+                                        <div className="col">
+                                            {invoice.status !== "PAID" &&
+                                                <button className="btn btn-primary" onClick={() => handleChangeStatus(invoice.id, "PAID")}>Payer</button>
+                                                ||
+                                                <button className="btn btn-link" disabled>{status(invoice.status)}</button>
+                                            }
+                                        </div>
+                                        <div className="col text-right">
+                                            {!change ?
+                                                <button className="btn btn-secondary" onClick={() => setChange(!change)}>{"Modifier"}</button>
+                                                :
+                                                <button className="btn btn-secondary" onClick={() => { setChange(!change) }}>{"Valider"}</button>
+                                            }
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>

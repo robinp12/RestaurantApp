@@ -93,18 +93,21 @@ const NavbarPerso = ({ history }) => {
           </>
           ||
           <Nav className="mr-auto nav-item">
+            {/* <Nav.Link className="nav-item text-muted" href="#map">Map</Nav.Link> */}
+            {/* <Nav.Link className="nav-item text-muted" href="#chatadmin">Chat</Nav.Link> */}
             <Nav.Link className="nav-item" href="#commandes">Commandes</Nav.Link>
-            <Nav.Link className="nav-item text-muted" href="#map">Map</Nav.Link>
             <Nav.Link className="nav-item" href="#reservations">Reservations</Nav.Link>
-            <Nav.Link className="nav-item" href="#chatadmin">Chat</Nav.Link>
+            <Nav.Link className="nav-item" href="#factures">Factures</Nav.Link>
             <NavDropdown title="Gestion" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#factures">Factures</NavDropdown.Item>
               <NavDropdown.Item href="#clients">Clients</NavDropdown.Item>
 
               <NavDropdown.Divider />
               <NavDropdown.Item href="#manage">Menus</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#utilisateurs">Utilisateurs</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#map" className="text-muted">Map</NavDropdown.Item>
+              <NavDropdown.Item href="#chatadmin" className="text-muted">Chat</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         }

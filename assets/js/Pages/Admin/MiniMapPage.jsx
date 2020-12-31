@@ -38,7 +38,7 @@ const MiniMapPage = () => {
             case "CANCELLED":
                 return "Supprimé";
             default:
-                return "Envoyé";
+                return "En attente";
         }
     }
     useEffect(() => {

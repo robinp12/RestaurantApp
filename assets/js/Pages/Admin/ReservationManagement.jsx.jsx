@@ -113,7 +113,6 @@ const ReservationManagement = ({ match, history }) => {
                                                 {reservation.comment}</span>
                                         </div>
                                     </div>
-                                    <button className="btn btn-secondary">{"Modifier"}</button>
                                     <button onClick={() => handleDelete(reservation.id)} className="btn btn-primary float-right">Supprimer</button>
                                 </div>
                             </div>
