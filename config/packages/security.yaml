@@ -14,16 +14,6 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
-    products:
-      pattern: ^/api/products
-      anonymous: true
-      stateless: true
-      methods: [GET]
-    categories:
-      pattern: ^/api/categories
-      anonymous: true
-      stateless: true
-      methods: [GET]
     customers:
       pattern: ^/api/customers
       anonymous: true
@@ -44,6 +34,16 @@ security:
       anonymous: true
       stateless: true
       methods: [POST]
+    products:
+      pattern: ^/api/products
+      anonymous: true
+      stateless: true
+      methods: [GET]
+    categories:
+      pattern: ^/api/categories
+      anonymous: true
+      stateless: true
+      methods: [GET]
     login:
       pattern: ^/api/login
       stateless: true
@@ -52,11 +52,6 @@ security:
         check_path: /api/login_check
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
-    # registration:
-    #   pattern: ^/api/users
-    #   anonymous: true
-    #   stateless: true
-    #   methods: [POST]
     api:
       pattern: ^/api
       stateless: true
@@ -77,7 +72,37 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
-    # - { path: ^/admin, roles: ROLE_ADMIN }
-    # - { path: ^/profile, roles: ROLE_USER }
     - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - {
+        path: ^/api/products,
+        roles: IS_AUTHENTICATED_FULLY,
+        methods: [POST, PUT, DELETE],
+      }
+    - {
+        path: ^/api/categories,
+        roles: IS_AUTHENTICATED_FULLY,
+        methods: [POST, PUT, DELETE],
+      }
+    - {
+        path: ^/api/customers,
+        roles: IS_AUTHENTICATED_FULLY,
+        methods: [GET, PUT, DELETE],
+      }
+    - {
+        path: ^/api/orders,
+        roles: IS_AUTHENTICATED_FULLY,
+        methods: [GET, PUT, DELETE],
+      }
+    - {
+        path: ^/api/invoices,
+        roles: IS_AUTHENTICATED_FULLY,
+        methods: [GET, DELETE],
+      }
+    - {
+        path: ^/api/reservations,
+        roles: IS_AUTHENTICATED_FULLY,
+        methods: [GET, PUT, DELETE],
+      }
     - { path: ^/admin, roles: IS_AUTHENTICATED_FULLY }
+    # - { path: ^/profile, roles: ROLE_USER }
+    # - { path: ^/admin, roles: ROLE_ADMIN }

@@ -99,7 +99,7 @@ const MenuOrder = ({ products, categories, listCart, addItemToCart }) => {
                                             <div className="col">
                                                 <li onClick={() => {
                                                     addItemToCart(prod.id, prod.label, prod.price, 1); setCart(listCart);
-                                                }} className={"list-group-item d-flex justify-content-between align-items-center " + actif(prod.id)}
+                                                }} className={"list-group-item d-flex justify-content-between align-items-center " + (actif(prod.id) && "selected" || "")}
                                                 >
                                                     <span className="justify-content-between mr-4">
                                                         {prod.label}

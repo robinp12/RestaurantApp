@@ -65,8 +65,8 @@ const HomePage = () => {
                         <div className="col">
                             <div className="card-text">
 
-                                <p>Bienvenue sur le site du Cheval Blanc. <br />
-                                Vous pouvez sur ce site passer une commande en ligne.</p>
+                                <p>Bienvenue sur le site de commerce en ligne du Cheval Blanc. <br />
+                                Via ce site, vous pouvez passer une commande en ligne.</p>
                                 <a className="btn btn-primary text-light " href="#menu" role="a">
                                     Voir la carte
                                     </a>
