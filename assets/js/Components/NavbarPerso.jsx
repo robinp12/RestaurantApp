@@ -29,7 +29,7 @@ const NavbarPerso = ({ history }) => {
   );
 
   return (
-    <Navbar fixed="top" bg="dark" variant="dark" collapseOnSelect={true} expand="lg" onToggle={() => setShow(false)}>
+    <Navbar fixed="top" className="violet" variant="dark" collapseOnSelect={true} expand="lg" onToggle={() => setShow(false)}>
       <Navbar.Brand href={!isAuth && "#home" || ""}>
         <img
           alt=""
@@ -72,7 +72,7 @@ const NavbarPerso = ({ history }) => {
                     <>
                       <Nav.Link className="btn text-light mr-1" href="#reserver">{lang.toReserve}</Nav.Link>
                       <OverlayTrigger trigger="click" placement="bottom" show={show} overlay={popover} transition>
-                        <Nav.Link className="nav-item btn btn-dark text-primary border-primary ml-1" onClick={() => setShow(!show)}>
+                        <Nav.Link className="nav-item btn text-light border-light ml-1" onClick={() => setShow(!show)}>
                           <b><em className="fa fa-shopping-cart fa-lg"></em> {lang.cart} : {cart.length}</b>
                         </Nav.Link>
                       </OverlayTrigger>
@@ -82,7 +82,7 @@ const NavbarPerso = ({ history }) => {
                       {(history.location.pathname !== "/commander") &&
                         <>
                           <Nav.Link className="btn text-light mr-1" href="#reserver">{lang.toReserve}</Nav.Link>
-                          <Nav.Link className="btn text-primary border-primary mr-1" href="#commander">{lang.toOrder}</Nav.Link>
+                          <Nav.Link className="btn text-orange border-warning mr-1" href="#commander">{lang.toOrder}</Nav.Link>
                         </>
                       }
                     </>

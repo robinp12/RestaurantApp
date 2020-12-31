@@ -72,10 +72,10 @@ const HomePage = () => {
 
                                 <p>Bienvenue sur le site du Cheval Blanc. <br />
                                 Vous pouvez sur ce site passer une commande en ligne.</p>
-                                <a className="btn btn-primary" href="#menu" role="a">
+                                <a className="btn btn-primary text-light " href="#menu" role="a">
                                     Voir la carte
                                     </a>
-                                <a href="#apropos" className="card-link mx-3">À propos</a>
+                                <a href="#apropos" className="btn text-violet mx-2">À propos</a>
                             </div>
                         </div>
                     </div>

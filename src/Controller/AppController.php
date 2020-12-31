@@ -9,6 +9,7 @@ use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -113,5 +114,26 @@ class AppController extends AbstractController
             return $this->redirectToRoute("app");
         }
         return new Response;
+    }
+
+    /**
+     * @Route("/pay/{id}",name="pay", methods={"POST"})
+     */
+    public function paying(int $id): Response
+    {
+        $invoice = $this->invoice_repository->find($id);
+        $orders = "";
+        foreach ($invoice->getOrders() as $key) {
+            $orders .= " | " . $key->getQuantity() . "x " . $key->getLabel() . " " . $key->getPrice() . "€ \n";
+        }
+        \Stripe\Stripe::setApiKey('sk_test_51HCndUCDUj22MdGMscmy5f7WOiIB4zVDgd8AHVyDJ6pceA0wx8w0OV2Lpf4HtLtdRCAgvOLFDUIBjkR0tf25gwyD002AdZsgEN');
+        $pay = \Stripe\PaymentIntent::create([
+            'amount' => $invoice->getAmount() * 100,
+            'currency' => 'eur',
+            'payment_method_types' => ['card'],
+            "description" => "Facture n°" . $invoice->getId() . " \n" . $orders
+        ]);
+
+        return $this->json($pay);
     }
 }

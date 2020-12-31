@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../Context/CartContext';
-import Field from './Form/Input/Field';
 
-const Cart = () => {
+const Cart = ({ pay }) => {
     const { cart, setCart } = useContext(CartContext);
     const [refresh, setRefresh] = useState(true);
 
@@ -63,7 +62,7 @@ const Cart = () => {
                                     {cart.map((e) =>
                                         <tr key={e.product}>
                                             <td>{e.name}</td>
-                                            <td>
+                                            <td>{pay && e.quantity ||
                                                 <input
                                                     className={"form-control"}
                                                     value={e.quantity}
@@ -71,13 +70,14 @@ const Cart = () => {
                                                     onChange={handleChange}
                                                     type={"number"}
                                                     placeholder={e.quantity}
-                                                />
+                                                />}
                                             </td>
                                             <td className=" text-center">{e.totalAmount} €</td>
                                             <td className=" text-center">
-                                                <a className="badge badge-primary" onClick={() => deleteItem(e.product)}>
-                                                    <em className="fa fa-times fa-sm"></em>
-                                                </a>
+                                                {!pay &&
+                                                    <a className="badge badge-primary" onClick={() => deleteItem(e.product)}>
+                                                        <em className="fa fa-times fa-sm"></em>
+                                                    </a>}
                                             </td>
                                         </tr>
                                     )}

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import "react-toastify/dist/ReactToastify.css";
 import socketIOClient from "socket.io-client";
+import PaymentForm from '../Components/Form/PaymentForm';
 import Header from '../Components/Header';
-import Stripe from '../Components/Stripe';
 import { LangContext } from '../Context/LangContext';
 import authAPI from '../Services/authAPI';
 import useLocalStorage from '../Services/useLocalStorage';
@@ -70,7 +70,7 @@ const AboutPage = ({ ref }) => {
                     </div> */}
                     {/* <div className={"alert alert-" + (!adminConnected.bool ? "primary" : "success")} role="alert">{adminConnected.msg}</div> */}
                     {/* <OrderChat customer={customer} admin={authAPI.isAuth()} send={send} message={message} setMessage={setMessage} adminConnected={adminConnected} /> */}
-                    <Stripe />
+                    <PaymentForm />
                 </div>
                 <div className="col-sm-12 col-md-6">
                     <div className="row">
@@ -86,7 +86,7 @@ const AboutPage = ({ ref }) => {
                                 <i className="fa fa-mobile fa-lg" aria-hidden="true"></i>  <a href="tel:0475 31 93 24">0475 31 93 24</a>
 
                                 <br />
-                                <i className="fa fa-facebook-square fa-lg" aria-hidden="true"></i> <a href="https://www.facebook.com/LeChevalBlancSpontin">Le Cheval Blanc Spontin</a><br />
+                                <i className="fa fa-facebook-square fa-lg" aria-hidden="true"></i> <a href="https://www.facebook.com/LeChevalBlancSpontin" target="_blank">Le Cheval Blanc Spontin</a><br />
                                 <i className="fa fa-envelope-o fa-lg" aria-hidden="true"></i> <a href="mailto:cavalo.branco@skynet.be">cavalo.branco@skynet.be</a>
                             </address>
                         </div>

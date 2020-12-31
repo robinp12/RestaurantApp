@@ -1,10 +1,9 @@
 import QrCode from "qrcode.react";
-import React, { useContext, useEffect, useState } from 'react';
-import { API_URL } from "../../../config";
+import React, { useContext } from 'react';
 import { CustomerContext } from '../../Context/CustomerContext';
 import { LangContext } from '../../Context/LangContext';
 import Cart from '../Cart';
-const OrderSummary = ({ isReservation = false, reservation, setReservation, takeAway, toPrint = false }) => {
+const OrderSummary = ({ isReservation = false, reservation, setReservation, takeAway, toPrint = false, pay }) => {
 
     const { lang } = useContext(LangContext);
     const { customer, setCustomer } = useContext(CustomerContext);
@@ -60,7 +59,7 @@ const OrderSummary = ({ isReservation = false, reservation, setReservation, take
                         <>
                             <h3>{lang.cart}</h3>
                             <div className="row">
-                                <Cart />
+                                <Cart pay={pay} />
                             </div>
                         </>
                         ||

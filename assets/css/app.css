@@ -187,3 +187,94 @@ input::-webkit-inner-spin-button {
 .svg {
   overflow: scroll;
 }
+.violet {
+  background-color: #532e3d;
+}
+.text-violet {
+  color: #5f3647 !important;
+}
+.orange {
+  background-color: #efa138;
+}
+.text-orange {
+  color: #efa138 !important;
+}
+.btn-primary {
+  background-image: linear-gradient(
+    180deg,
+    rgba(110, 63, 83, 1) 0%,
+    rgba(94, 53, 70, 1) 44%,
+    rgba(124, 76, 96, 1) 100%
+  ) !important;
+  border: 1px solid rgba(124, 76, 96, 1) !important;
+}
+.btn-outline-primary {
+  color: #5f3647 !important;
+  border: 1px solid rgba(124, 76, 96, 1) !important;
+}
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(124, 76, 96, 0.4) !important;
+}
+.btn-primary.focus,
+.btn-primary:focus,
+.btn.focus,
+.btn:focus {
+  box-shadow: 0 0 0 0.2rem rgba(124, 76, 96, 0.4) !important;
+}
+.dropdown-item.active,
+.dropdown-item:active,
+.badge-primary {
+  background-color: #5f3647 !important;
+}
+.dropdown-item:focus,
+.dropdown-item:hover,
+.btn-outline-primary:hover {
+  background-color: #5f3647 !important;
+  color: white !important;
+}
+a,
+a:hover,
+.page-link {
+  color: #5f3647;
+}
+.form-control:focus {
+  border-color: #5f3647 !important;
+  box-shadow: 0 0 0 0.2rem rgba(124, 76, 96, 0.4) !important;
+}
+.btn-outline-primary,
+.border-primary {
+  border-color: #5f3647 !important;
+}
+.btn-outline-primary:not(:disabled):not(.disabled).active,
+.btn-outline-primary:not(:disabled):not(.disabled):active,
+.show > .btn-outline-primary.dropdown-toggle {
+  background-color: #5f3647 !important;
+  color: white !important;
+}
+.btn-outline-primary.focus,
+.btn-outline-primary:focus,
+.page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(124, 76, 96, 0.4) !important;
+}
+.page-item.active .page-link,
+.page-link:hover {
+  background-color: #5f3647 !important;
+  border-color: #5f3647 !important;
+}
+.stripe {
+  background: #5469d4 !important;
+  font-family: Arial, sans-serif !important;
+  color: #ffffff !important;
+  border-radius: 0 0 4px 4px !important;
+  border: 0 !important;
+  padding: 12px 16px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: block !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07) !important;
+  width: 100% !important;
+}

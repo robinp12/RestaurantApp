@@ -36,6 +36,7 @@ const StepForm = ({ match, setWhere }) => {
     const [there, setThere] = useState(0);
     const [confirmed, setConfirmed] = useState(false);
 
+    const [invoiceId, setInvoiceId] = useState();
 
     const [customer, setCustomer] = useState({
         firstName: "",
@@ -94,7 +95,7 @@ const StepForm = ({ match, setWhere }) => {
         try {
             const rep = await invoicesAPI.add(invoice);
             confirmRef.current.removeAttribute("disabled")
-            toast("Commande envoyée");
+            setInvoiceId(rep.data.id);
             sendAllOrders(rep.data.id)
             setConfirmed(true)
             // sendNotif()
@@ -104,10 +105,10 @@ const StepForm = ({ match, setWhere }) => {
     }
 
     const sendAllOrders = (id) => {
-        setAway(step => step + 1)
         for (let e in bag) {
             handleSubmitOrder(formatedOrder(bag[e]), id)
         }
+        setAway(step => step + 1)
     }
 
     const formatedOrder = ({ name, price, totalAmount, ...bag }) => {
@@ -117,20 +118,10 @@ const StepForm = ({ match, setWhere }) => {
         bag.orderTable = id < 15 ? +id : 0;
         return bag
     }
-    var i = 0;
     const handleSubmitOrder = async (order, id) => {
         order.invoice = "/api/invoices/" + id;
         try {
             await ordersAPI.add(order);
-            i++
-            if (bag.length == i) {
-                try {
-                    //Envoi du mail de confirmation 
-                    // await ordersAPI.sendMail(id);
-                } catch (error) {
-                    console.error("Error on mail sending")
-                }
-            }
             setOrderCart(cart)
         } catch (error) {
             console.error("Order's form error")
@@ -274,7 +265,7 @@ const StepForm = ({ match, setWhere }) => {
                     if (!cart.length) setAway(1);
                     return (
                         <div className="container">
-                            <OrderSummary reservation={orderInfo} />
+                            <OrderSummary reservation={orderInfo} pay={false} />
                             <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
                             <button className="btn-primary btn float-right mt-4" ref={confirmRef} onClick={(e) => {
                                 handleSubmit(e)
@@ -285,14 +276,12 @@ const StepForm = ({ match, setWhere }) => {
                 case 4: // Payment
                     return (
                         <div className="container">
-                            <PaymentForm />
-                            <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
-                            <button className="btn-primary btn float-right mt-4" onClick={(e) => {
+                            <PaymentForm id={invoiceId} setAway={setAway} />
+                            {/* <button className="btn-primary btn float-right mt-4" onClick={(e) => {
                                 e.preventDefault();
                                 setAway(step => step + 1)
                                 // setCart([])
-                                //Handle CHANGE STATUS COMMANDE TO PAY
-                            }} >{lang.next}</button>
+                            }} >{lang.next}</button> */}
                         </div>
                     );
                 case 5: // Chat validation
@@ -300,7 +289,7 @@ const StepForm = ({ match, setWhere }) => {
                         <>
                             <div className="container">
                                 <div ref={componentRef2}>
-                                    <OrderSummary reservation={orderInfo} toPrint />
+                                    <OrderSummary reservation={orderInfo} toPrint pay />
                                 </div>
                                 <ReactToPrint bodyClass={"m-5 p-5"}
                                     trigger={() => <a className="btn-secondary btn float-right">{lang.print}</a>}
@@ -340,7 +329,7 @@ const StepForm = ({ match, setWhere }) => {
                             <a className="btn btn-block borderButt text-primary my-2 border-primary" onClick={() => setChoose(1)}>{lang.there}</a>
                         </div> */}
                         <div className="col">
-                            <a className="btn btn-block borderButt text-dark my-2 border-dark" onClick={() => { setChoose(2); setWhere(2) }}>{lang.takeAway}</a>
+                            <a className="btn btn-block borderButt btn-outline-violet my-2" onClick={() => { setChoose(2); setWhere(2) }}>{lang.takeAway}</a>
                         </div>
                     </div>
                     <div className="d-flex justify-content-center align-items-center">
