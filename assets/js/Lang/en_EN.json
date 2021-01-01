@@ -1,4 +1,5 @@
 {
+    "welcomeMsg" : "Welcome on the Le Cheval Blanc's website shopping. You can create an order by this way.",
     "french" : "french",
     "about" : "About",
     "desserts" : "Desserts",
@@ -8,7 +9,7 @@
     "hours": "Hours",
     "minutes": "Minutes",
     "date": "Date",
-    "peopleNumber" : "Number of people",
+    "peopleNumber" : "People number",
     "reservation" : "Reservation",
     "lastName": "Last Name",
     "firstName" : "First Name",
@@ -26,6 +27,10 @@
     "orderConfirmation": "Order confirmed",
     "reservationConfirmation": "Reservation confirmed",
     "paymentConfirmation": "Payment confirmed",
+    "confirmPayment": "Confirm payment",
+    "paymentSucceed": "Payment succeed",
+    "refusedPayment": "Refused payment",
+    "verification": "Payment verification",
     "takeAway": "Take away",
     "there" : "There",
     "payment" : "Payment",
@@ -44,5 +49,14 @@
     "print" : "Print",
     "from" : "",
     "to" : "to",
-    "and" : "and"
+    "and" : "and",
+    "comment" : "Comment",
+    "writeComment" : "Write a comment about the reservation ...",
+    "customer" : "Customer",
+    "sendingDate" : "Sending date",
+    "reservationDate" : "Reservation date",
+    "sentReservation" : "Reservation sent",
+    "price" : "Price",
+    "product" :"Product",
+    "summary" : "Summary"
 }

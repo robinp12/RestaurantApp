@@ -103,13 +103,13 @@ const ReservationManagement = ({ match, history }) => {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-sm-12 col-md-6">
-                                            <span> Client : <Link to={`/clients/${reservation.customer.id}`}>{reservation.customer.firstName} {reservation.customer.lastName}</Link></span><br />
-                                            <span> Nombre de personne : {reservation.peopleNumber}</span><br />
-                                            <span> Date de réservation : {new Date(reservation.reservation_at).toLocaleString()}</span><br />
+                                            <span> {lang.customer} : <Link to={`/clients/${reservation.customer.id}`}>{reservation.customer.firstName} {reservation.customer.lastName}</Link></span><br />
+                                            <span> {lang.peopleNumber} : {reservation.peopleNumber}</span><br />
+                                            <span> {lang.reservationDate} : {new Date(reservation.reservation_at).toLocaleString()}</span><br />
                                         </div>
                                         <div className="col-sm-12 col-md-6">
-                                            <span> Date d'envoi : {new Date(reservation.sentAt).toLocaleString()}</span><br />
-                                            <span> Commentaire : <br />
+                                            <span> {lang.sendingDate} : {new Date(reservation.sentAt).toLocaleString()}</span><br />
+                                            <span> {lang.comment} : <br />
                                                 {reservation.comment}</span>
                                         </div>
                                     </div>

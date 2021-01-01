@@ -37,6 +37,7 @@ export default function CheckoutForm() {
                     name: "Rob",
                 },
             },
+            return_url: 'https://your-website.com/checkout/complete',
         });
 
         if (error) {

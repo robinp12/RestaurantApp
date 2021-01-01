@@ -75,7 +75,7 @@ const ReservationForm = () => {
             } catch (error) {
                 console.error("Error on email sending")
             }
-            toast("Réservation envoyée");
+            toast(lang.sentReservation);
             setStep(step => step + 1);
         } catch (error) {
             console.error("Reservation's form error")

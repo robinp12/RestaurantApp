@@ -1,6 +1,7 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { LangContext } from "../Context/LangContext";
 import invoicesAPI from "../Services/invoicesAPI";
 import ordersAPI from "../Services/ordersAPI";
 export default function CheckoutForm({ id, setAway }) {
@@ -9,6 +10,8 @@ export default function CheckoutForm({ id, setAway }) {
     const [processing, setProcessing] = useState('');
     const [disabled, setDisabled] = useState(true);
     const [clientSecret, setClientSecret] = useState('');
+    const { lang } = useContext(LangContext);
+
     const stripe = useStripe();
     const elements = useElements();
     useEffect(() => {
@@ -43,6 +46,7 @@ export default function CheckoutForm({ id, setAway }) {
         // Listen for changes in the CardElement
         // and display any errors as the customer types their card details
         setDisabled(event.empty);
+        setProcessing(false)
         setError(event.error ? event.error.message : "");
     };
     const handleSubmit = async e => {
@@ -52,7 +56,7 @@ export default function CheckoutForm({ id, setAway }) {
             payment_method: { card: elements.getElement(CardElement) }
         });
         if (payload.error) {
-            setError(`Paiement refusé. ${payload.error.message}`);
+            setError(`${lang.refusedPayment}. ${payload.error.message}`);
             setProcessing(false);
         } else {
             setError(null);
@@ -75,14 +79,14 @@ export default function CheckoutForm({ id, setAway }) {
             <CardElement id="card-element" className="bg-light m-1 p-3" options={cardStyle} onChange={handleChange} />
             <button onClick={handleSubmit} className="btn btn-primary mt-3 stripe" disabled={processing || disabled || succeeded} id="submit" >
                 <span id="button-text">
-                    {processing ? (<div className="spinner" id="spinner"></div>) : ("Payer")}
+                    {processing ? (lang.verification + " ...") : (lang.confirmPayment)}
                 </span>
             </button>
             {/* Show any error that happens when processing the payment */}
             {error && (<div className="card-errors" role="alert">{error}</div>)}
             {/* Show a success message upon completion */}
             {succeeded && <p className={succeeded ? "result-message" : "result-message hidden"}>
-                Paiement réussi.
+                {LangContext.paymentSucceed}
             </p>}
         </>
     );

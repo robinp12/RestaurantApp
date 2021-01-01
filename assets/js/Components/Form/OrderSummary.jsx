@@ -47,7 +47,7 @@ const OrderSummary = ({ isReservation = false, reservation, setReservation, take
                                 {!takeAway && <><em>{lang.date} : <b>{new Date(reservation.reservationAt).toLocaleString().slice(0, -3)}</b></em><br /></>}
                                 {isReservation && (<>
                                     <span>{lang.peopleNumber} : <b>{reservation.peopleNumber}</b></span><br />
-                                    {toPrint && <span>{"Commentaire"} : <br /><b>{reservation.comment}</b></span>}
+                                    {toPrint && <span>{lang.comment} : <br /><b>{reservation.comment}</b></span>}
                                 </>
                                 )}
                             </p>
@@ -65,7 +65,7 @@ const OrderSummary = ({ isReservation = false, reservation, setReservation, take
                         ||
                         <>{!toPrint &&
                             <div className="form-group">
-                                <label htmlFor="comment">Commentaire</label>
+                                <label htmlFor="comment">{lang.comment}</label>
                                 <textarea
                                     value={reservation.comment}
                                     name="comment"
@@ -74,7 +74,7 @@ const OrderSummary = ({ isReservation = false, reservation, setReservation, take
                                     className={"form-control"}
                                     id="comment"
                                     rows="5"
-                                    placeholder={"Ecrire un commmentaire à propos de la réservation ..."} />
+                                    placeholder={lang.writeComment} />
                             </div> ||
                             <></>
                         }

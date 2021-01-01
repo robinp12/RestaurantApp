@@ -65,12 +65,11 @@ const HomePage = () => {
                         <div className="col">
                             <div className="card-text">
 
-                                <p>Bienvenue sur le site de commerce en ligne du Cheval Blanc. <br />
-                                Via ce site, vous pouvez passer une commande en ligne.</p>
+                                <p>{lang.welcomeMsg}</p>
                                 <a className="btn btn-primary text-light " href="#menu" role="a">
-                                    Voir la carte
-                                    </a>
-                                <a href="#apropos" className="btn text-violet mx-2">À propos</a>
+                                    {lang.theMenu}
+                                </a>
+                                <a href="#apropos" className="btn text-violet mx-2">{lang.about}</a>
                             </div>
                         </div>
                     </div>

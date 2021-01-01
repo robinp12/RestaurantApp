@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../Context/CartContext';
+import { LangContext } from '../Context/LangContext';
 
 const Cart = ({ pay }) => {
     const { cart, setCart } = useContext(CartContext);
+    const { lang } = useContext(LangContext);
+
     const [refresh, setRefresh] = useState(true);
 
     const totalCart = function () {
@@ -52,9 +55,9 @@ const Cart = ({ pay }) => {
                             <table className="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Produit</th>
+                                        <th>{lang.product}</th>
                                         <th className="text-center">#</th>
-                                        <th className="text-center">Prix</th>
+                                        <th className="text-center">{lang.price}</th>
                                         <th className="text-center"></th>
                                     </tr>
                                 </thead>

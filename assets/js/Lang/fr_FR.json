@@ -1,4 +1,5 @@
 {
+    "welcomeMsg" : "Bienvenue sur le site de commerce en ligne du Cheval Blanc. Via ce site, vous pouvez passer une commande en ligne.",
     "french" : "français",
     "about" : "À propos",
     "desserts" : "Desserts",
@@ -27,6 +28,10 @@
     "reservationConfirmation": "Réservation confirmée",
     "orderConfirmation": "Commande confirmée",
     "paymentConfirmation": "Paiement confirmé",
+    "confirmPayment": "Confirmer le paiement",
+    "paymentSucceed": "Paiement réussi",
+    "refusedPayment": "Paiement refusé",
+    "verification": "Vérification du paiement",
     "takeAway": "À emporter",
     "there" : "Sur place",
     "payment" : "Paiement",
@@ -45,5 +50,15 @@
     "print" : "Imprimer",
     "from" : "de",
     "to" : "à",
-    "and" : "et"
+    "and" : "et",
+    "comment" : "Commentaire",
+    "writeComment" : "Ecrire un commentaire à propos de la réservation ...",
+    "customer" : "Client",
+    "sendingDate" : "Date d'envoi",
+    "reservationDate" : "Date de réservation",
+    "sentReservation" : "Réservation envoyée",
+    "price" : "Prix",
+    "product" :"Produit",
+    "summary" : "Résumé"
+
 }
