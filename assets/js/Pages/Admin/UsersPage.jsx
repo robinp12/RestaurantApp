@@ -4,6 +4,7 @@ import Field from '../../Components/Form/Input/Field';
 import Select from '../../Components/Form/Input/Select';
 import UserForm from '../../Components/Form/Management/UserForm';
 import Loader from '../../Components/Loader';
+import authAPI from '../../Services/authAPI';
 import usersAPI from '../../Services/usersAPI';
 
 
@@ -14,6 +15,8 @@ const UsersPage = ({ match, history }) => {
     const [addUser, setAddUser] = useState(false);
     const [change, setChange] = useState(true);
     const [load, setLoad] = useState(true);
+
+    console.log(authAPI.isAdmin())
 
     const handleDelete = async (id) => {
         const originUsers = [...users];
@@ -163,7 +166,7 @@ const UsersPage = ({ match, history }) => {
                                     <th className="text-center hidden-xs align-middle">ID</th>
                                     <th className="text-center align-middle">Utilisateur</th>
                                     <th className="text-center align-middle">
-                                        <button onClick={() => setAddUser(!addUser)} className="btn btn-primary float-right"><i className="fa fa-user-plus fa-lg" aria-hidden="true"></i></button>
+                                        {authAPI.isAdmin && <button onClick={() => setAddUser(!addUser)} className="btn btn-primary float-right"><i className="fa fa-user-plus fa-lg" aria-hidden="true"></i></button> || <></>}
                                     </th>
                                 </tr>
                             </thead>
@@ -180,20 +183,22 @@ const UsersPage = ({ match, history }) => {
                         </table>
                     </div>
                     <div className="col">
-                        {addUser &&
-                            <>
-                                <UserForm />
-                            </>
-                            ||
-                            <>
-                                {users.map(userInfo =>
-                                    userInfo.id == id &&
-                                    <div key={userInfo.id}>
-                                        <SingleUser userInfo={userInfo} />
-                                    </div>
-                                )}
-                            </>
-                        }
+                        {authAPI.isAdmin() && <>
+                            {addUser &&
+                                <>
+                                    <UserForm />
+                                </>
+                                ||
+                                <>
+                                    {users.map(userInfo =>
+                                        userInfo.id == id &&
+                                        <div key={userInfo.id}>
+                                            <SingleUser userInfo={userInfo} />
+                                        </div>
+                                    )}
+                                </>
+                            }
+                        </>}
                     </div>
                 </div>}
         </>

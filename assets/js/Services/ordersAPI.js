@@ -34,17 +34,11 @@ async function findOrder(id) {
 }
 // Récuperer tous les orders
 async function getAllOrders() {
-  const cachedOrders = await Cache.get("orders");
-
-  if (cachedOrders) {
-    return cachedOrders;
-  } else {
-    return Axios.get(ORDERS_API).then((response) => {
-      const orders = response.data["hydra:member"];
-      Cache.set("orders", orders);
-      return orders;
-    });
-  }
+  return Axios.get(ORDERS_API).then((response) => {
+    const orders = response.data["hydra:member"];
+    Cache.set("orders", orders);
+    return orders;
+  });
 }
 // Supprimer un order
 function deleteOrders(id) {

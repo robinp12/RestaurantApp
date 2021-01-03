@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import authAPI from '../../Services/authAPI';
 import settingsAPI from '../../Services/settingsAPI';
 
 
@@ -39,7 +40,7 @@ const SettingsPage = () => {
 
                         <h3 className="card-header">
                             Paramètres
-                        <button className="float-right btn btn-sm btn-primary" onClick={() => setActive(a => !a)}><em className="fa fa-pencil"></em></button>
+                     {authAPI.isAdmin() && <button className="float-right btn btn-sm btn-primary" onClick={() => setActive(a => !a)}><em className="fa fa-pencil"></em></button>}
                         </h3>
 
                         <div className="card-body">

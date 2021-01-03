@@ -47,16 +47,11 @@ async function findInvoices(id) {
 }
 // Récuperer tous les invoices
 async function getAllInvoices() {
-  const cachedInvoices = await Cache.get("invoices");
-  if (cachedInvoices) {
-    return cachedInvoices;
-  } else {
-    return Axios.get(INVOICES_API).then((response) => {
-      const invoices = response.data["hydra:member"];
-      Cache.set("invoices", invoices);
-      return invoices;
-    });
-  }
+  return Axios.get(INVOICES_API).then((response) => {
+    const invoices = response.data["hydra:member"];
+    Cache.set("invoices", invoices);
+    return invoices;
+  });
 }
 // Supprimer une invoice
 function deleteInvoices(id) {

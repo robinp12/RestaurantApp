@@ -111,10 +111,19 @@ const StepForm = ({ match, setWhere }) => {
             handleSubmitOrder(formatedOrder(bag[e]), id)
         }
         if (!onlinePayment.onlinePayment) {
+            sendMail(id);
             setAway(5);
         }
         else {
             setAway(step => step + 1);
+        }
+    }
+
+    const sendMail = async (id) => {
+        try {
+            await ordersAPI.sendMail(id);
+        } catch (error) {
+            console.log(error)
         }
     }
 

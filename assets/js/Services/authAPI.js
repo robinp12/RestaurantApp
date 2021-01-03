@@ -53,7 +53,7 @@ function isAdmin() {
   const token = window.localStorage.getItem("authToken");
   if (
     jwtDecode(token).roles.includes("SUPERADMIN") ||
-    jwtDecode(token).roles.includes("ADMIN")
+    jwtDecode(token).roles.includes("ROLE_ADMIN")
   ) {
     return true;
   }
