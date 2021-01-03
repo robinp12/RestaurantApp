@@ -26,6 +26,7 @@ export default function CheckoutForm({ id, setAway }) {
                 });
             setClientSecret(rep.data.client_secret)
         } catch (error) {
+            setError("Erreur de récupération de la facture")
             console.error("Error on client's payment fetching")
         }
     }
@@ -58,38 +59,45 @@ export default function CheckoutForm({ id, setAway }) {
         setProcessing(false)
         setError(event.error ? event.error.message : "");
     };
-    const handleSubmit = async e => {
-        e.preventDefault();
-        setProcessing(true);
-        var payload;
-        try {
-            payload = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: { card: elements.getElement(CardElement) }
-            });
-        } catch (error) {
-            console.log(error)
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setDisabled(true);
+
+        if (!stripe || !elements) {
+            return;
         }
-        if (payload.error) {
-            console.log(payload.error)
 
-            setError(`${lang.refusedPayment}. ${payload.error.message}`);
-            setProcessing(false);
+        const result = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: { card: elements.getElement(CardElement) }
+        });
+
+        if (result.error) {
+            setError(lang.refusedPayment);
+            setDisabled(false);
+
+            console.log(result.error.message);
         } else {
-            setError(null);
-            try {
-                const rep = await invoicesAPI.update(id, { status: "PAID" });
-                //Envoi du mail de confirmation 
-                const mail = await ordersAPI.sendMail(id);
-                toast(lang.paymentConfirmation);
-
+            // The payment has been processed!
+            setProcessing(true);
+            setDisabled(true);
+            if (result.paymentIntent.status === 'succeeded') {
+                setSucceeded(true);
                 setProcessing(false);
-                setAway(step => step + 1)
-            } catch (error) {
-                setProcessing(false);
-
-                console.error("Error on invoice update to paid")
+                // Show a success message to your customer
+                // There's a risk of the customer closing the window before callback
+                // execution. Set up a webhook or plugin to listen for the
+                // payment_intent.succeeded event that handles any business critical
+                // post-payment actions.
+                try {
+                    const rep = await invoicesAPI.update(id, { status: "PAID" });
+                    toast(lang.paymentConfirmation);
+                    //Envoi du mail de confirmation 
+                    const mail = await ordersAPI.sendMail(id);
+                    setAway(step => step + 1)
+                } catch (error) {
+                    console.error("Error on invoice update to paid")
+                }
             }
-            setSucceeded(true);
         }
     };
     return (
@@ -100,9 +108,7 @@ export default function CheckoutForm({ id, setAway }) {
                     {processing ? (lang.verification + " ...") : (lang.confirmPayment)}
                 </span>
             </button>
-            {/* Show any error that happens when processing the payment */}
             {error && (<div className="card-errors" role="alert">{error}</div>)}
-            {/* Show a success message upon completion */}
             {succeeded && <p className={succeeded ? "result-message" : "result-message hidden"}>
                 {LangContext.paymentSucceed}
             </p>}
