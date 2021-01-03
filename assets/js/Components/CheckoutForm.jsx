@@ -20,7 +20,7 @@ export default function CheckoutForm({ id, setAway }) {
     const fetchSecret = async () => {
         // Create PaymentIntent as soon as the page loads
         try {
-            const rep = await Axios.post("/pay/" + 239)
+            const rep = await Axios.post("/pay/" + id)
                 .then(res => {
                     return res;
                 });
@@ -34,6 +34,7 @@ export default function CheckoutForm({ id, setAway }) {
     }, []);
 
     const cardStyle = {
+        hidePostalCode: true,
         style: {
             base: {
                 color: "#32325d",
@@ -54,7 +55,6 @@ export default function CheckoutForm({ id, setAway }) {
         // Listen for changes in the CardElement
         // and display any errors as the customer types their card details
         setDisabled(false);
-        //c
         setProcessing(false)
         setError(event.error ? event.error.message : "");
     };

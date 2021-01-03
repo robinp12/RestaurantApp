@@ -17,6 +17,7 @@ const Cart = ({ pay }) => {
     }
 
     const deleteItem = (product) => {
+
         for (var item in cart) {
             if (cart[item].product === product) {
                 cart.splice(item, 1);
@@ -26,12 +27,28 @@ const Cart = ({ pay }) => {
         setCart([...cart])
     }
 
-    const handleChange = ({ currentTarget }) => {
-        const { name, value } = currentTarget;
+    const addItemToCart = function (product, name, price, quantity) {
         setRefresh(!refresh)
+
         for (var item in cart) {
-            if (cart[item].product == name) {
-                cart[item].quantity = +value
+            if (cart[item].product === product) {
+                cart[item].quantity++;
+                cart[item].totalAmount = +Number(cart[item].price * cart[item].quantity).toFixed(2);
+                return;
+            }
+        }
+        price = parseFloat(price)
+        var item = { product, name, price, quantity };
+        cart.push(item);
+    }
+
+    const removeItemFromCart = function (product, name, price, quantity) {
+        setRefresh(!refresh)
+        console.log(product, name, price, quantity)
+
+        for (var item in cart) {
+            if (cart[item].product === product) {
+                cart[item].quantity--;
                 if (cart[item].quantity == 0) {
                     deleteItem(cart[item].product)
                     break;
@@ -42,7 +59,25 @@ const Cart = ({ pay }) => {
                 }
             }
         }
-    };
+    }
+
+    // const handleChange = ({ currentTarget }) => {
+    //     const { name, value } = currentTarget;
+    //     setRefresh(!refresh)
+    //     for (var item in cart) {
+    //         if (cart[item].product == name) {
+    //             cart[item].quantity = +value
+    //             if (cart[item].quantity == 0) {
+    //                 deleteItem(cart[item].product)
+    //                 break;
+    //             }
+    //             else {
+    //                 cart[item].totalAmount = +Number(cart[item].price * cart[item].quantity).toFixed(2);
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // };
 
     useEffect(() => { }, [refresh])
 
@@ -52,13 +87,13 @@ const Cart = ({ pay }) => {
                 <div className="col">
                     <div className="row">
                         <div className="col">
-                            <table className="table table-hover">
+                            <table className="table table-responsive-md table-hover ">
                                 <thead>
                                     <tr>
                                         <th className="text-center">{lang.product}</th>
                                         <th className="text-center">#</th>
                                         <th className="text-center">{lang.price}</th>
-                                        <th className="text-center"></th>
+                                        {/* <th className="text-center"></th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -67,23 +102,36 @@ const Cart = ({ pay }) => {
                                             <td className="text-center">{e.name}</td>
                                             {pay && <td className=" text-center">{e.quantity}</td> ||
                                                 <td>
-                                                    <input
-                                                        className={"form-control"}
-                                                        value={e.quantity}
-                                                        name={e.product}
-                                                        onChange={handleChange}
-                                                        type={"number"}
-                                                        placeholder={e.quantity}
-                                                    />
+
+                                                    <ul className="pagination pagination-sm">
+                                                        <li className="page-item" onClick={() => removeItemFromCart(e.product, e.name, e.totalAmount, e.quantity)}>
+                                                            <a className="page-link">&laquo;</a>
+                                                        </li>
+                                                        <li className="page-item disabled">
+                                                            <a className="page-link">{e.quantity}</a>
+                                                        </li>
+                                                        <li className="page-item" onClick={() => addItemToCart(e.product, e.name, e.price, e.quantity)}>
+                                                            <a className="page-link">&raquo;</a>
+                                                        </li>
+                                                    </ul>
+                                                    {/* <input
+                                                            className={"form-control"}
+                                                            value={e.quantity}
+                                                            name={e.product}
+                                                            onChange={handleChange}
+                                                            type={"number"}
+                                                            placeholder={e.quantity}
+                                                        /> */}
                                                 </td>
                                             }
                                             <td className=" text-center">{e.totalAmount} €</td>
-                                            <td className=" text-center">
-                                                {!pay &&
+                                            {/* <td className=" text-center">
+                                                 {!pay &&
                                                     <a className="badge badge-primary" onClick={() => deleteItem(e.product)}>
                                                         <em className="fa fa-times fa-sm"></em>
-                                                    </a>}
-                                            </td>
+                                                    </a>
+                                                } 
+                                            </td>  */}
                                         </tr>
                                     )}
                                 </tbody>

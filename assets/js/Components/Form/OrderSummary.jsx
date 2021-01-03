@@ -59,7 +59,9 @@ const OrderSummary = ({ isReservation = false, reservation, setReservation, take
                         <>
                             <h3>{lang.cart}</h3>
                             <div className="row">
-                                <Cart pay={pay} />
+                                <div className="col">
+                                    <Cart pay={pay} />
+                                </div>
                             </div>
                         </>
                         ||

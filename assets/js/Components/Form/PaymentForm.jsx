@@ -22,7 +22,7 @@ const PaymentForm = ({ id, setAway }) => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col payment">
+                        <div className="col my-2">
                             <h3 className={"mb-4"}>{lang.payment} </h3>
                             <Elements stripe={promise}>
                                 <CheckoutForm id={id} setAway={setAway} />

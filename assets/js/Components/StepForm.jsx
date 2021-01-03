@@ -112,6 +112,7 @@ const StepForm = ({ match, setWhere }) => {
         }
         if (!onlinePayment.onlinePayment) {
             sendMail(id);
+            toast(lang.paymentConfirmation);
             setAway(5);
         }
         else {
@@ -212,10 +213,12 @@ const StepForm = ({ match, setWhere }) => {
     const Next = (e) => {
         e.preventDefault();
         setAway(step => step + 1)
+        window.scrollTo(0, 0);
     }
     const Back = (e) => {
         e.preventDefault();
         setAway(step => step - 1)
+        window.scrollTo(0, 0);
     }
     const ButtonOrder = ({ children, next, back, disabled }) => {
         return (
@@ -246,10 +249,11 @@ const StepForm = ({ match, setWhere }) => {
                             </div>
                             {!confirmed &&
                                 <>
-                                    <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); setThere(step => step - 1) }}>{lang.back}</button>
+                                    <button className="btn-primary btn float-left mt-4" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setThere(step => step - 1) }}>{lang.back}</button>
                                     <button className="btn-primary btn float-right mt-4" ref={confirmRef} onClick={(e) => {
                                         handleSubmitInvoice()
                                         oneTimeClick(e)
+                                        window.scrollTo(0, 0);
                                     }}>{lang.confirm}</button>
                                 </> ||
                                 <ReactToPrint bodyClass={"m-5 p-5"}
@@ -265,7 +269,7 @@ const StepForm = ({ match, setWhere }) => {
                     return (
                         <div className="container">
                             <MenuOrder products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
-                            <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); setThere(step => step + 1) }} disabled={!cart.length}>{lang.next}</button>
+                            <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setThere(step => step + 1) }} disabled={!cart.length}>{lang.next}</button>
                         </div>
                     );
             }
@@ -296,10 +300,12 @@ const StepForm = ({ match, setWhere }) => {
                             <button className="btn-primary btn float-right mt-4" ref={confirmRef} onClick={(e) => {
                                 handleSubmit(e)
                                 oneTimeClick(e)
-                            }} >{lang.confirm}</button>
+                                window.scrollTo(0, 0);
+                            }} disabled={!cart.length} >{lang.confirm}</button>
                         </div>
                     );
                 case 4: // Payment
+                    if (!cart.length) setAway(1);
                     return (
                         <div className="container">
                             <PaymentForm id={invoiceId} setAway={setAway} />
@@ -330,7 +336,7 @@ const StepForm = ({ match, setWhere }) => {
                     return (
                         <div className="container">
                             <CustomerForm errors={errors} />
-                            <button className="btn-primary btn float-left" onClick={(e) => { e.preventDefault(); setChoose(0) }}>{lang.back}</button>
+                            <button className="btn-primary btn float-left" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setChoose(0) }}>{lang.back}</button>
                             <button className="btn-primary btn float-right" onClick={Next}
                                 disabled={!(
                                     customer.firstName &&
@@ -355,7 +361,7 @@ const StepForm = ({ match, setWhere }) => {
                             <a className="btn btn-block borderButt text-primary my-2 border-primary" onClick={() => setChoose(1)}>{lang.there}</a>
                         </div> */}
                         <div className="col">
-                            <a className="btn btn-block borderButt btn-outline-violet my-2" onClick={() => { setChoose(2); setWhere(2) }}>{lang.takeAway}</a>
+                            <a className="btn btn-block borderButt btn-outline-violet my-2" onClick={() => { setChoose(2); setWhere(2); window.scrollTo(0, 0); }}>{lang.takeAway}</a>
                         </div>
                     </div>
                     <div className="d-flex justify-content-center align-items-center">

@@ -7,6 +7,7 @@ import Cart from "./Cart";
 
 const NavbarPerso = ({ history }) => {
   const { cart, setCart } = useContext(CartContext);
+  window.scrollTo(0, 0);
 
   const { language, setLanguage, lang } = useContext(LangContext);
   const { isAuth } = useContext(AuthContext);
@@ -19,8 +20,8 @@ const NavbarPerso = ({ history }) => {
         <Cart />
         {(history.location.pathname !== "/commander") &&
           <div className="row">
-            <div className="col">
-              <a href="#commander" onClick={() => setShow(false)} className="btn btn-sm btn-primary justify-content-end btn-block">Commander</a>
+            <div className="col mx-4 my-2">
+              <Nav.Link href="#commander" onClick={() => setShow(false)} className="btn btn-primary">Commander</Nav.Link>
             </div>
           </div>
         }
