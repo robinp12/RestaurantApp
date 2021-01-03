@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import Field from '../../Components/Form/Input/Field';
 import Loader from '../../Components/Loader';
 import Pagination from '../../Components/Pagination';
+import { LangContext } from '../../Context/LangContext';
 import reservationsAPI from '../../Services/reservationsAPI';
 
 const ReservationManagement = ({ match, history }) => {
+
+    const { lang } = useContext(LangContext);
 
     const { id } = match.params
 
@@ -52,9 +55,9 @@ const ReservationManagement = ({ match, history }) => {
         setCurrentPage(1)
     }
     const filtered = reservations.filter(c =>
-        c.customer.firstName.toLowerCase().includes(search.toLowerCase()) ||
-        c.customer.lastName.toLowerCase().includes(search.toLowerCase()) ||
-        c.customer.email.toLowerCase().includes(search.toLowerCase())
+        c.customer?.firstName.toLowerCase().includes(search.toLowerCase()) ||
+        c.customer?.lastName.toLowerCase().includes(search.toLowerCase()) ||
+        c.customer?.email.toLowerCase().includes(search.toLowerCase())
     );
     const paginated = Pagination.getData(filtered, currentPage, itemsPerPage)
 
@@ -103,7 +106,7 @@ const ReservationManagement = ({ match, history }) => {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-sm-12 col-md-6">
-                                            <span> {lang.customer} : <Link to={`/clients/${reservation.customer.id}`}>{reservation.customer.firstName} {reservation.customer.lastName}</Link></span><br />
+                                            <span> {lang.customer} : <Link to={`/clients/${reservation.customer.id}`}>{reservation.customer?.firstName} {reservation.customer?.lastName}</Link></span><br />
                                             <span> {lang.peopleNumber} : {reservation.peopleNumber}</span><br />
                                             <span> {lang.reservationDate} : {new Date(reservation.reservation_at).toLocaleString()}</span><br />
                                         </div>

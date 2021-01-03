@@ -44,6 +44,11 @@ security:
       anonymous: true
       stateless: true
       methods: [GET]
+    settings:
+      pattern: ^/api/settings
+      anonymous: true
+      stateless: true
+      methods: [GET]
     login:
       pattern: ^/api/login
       stateless: true
@@ -102,6 +107,11 @@ security:
         path: ^/api/reservations,
         roles: IS_AUTHENTICATED_FULLY,
         methods: [GET, PUT, DELETE],
+      }
+    - {
+        path: ^/api/settings,
+        roles: IS_AUTHENTICATED_FULLY,
+        methods: [POST, PUT, DELETE],
       }
     - { path: ^/admin, roles: IS_AUTHENTICATED_FULLY }
     # - { path: ^/profile, roles: ROLE_USER }

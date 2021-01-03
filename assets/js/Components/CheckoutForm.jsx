@@ -4,6 +4,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { LangContext } from "../Context/LangContext";
 import invoicesAPI from "../Services/invoicesAPI";
 import ordersAPI from "../Services/ordersAPI";
+import { toast } from "react-toastify";
+
 export default function CheckoutForm({ id, setAway }) {
     const [succeeded, setSucceeded] = useState(false);
     const [error, setError] = useState(null);
@@ -14,15 +16,21 @@ export default function CheckoutForm({ id, setAway }) {
 
     const stripe = useStripe();
     const elements = useElements();
-    useEffect(() => {
+
+    const fetchSecret = async () => {
         // Create PaymentIntent as soon as the page loads
-        Axios.post("/pay/" + id)
-            .then(res => {
-                return res;
-            })
-            .then(data => {
-                setClientSecret(data.data.client_secret);
-            });
+        try {
+            const rep = await Axios.post("/pay/" + 239)
+                .then(res => {
+                    return res;
+                });
+            setClientSecret(rep.data.client_secret)
+        } catch (error) {
+            console.error("Error on client's payment fetching")
+        }
+    }
+    useEffect(() => {
+        fetchSecret()
     }, []);
 
     const cardStyle = {
@@ -45,17 +53,25 @@ export default function CheckoutForm({ id, setAway }) {
     const handleChange = async (event) => {
         // Listen for changes in the CardElement
         // and display any errors as the customer types their card details
-        setDisabled(event.empty);
+        setDisabled(false);
+
         setProcessing(false)
         setError(event.error ? event.error.message : "");
     };
     const handleSubmit = async e => {
         e.preventDefault();
         setProcessing(true);
-        const payload = await stripe.confirmCardPayment(clientSecret, {
-            payment_method: { card: elements.getElement(CardElement) }
-        });
+        var payload;
+        try {
+            payload = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: { card: elements.getElement(CardElement) }
+            });
+        } catch (error) {
+            console.log(error)
+        }
         if (payload.error) {
+            console.log(payload.error)
+
             setError(`${lang.refusedPayment}. ${payload.error.message}`);
             setProcessing(false);
         } else {
@@ -64,11 +80,13 @@ export default function CheckoutForm({ id, setAway }) {
                 const rep = await invoicesAPI.update(id, { status: "PAID" });
                 //Envoi du mail de confirmation 
                 const mail = await ordersAPI.sendMail(id);
-                console.log(rep, mail)
+                toast(lang.paymentConfirmation);
 
                 setProcessing(false);
                 setAway(step => step + 1)
             } catch (error) {
+                setProcessing(false);
+
                 console.error("Error on invoice update to paid")
             }
             setSucceeded(true);

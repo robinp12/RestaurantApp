@@ -9,3 +9,5 @@ api_platform:
   collection:
     pagination:
       enabled: false
+  enable_swagger_ui: false
+  enable_re_doc: false

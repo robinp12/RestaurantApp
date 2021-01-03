@@ -55,7 +55,7 @@ const Cart = ({ pay }) => {
                             <table className="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>{lang.product}</th>
+                                        <th className="text-center">{lang.product}</th>
                                         <th className="text-center">#</th>
                                         <th className="text-center">{lang.price}</th>
                                         <th className="text-center"></th>
@@ -64,17 +64,19 @@ const Cart = ({ pay }) => {
                                 <tbody>
                                     {cart.map((e) =>
                                         <tr key={e.product}>
-                                            <td>{e.name}</td>
-                                            <td>{pay && e.quantity ||
-                                                <input
-                                                    className={"form-control"}
-                                                    value={e.quantity}
-                                                    name={e.product}
-                                                    onChange={handleChange}
-                                                    type={"number"}
-                                                    placeholder={e.quantity}
-                                                />}
-                                            </td>
+                                            <td className="text-center">{e.name}</td>
+                                            {pay && <td className=" text-center">{e.quantity}</td> ||
+                                                <td>
+                                                    <input
+                                                        className={"form-control"}
+                                                        value={e.quantity}
+                                                        name={e.product}
+                                                        onChange={handleChange}
+                                                        type={"number"}
+                                                        placeholder={e.quantity}
+                                                    />
+                                                </td>
+                                            }
                                             <td className=" text-center">{e.totalAmount} €</td>
                                             <td className=" text-center">
                                                 {!pay &&

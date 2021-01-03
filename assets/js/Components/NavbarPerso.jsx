@@ -108,6 +108,8 @@ const NavbarPerso = ({ history }) => {
               <NavDropdown.Divider />
               <NavDropdown.Item href="#map" className="text-muted">Map</NavDropdown.Item>
               <NavDropdown.Item href="#chatadmin" className="text-muted">Chat</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#parametres" className="text-muted">Paramètres</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         }

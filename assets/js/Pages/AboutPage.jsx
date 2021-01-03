@@ -1,3 +1,4 @@
+import Axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import "react-toastify/dist/ReactToastify.css";
 import socketIOClient from "socket.io-client";
@@ -49,7 +50,7 @@ const AboutPage = ({ ref }) => {
 
     return (
         <>
-            <Header title={lang.about} />
+            <Header title={lang.about} bool={false} />
 
             <div className="row card-text" >
                 <div className="col-sm-12 col-md-6">

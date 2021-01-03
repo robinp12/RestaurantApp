@@ -213,6 +213,7 @@ input::-webkit-inner-spin-button {
     rgba(94, 53, 70, 1) 44%,
     rgba(124, 76, 96, 1) 100%
   ) !important;
+  background-color: #5f3647 !important;
   border: 1px solid rgba(124, 76, 96, 1) !important;
 }
 .btn-outline-primary {

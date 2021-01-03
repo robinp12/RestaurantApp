@@ -9,7 +9,7 @@ const ManagementPage = () => {
 
     const [showCat, setShowCat] = useState(false);
     const [showProd, setShowProd] = useState(true);
-    const [showDet, setShowDet] = useState(true);
+    const [showDet, setShowDet] = useState(false);
 
     const ManagementPart = ({ title, className, setShow, show, children }) => {
         return (

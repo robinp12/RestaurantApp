@@ -1,9 +1,11 @@
+import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import Loader from '../../Components/Loader';
 import Pagination from '../../Components/Pagination';
 import ordersAPI from '../../Services/ordersAPI';
+import settingsAPI from '../../Services/settingsAPI';
 import useLocalStorage from '../../Services/useLocalStorage';
 
 

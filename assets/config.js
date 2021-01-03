@@ -2,6 +2,7 @@
 export const API_URL = process.env.API_URL;
 
 // Regroupement dans un fichier pour surcharger
+export const SETTINGS_API = API_URL + "settings";
 export const USERS_API = API_URL + "users";
 export const CUSTOMERS_API = API_URL + "customers";
 export const RESERVATIONS_API = API_URL + "reservations";

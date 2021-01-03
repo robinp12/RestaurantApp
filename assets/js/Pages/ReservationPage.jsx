@@ -10,7 +10,7 @@ const ReservationPage = () => {
 
     return (
         <>
-            <Header title={lang.reservation} />
+            <Header title={lang.reservation} bool={false} />
             <div className="container">
                 <div className="row justify-content-center">
                     <form className="d-flex blockStep">

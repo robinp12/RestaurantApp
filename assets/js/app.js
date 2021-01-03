@@ -26,6 +26,7 @@ import MenuManagement from "./Pages/Admin/MenuManagement";
 import MiniMapPage from "./Pages/Admin/MiniMapPage";
 import OrdersPage from "./Pages/Admin/OrdersPage";
 import ReservationManagement from "./Pages/Admin/ReservationManagement.jsx";
+import SettingsPage from "./Pages/Admin/SettingsPage";
 import UsersPage from "./Pages/Admin/UsersPage";
 import HomePage from "./Pages/HomePage";
 import MenuPage from "./Pages/MenuPage";
@@ -116,6 +117,10 @@ const App = () => {
                       <PrivateRoute path="/manage" component={MenuManagement} />
                       <PrivateRoute path="/map" component={MiniMapPage} />
                       <PrivateRoute path="/chatadmin" component={ChatPage} />
+                      <PrivateRoute
+                        path="/parametres"
+                        component={SettingsPage}
+                      />
                       {isAuth && <Redirect path={"/connexion"} to="/" />}
                       <Route
                         path="/connexion"

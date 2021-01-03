@@ -9,6 +9,7 @@ import customersAPI from '../Services/customersAPI';
 import invoicesAPI from '../Services/invoicesAPI';
 import ordersAPI from '../Services/ordersAPI';
 import productsAPI from '../Services/productsAPI';
+import settingsAPI from '../Services/settingsAPI';
 import useLocalStorage from '../Services/useLocalStorage';
 import CustomerForm from './Form/CustomerForm';
 import OrderForm from './Form/OrderForm';
@@ -35,6 +36,7 @@ const StepForm = ({ match, setWhere }) => {
     const [choose, setChoose] = useState(0);
     const [there, setThere] = useState(0);
     const [confirmed, setConfirmed] = useState(false);
+    const [onlinePayment, setOnlinePayment] = useState();
 
     const [invoiceId, setInvoiceId] = useState();
 
@@ -108,7 +110,12 @@ const StepForm = ({ match, setWhere }) => {
         for (let e in bag) {
             handleSubmitOrder(formatedOrder(bag[e]), id)
         }
-        setAway(step => step + 1)
+        if (!onlinePayment.onlinePayment) {
+            setAway(5);
+        }
+        else {
+            setAway(step => step + 1);
+        }
     }
 
     const formatedOrder = ({ name, price, totalAmount, ...bag }) => {
@@ -145,6 +152,14 @@ const StepForm = ({ match, setWhere }) => {
             console.log(error.response);
         }
     }
+    const fetchPayment = async () => {
+        try {
+            const { label, isTrue } = await settingsAPI.findSetting(1);
+            setOnlinePayment({ [label]: isTrue });
+        } catch (error) {
+            console.log("Error on check online payment");
+        }
+    }
     // const sendNotif = () => {
     //     SocketClient.sendToSocket("notifSend", "Nouvelle commande");
     // }
@@ -152,6 +167,7 @@ const StepForm = ({ match, setWhere }) => {
     useEffect(() => {
         fetchCat();
         fetchProd();
+        fetchPayment();
         if (id <= 15) {
             setChoose(1);
             setWhere(1)
