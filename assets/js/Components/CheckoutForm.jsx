@@ -54,7 +54,7 @@ export default function CheckoutForm({ id, setAway }) {
         // Listen for changes in the CardElement
         // and display any errors as the customer types their card details
         setDisabled(false);
-
+        //c
         setProcessing(false)
         setError(event.error ? event.error.message : "");
     };
