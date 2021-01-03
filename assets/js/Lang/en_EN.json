@@ -1,5 +1,5 @@
 {
-    "welcomeMsg" : "Welcome on the Le Cheval Blanc's website shopping. You can create an order by this way.",
+    "welcomeMsg" : "Welcome on the website of Le Cheval Blanc. Through this platform you are able to pass your online order.",
     "french" : "french",
     "about" : "About",
     "desserts" : "Desserts",
@@ -28,7 +28,7 @@
     "reservationConfirmation": "Reservation confirmed",
     "paymentConfirmation": "Payment confirmed",
     "confirmPayment": "Confirm payment",
-    "paymentSucceed": "Payment succeed",
+    "paymentSucceed": "Payment succeeded",
     "refusedPayment": "Refused payment",
     "verification": "Payment verification",
     "takeAway": "Take away",
