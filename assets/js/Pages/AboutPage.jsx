@@ -12,7 +12,6 @@ import useLocalStorage from '../Services/useLocalStorage';
 
 const ENDPOINT = SOCKET_URL;
 
-
 const socket = socketIOClient(ENDPOINT, {
     transports: ["websocket"],
 });
