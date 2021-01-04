@@ -2,6 +2,7 @@ import Axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import "react-toastify/dist/ReactToastify.css";
 import socketIOClient from "socket.io-client";
+import { API_URL, SOCKET_URL } from '../../config';
 import PaymentForm from '../Components/Form/PaymentForm';
 import Header from '../Components/Header';
 import { LangContext } from '../Context/LangContext';
@@ -9,7 +10,8 @@ import authAPI from '../Services/authAPI';
 import useLocalStorage from '../Services/useLocalStorage';
 
 
-const ENDPOINT = "http://localhost:3000";
+const ENDPOINT = SOCKET_URL;
+
 
 const socket = socketIOClient(ENDPOINT, {
     transports: ["websocket"],
@@ -57,18 +59,7 @@ const AboutPage = ({ ref }) => {
                     <iframe width="100%" height="350" frameBorder="0"
                         src="https://www.google.com/maps/embed/v1/place?q=le%20cheval%20blanc%20spontin&key=AIzaSyD447e5QbLc2blHJchrtHoVouRz1YN8pNI" allowFullScreen></iframe>
 
-                    {/* <div id="mapid">
-                        <Map center={[50.503439, 4.855911]} zoom={8}>
-                        <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                        <Marker position={[50.503439, 4.855911]}>
-                        <Popup>
-                        A pretty CSS3 popup. <br /> Easily customizable.
-                        </Popup>
-                        </Marker> 
-                        </Map>
-                    </div> */}
+
                     {/* <div className={"alert alert-" + (!adminConnected.bool ? "primary" : "success")} role="alert">{adminConnected.msg}</div> */}
                     {/* <OrderChat customer={customer} admin={authAPI.isAuth()} send={send} message={message} setMessage={setMessage} adminConnected={adminConnected} /> */}
                     {/* <PaymentForm /> */}

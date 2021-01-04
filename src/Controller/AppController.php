@@ -51,7 +51,6 @@ class AppController extends AbstractController
                     ->from('admin@shop-lechevalblanc.be')
                     ->cc('admin@shop-lechevalblanc.be')
                     ->to($invoice->getClient()->getEmail())
-                    ->priority(Email::PRIORITY_HIGH)
                     ->subject('Confirmation de commande')
                     ->htmlTemplate('emails/orderConfirmation.html.twig')
                     ->context(['totalAmount' => $invoice->getAmount(), 'orders' => $invoice->getOrders()]);
@@ -77,7 +76,6 @@ class AppController extends AbstractController
                     ->from('admin@shop-lechevalblanc.be')
                     ->cc('admin@shop-lechevalblanc.be')
                     ->to($reservation->getCustomer()->getEmail())
-                    ->priority(Email::PRIORITY_HIGH)
                     ->subject('Confirmation de réservation')
                     ->htmlTemplate('emails/reserveConfirmation.html.twig')
                     ->context([
@@ -104,7 +102,7 @@ class AppController extends AbstractController
         $reservation = $reservation_repository->find($delete);
         $date = new DateTime();
         if ($reservation) {
-            if ($reservation->getReservationAt() >= $date->modify("-50 minutes")) {
+            if ($reservation->getReservationAt() >= $date->modify("-30 minutes")) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($reservation);
                 $entityManager->flush();

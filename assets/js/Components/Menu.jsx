@@ -15,15 +15,15 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
             }
         }
     }
-    // const deleteItem = (product) => {
-    //     for (var item in cart) {
-    //         if (cart[item].product === product) {
-    //             cart.splice(item, 1);
-    //             break;
-    //         }
-    //     }
-    //     setCart([...cart])
-    // }
+    const deleteItem = (product) => {
+        for (var item in cart) {
+            if (cart[item].product === product) {
+                cart.splice(item, 1);
+                break;
+            }
+        }
+        setCart([...cart])
+    }
 
     return (
         <>
@@ -37,18 +37,32 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
                                     cat.id == prod.category.id &&
                                     <div className="row align-items-center" key={index}>
                                         <div className="col">
-                                            <li onClick={() => {
-                                                addItemToCart(prod.id, prod.label, prod.price, 1); setCart(listCart);
-                                            }} className={"list-group-item d-flex justify-content-between align-items-center align-middle " + (actif(prod.id) && "selected" || "")}
+                                            <li className={"list-group-item " + (actif(prod.id) && "selected" || "")}
                                             >
-                                                <span className="float-left">
-                                                    <span>{prod.label}</span>
-                                                    <span className="px-1"></span>
-                                                    {prod.description && <PopupInfo info={prod.description} />}
-                                                </span>
-                                                <span className="lead">
-                                                    <small className={"mr-2"}> {actif(prod.id) && actif(prod.id) + "x"}</small>
-                                                    {prod.price}€</span>
+                                                <div className="row">
+                                                    <div className="col">
+
+                                                        <div className="justify-content-between align-items-center align-middle d-flex" onClick={() => {
+                                                            addItemToCart(prod.id, prod.label, prod.price, 1); setCart(listCart);
+                                                        }}>
+                                                            <span className="float-left">
+                                                                <span>{prod.label}</span>
+                                                                <span className="px-1"></span>
+                                                                {prod.description && <PopupInfo info={prod.description} />}
+                                                            </span>
+                                                            <span className="lead">
+                                                                <small className={"mr-2"}> {actif(prod.id) && actif(prod.id) + "x"}</small>
+                                                                {prod.price}€</span>
+                                                        </div>
+                                                    </div>
+                                                    {actif(prod.id) &&
+                                                        <div className="float-right ">
+                                                            <a className="badge badge-primary float-right" onClick={() => deleteItem(prod.id)}>
+                                                                <em className="fa fa-times fa-sm"></em>
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
                                             </li>
                                         </div>
                                     </div>
@@ -62,68 +76,80 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
 }
 let cle;
 
-const MenuOrder = ({ products, categories, listCart, addItemToCart }) => {
+// const MenuOrder = ({ products, categories, listCart, addItemToCart }) => {
 
-    const [key, setKey] = useState(cle);
-    cle = key;
+//     const [key, setKey] = useState(cle);
+//     cle = key;
 
-    const { cart, setCart } = useContext(CartContext);
+//     const { cart, setCart } = useContext(CartContext);
 
-    const actif = (product) => {
-        for (var i in cart) {
-            if (cart[i].product == product) {
-                return cart[i].quantity
-            }
-        }
-    }
-    // const deleteItem = (product) => {
-    //     for (var item in cart) {
-    //         if (cart[item].product === product) {
-    //             cart.splice(item, 1);
-    //             break;
-    //         }
-    //     }
-    //     setCart([...cart])
-    // }
-    return (
-        <>
-            <Tabs id="controlled-tab" activeKey={key} onSelect={(k) => setKey(k)}>
-                {categories.map((cat, index) =>
-                    <Tab key={index} eventKey={cat.label} title={cat.label}>
-                        <div className="row">
-                            <div className="col">
-                                <ul className={"list-group"}>
-                                    {products.map((prod, index) =>
-                                        cat.id == prod.category.id &&
-                                        <div className="row align-items-center" key={index}>
-                                            <div className="col">
-                                                <li onClick={() => {
-                                                    addItemToCart(prod.id, prod.label, prod.price, 1); setCart(listCart);
-                                                }} className={"list-group-item d-flex justify-content-between align-items-center " + (actif(prod.id) && "selected" || "")}
-                                                >
-                                                    <span className="justify-content-between mr-4">
-                                                        {prod.label}
-                                                        <span className="px-1"></span>
-                                                        {prod.description && <PopupInfo info={prod.description} />
-                                                        }
-                                                    </span>
-                                                    <span className="lead ml-3">
-                                                        <small className={"mr-2"}> {actif(prod.id) && actif(prod.id) + "x"}</small>
+//     const actif = (product) => {
+//         for (var i in cart) {
+//             if (cart[i].product == product) {
+//                 return cart[i].quantity
+//             }
+//         }
+//     }
+//     const deleteItem = (product) => {
+//         for (var item in cart) {
+//             if (cart[item].product === product) {
+//                 cart.splice(item, 1);
+//                 break;
+//             }
+//         }
+//         setCart([...cart])
+//     }
+//     return (
+//         <>
+//             <Tabs id="controlled-tab" activeKey={key} onSelect={(k) => setKey(k)}>
+//                 {categories.map((cat, index) =>
+//                     <Tab key={index} eventKey={cat.label} title={cat.label}>
+//                         <div className="row">
+//                             <div className="col">
+//                                 <ul className={"list-group"}>
+//                                     {products.map((prod, index) =>
+//                                         cat.id == prod.category.id &&
+//                                         <div className="row align-items-center" key={index}>
+//                                             <div className="col">
+//                                                 <li className={"list-group-item " + (actif(prod.id) && "selected" || "")}>
+//                                                     <div className="row">
+//                                                         <div className="col">
+//                                                             <div className="justify-content-between align-items-center align-middle d-flex" onClick={() => {
+//                                                                 addItemToCart(prod.id, prod.label, prod.price, 1); setCart(listCart);
+//                                                             }}>
+//                                                                 <span className="justify-content-between mr-4">
+//                                                                     {prod.label}
+//                                                                     <span className="px-1"></span>
+//                                                                     {prod.description && <PopupInfo info={prod.description} />
+//                                                                     }
+//                                                                 </span>
+//                                                                 <span className="lead ml-3">
+//                                                                     <small className={"mr-2"}> {actif(prod.id) && actif(prod.id) + "x"}</small>
 
-                                                        {prod.price}€</span>
-                                                </li>
-                                            </div>
-                                        </div>
-                                    )}
-                                </ul>
-                            </div>
-                        </div>
-                    </Tab>
-                )}
-            </Tabs>
-        </>
-    )
-}
+//                                                                     {prod.price}€</span>
+//                                                             </div>
+//                                                         </div>
+//                                                         {actif(prod.id) &&
+//                                                             <div className="float-right ">
+//                                                                 <a className="badge badge-primary float-right" onClick={() => deleteItem(prod.id)}>
+//                                                                     <em className="fa fa-times fa-sm"></em>
+//                                                                 </a>
+//                                                             </div>
+//                                                         }
+//                                                     </div>
+//                                                 </li>
+//                                             </div>
+//                                         </div>
+//                                     )}
+//                                 </ul>
+//                             </div>
+//                         </div>
+//                     </Tab>
+//                 )}
+//             </Tabs>
+//         </>
+//     )
+// }
 
-export { Menu, MenuOrder };
+export { Menu };
 

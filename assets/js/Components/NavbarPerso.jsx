@@ -68,23 +68,17 @@ const NavbarPerso = ({ history }) => {
             <Nav className="nav-item">
               {((history.location.pathname !== "/reserver")) &&
                 <>
-
-                  {cart.length &&
+                  {(history.location.pathname !== "/commander") &&
                     <>
                       <Nav.Link className="btn text-light mr-1" href="#reserver">{lang.toReserve}</Nav.Link>
-                      <OverlayTrigger trigger="click" placement="bottom" show={show} overlay={popover} transition>
-                        <Nav.Link className="nav-item btn text-light border-light ml-1" onClick={() => setShow(!show)}>
-                          <b><em className="fa fa-shopping-cart fa-lg"></em> {lang.cart} : {cart.length}</b>
-                        </Nav.Link>
-                      </OverlayTrigger>
-                    </>
-                    ||
-                    <>
-                      {(history.location.pathname !== "/commander") &&
-                        <>
-                          <Nav.Link className="btn text-light mr-1" href="#reserver">{lang.toReserve}</Nav.Link>
-                          <Nav.Link className="btn text-orange border-warning mr-1" href="#commander">{lang.toOrder}</Nav.Link>
-                        </>
+                      {cart.length &&
+                        <OverlayTrigger trigger="click" placement="bottom" show={show} overlay={popover} transition>
+                          <Nav.Link className="nav-item btn text-light border-light ml-1" onClick={() => setShow(!show)}>
+                            <b><em className="fa fa-shopping-cart fa-lg"></em> {lang.cart} : {cart.length}</b>
+                          </Nav.Link>
+                        </OverlayTrigger>
+                        ||
+                        <Nav.Link className="btn text-orange border-warning mr-1" href="#commander">{lang.toOrder}</Nav.Link>
                       }
                     </>
                   }

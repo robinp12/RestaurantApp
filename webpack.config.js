@@ -73,6 +73,7 @@ Encore
 //.addEntry('admin', './assets/js/admin.js')
 Encore.configureDefinePlugin((options) => {
   options["process.env"].API_URL = process.env.API_URL;
+  options["process.env"].SOCKET_URL = process.env.SOCKET_URL;
 });
 
 module.exports = Encore.getWebpackConfig();

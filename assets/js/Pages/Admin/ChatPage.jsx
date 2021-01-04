@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import socketIOClient from "socket.io-client";
+import { SOCKET_URL } from '../../../config';
 import OrderChat from '../../Components/Form/OrderChat';
 import authAPI from '../../Services/authAPI';
 import useLocalStorage from '../../Services/useLocalStorage';
 
-const ENDPOINT = "http://localhost:3000";
+const ENDPOINT = SOCKET_URL;
 
 const socket = socketIOClient(ENDPOINT, {
     transports: ["websocket"],

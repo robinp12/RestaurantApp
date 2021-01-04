@@ -15,7 +15,7 @@ import CustomerForm from './Form/CustomerForm';
 import OrderForm from './Form/OrderForm';
 import OrderSummary from './Form/OrderSummary';
 import PaymentForm from './Form/PaymentForm';
-import { MenuOrder } from './Menu';
+import { Menu } from './Menu';
 
 let now = new Date().toISOString().slice(0, 16);
 const StepForm = ({ match, setWhere }) => {
@@ -165,8 +165,11 @@ const StepForm = ({ match, setWhere }) => {
     const fetchPayment = async () => {
         try {
             const { label, isTrue } = await settingsAPI.findSetting(1);
-            setOnlinePayment({ [label]: isTrue });
+            if (label === "onlinePayment") {
+                setOnlinePayment({ [label]: isTrue });
+            }
         } catch (error) {
+            setOnlinePayment({ onlinePayment: true });
             console.log("Error on check online payment");
         }
     }
@@ -236,9 +239,10 @@ const StepForm = ({ match, setWhere }) => {
     }
     const componentRef = useRef();
     const componentRef2 = useRef();
+    console.log()
 
     function formOrder() {
-        if (choose == 1) {
+        if (choose == 1 && ((11 <= new Date().getHours()) && (new Date().getHours() <= 24))) {
             switch (there) {
                 case 1:
                     orderInfo.reservationAt = new Date();
@@ -268,7 +272,13 @@ const StepForm = ({ match, setWhere }) => {
                 default:
                     return (
                         <div className="container">
-                            <MenuOrder products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
+                            <div className="row">
+                                <div className="col">
+
+                                    <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setThere(step => step + 1) }} disabled={!cart.length}>{lang.next}</button>
+                                </div>
+                            </div>
+                            <Menu products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
                             <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setThere(step => step + 1) }} disabled={!cart.length}>{lang.next}</button>
                         </div>
                     );
@@ -279,7 +289,12 @@ const StepForm = ({ match, setWhere }) => {
                 case 1: // Menu choice
                     return (
                         <ButtonOrder back={lang.back} next={lang.next} disabled={!cart.length}>
-                            <MenuOrder products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
+                            <div className="row">
+                                <div className="col">
+                                    <button className="btn-primary btn float-right mt-4" onClick={Next} disabled={!cart.length}>{lang.next}</button>
+                                </div>
+                            </div>
+                            <Menu products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
                         </ButtonOrder>
                     );
                 case 2: // Order informations

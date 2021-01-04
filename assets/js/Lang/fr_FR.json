@@ -59,6 +59,8 @@
     "sentReservation" : "Réservation envoyée",
     "price" : "Prix",
     "product" :"Produit",
-    "summary" : "Résumé"
+    "summary" : "Résumé",
+    "receptionDate":"Date et heure de réception",
+    "reserveDate":"Date et heure de réservation"
 
 }

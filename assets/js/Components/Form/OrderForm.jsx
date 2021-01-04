@@ -17,9 +17,9 @@ const OrderForm = ({ isReservation = false, reservation, setReservation, now }) 
     return (
         <>
             <div className="row justify-content-center text-center">
-                <div className="col-sm-12 col-md-5">
+                <div className="col-sm-12 col-md-6">
                     <div className="form-group">
-                        <label htmlFor={"time"}>{"Date"}</label>
+                        {isReservation && <label htmlFor={"time"}>{lang.reserveDate}</label> || <label htmlFor={"time"}>{lang.receptionDate}</label>}
                         <input name="reservationAt" type="datetime-local" className="form-control"
                             min={now} max={isReservation ? maxReserve : maxOrder} value={reservation.reservationAt} onChange={handleChange} placeholder={now} />
                     </div>{console.log(reservation.reservationAt)
@@ -29,7 +29,7 @@ const OrderForm = ({ isReservation = false, reservation, setReservation, now }) 
             {
                 isReservation &&
                 <div className="row justify-content-center text-center">
-                    <div className="col-sm-12 col-md-5">
+                    <div className="col-sm-12 col-md-6">
                         <Field label={lang.peopleNumber} type="number" value={reservation.peopleNumber} name="peopleNumber" onChange={handleChange} />
                     </div>
                 </div>
