@@ -1,20 +1,10 @@
-import Axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import "react-toastify/dist/ReactToastify.css";
-import socketIOClient from "socket.io-client";
-import { API_URL, SOCKET_URL } from '../../config';
-import PaymentForm from '../Components/Form/PaymentForm';
+import { socket } from '../../config';
 import Header from '../Components/Header';
 import { LangContext } from '../Context/LangContext';
 import authAPI from '../Services/authAPI';
 import useLocalStorage from '../Services/useLocalStorage';
-
-
-const ENDPOINT = SOCKET_URL;
-
-const socket = socketIOClient(ENDPOINT, {
-    transports: ["websocket"],
-});
 
 const AboutPage = ({ ref }) => {
 

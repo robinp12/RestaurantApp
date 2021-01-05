@@ -16,8 +16,6 @@ const UsersPage = ({ match, history }) => {
     const [change, setChange] = useState(true);
     const [load, setLoad] = useState(true);
 
-    console.log(authAPI.isAdmin())
-
     const handleDelete = async (id) => {
         const originUsers = [...users];
         setUsers(users.filter(user => user.id !== id));
@@ -57,13 +55,15 @@ const UsersPage = ({ match, history }) => {
             zipcode: userInfo.zipcode,
             phoneNumber: userInfo.phoneNumber,
             roles: userInfo.roles,
-            password: undefined
+            password: undefined,
+            passwordConfirm: undefined
         });
         const [errors, setErrors] = useState({
             lastName: "",
             firstName: "",
             email: "",
             password: "",
+            passwordConfirm: "",
             roles: "",
             address: "",
             zipcode: "",
@@ -85,21 +85,26 @@ const UsersPage = ({ match, history }) => {
 
         const handleSubmitChange = async (e) => {
             e.preventDefault();
-            try {
-                const rep = await usersAPI.updateInfo(userInfo.id, user)
-                toast(user.firstName + " a été modifié");
-                setChange(!change)
-                setErrors("");
-            } catch (error) {
-                console.error(error.response)
-                toast(error + "");
-                if (error.response.data.violations) {
-                    const apiErrors = {};
-                    error.response.data.violations.forEach((violation) => {
-                        apiErrors[violation.propertyPath] = violation.message;
-                    });
-                    setErrors(apiErrors);
+            if (user.password == user.passwordConfirm) {
+                try {
+                    const rep = await usersAPI.updateInfo(userInfo.id, user)
+                    toast(user.firstName + " a été modifié");
+                    setChange(!change)
+                    setErrors("");
+                } catch (error) {
+                    console.error(error.response)
+                    toast(error + "");
+                    if (error.response.data.violations) {
+                        const apiErrors = {};
+                        error.response.data.violations.forEach((violation) => {
+                            apiErrors[violation.propertyPath] = violation.message;
+                        });
+                        setErrors(apiErrors);
+                    }
                 }
+            } else {
+                setErrors({ password: "Mot de passe non-similaire" })
+
             }
         }
         const [roles, setRoles] = useState([
@@ -123,15 +128,16 @@ const UsersPage = ({ match, history }) => {
                                     <Field label="Email" name="email" onChange={handleChange} error={errors.email} value={user.email} disabled={change} />
 
                                     <Field label="Mot de passe" name="password" type="password" error={errors.password} placeholder="Nouveau mot de passe" onChange={handleChange} value={user.password} disabled={change} />
-                                    <Select onChange={handleChange} defaut={user.roles} name={"roles"} label="Rôles" error={errors.roles} disabled={change}>
-                                        {roles.map((role, index) => <option value={[role]} key={index}>{role}</option>)}
-                                    </Select>
+                                    <Field label="Confirmation" name="passwordConfirm" type="password" error={errors.password} placeholder="Nouveau mot de passe" onChange={handleChange} value={user.passwordConfirm} disabled={change} />
                                 </div>
                                 <div className="col-sm-12 col-md-6">
                                     <Field label="Nom" name="lastName" onChange={handleChange} error={errors.lastName} value={user.lastName} disabled={change} />
                                     <Field label="Adresse" name="address" onChange={handleChange} error={errors.address} value={user.address} disabled={change} />
                                     <Field label="Ville" name="city" onChange={handleChange} error={errors.city} value={user.city} disabled={change} />
                                     <Field label="Code Postal" name="zipcode" onChange={handleChange} error={errors.zipcode} value={user.zipcode} disabled={change} />
+                                    <Select onChange={handleChange} defaut={user.roles} name={"roles"} label="Rôles" error={errors.roles} disabled={change}>
+                                        {roles.map((role, index) => <option value={[role]} key={index}>{role}</option>)}
+                                    </Select>
                                 </div>
                             </div>
                             <div className="row mt-3">

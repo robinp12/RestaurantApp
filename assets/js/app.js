@@ -17,6 +17,7 @@ import { CartContext } from "./Context/CartContext";
 import { LangContext } from "./Context/LangContext";
 import en from "./Lang/en_EN.json";
 import fr from "./Lang/fr_FR.json";
+import pt from "./Lang/pt_PT.json";
 import AboutPage from "./Pages/AboutPage";
 import ChatPage from "./Pages/Admin/ChatPage";
 import ConnexionPage from "./Pages/Admin/ConnexionPage";
@@ -58,15 +59,22 @@ const App = () => {
   const NavbarWithRouter = withRouter(NavbarPerso);
   const FooterWithRouter = withRouter(Footer);
 
-  const [language, setLanguage] = useState(true);
+  const [count, setCount] = useState(0);
   const [cart, setCart] = useState([]);
 
   let lang;
-  if (language) {
-    lang = fr;
-  } else {
-    lang = en;
-  }
+
+  const setLang = () => {
+    switch (count) {
+      case 1:
+        return (lang = en);
+      case 2:
+        return (lang = pt);
+      default:
+        return (lang = fr);
+    }
+  };
+  setLang();
 
   const fetchCatProd = async () => {
     try {
@@ -86,7 +94,7 @@ const App = () => {
   return (
     <>
       <AuthContext.Provider value={{ isAuth, setIsAuth }}>
-        <LangContext.Provider value={{ language, setLanguage, lang }}>
+        <LangContext.Provider value={{ lang }}>
           <CartContext.Provider value={{ cart, setCart }}>
             <HashRouter hashType="noslash">
               <NavbarWithRouter />
@@ -150,7 +158,7 @@ const App = () => {
                   </div>
                 </div>
               </div>
-              <FooterWithRouter />
+              <FooterWithRouter setCount={setCount} count={count} />
             </HashRouter>
           </CartContext.Provider>
         </LangContext.Provider>

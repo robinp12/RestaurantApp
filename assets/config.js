@@ -1,6 +1,11 @@
+import socketIOClient from "socket.io-client";
+
 // export const API_URL = "http://localhost:8000/api/";
 export const API_URL = process.env.API_URL;
-export const SOCKET_URL = process.env.SOCKET_URL;
+
+export const socket = socketIOClient(process.env.SOCKET_URL, {
+  transports: ["websocket"],
+});
 
 // Regroupement dans un fichier pour surcharger
 export const SETTINGS_API = API_URL + "settings";

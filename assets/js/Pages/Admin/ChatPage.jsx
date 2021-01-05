@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import socketIOClient from "socket.io-client";
-import { SOCKET_URL } from '../../../config';
+import { socket } from '../../../config';
 import OrderChat from '../../Components/Form/OrderChat';
 import authAPI from '../../Services/authAPI';
 import useLocalStorage from '../../Services/useLocalStorage';
-
-const ENDPOINT = SOCKET_URL;
-
-const socket = socketIOClient(ENDPOINT, {
-    transports: ["websocket"],
-});
 
 const ChatPage = () => {
     const [users, setUsers] = useLocalStorage("chat-users", []);
