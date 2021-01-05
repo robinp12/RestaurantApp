@@ -104,6 +104,7 @@ const UserForm = () => {
                                                 <Field
                                                     label="Adresse mail"
                                                     name="email"
+                                                    className="manage"
                                                     value={users.email}
                                                     onChange={handleChange}
                                                     type="email"
@@ -161,6 +162,8 @@ const UserForm = () => {
                                                 <Field
                                                     label="Numéro de téléphone"
                                                     name="phoneNumber"
+                                                    className="manage"
+
                                                     value={users.phoneNumber}
                                                     onChange={handleChange}
                                                     placeholder="Numéro de téléphone"

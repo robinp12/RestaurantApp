@@ -70,6 +70,7 @@ const ProductForm = ({ categories, refresh, setRefresh, product, setProduct, upd
                                 <Field
                                     label="Nom du produit"
                                     name="label"
+                                    className="manage"
                                     value={product.label}
                                     onChange={handleChange}
                                     placeholder="Produit"
@@ -93,6 +94,7 @@ const ProductForm = ({ categories, refresh, setRefresh, product, setProduct, upd
                                 <Field
                                     label="Description du produit"
                                     name="description"
+                                    className="manage"
                                     value={product.description}
                                     onChange={handleChange}
                                     placeholder="Description"

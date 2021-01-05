@@ -150,6 +150,9 @@ used to vertically center elements, may need modification if you're not using de
 input[type="text"] {
   text-transform: capitalize;
 }
+input[type="text"].manage {
+  text-transform: none;
+}
 input[type="text"]:disabled {
   background-color: rgb(240, 240, 240);
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 //Composant d'input
-const Field = ({ name, label, value, onChange, placeholder, type = "text", error = "", id, disabled = false }) => (
+const Field = ({ name, label, value, onChange, placeholder, type = "text", error = "", id, disabled = false, className }) => (
     <div className="form-group">
         {label && <label htmlFor={name}>{label}</label>}
         <input
@@ -8,7 +8,7 @@ const Field = ({ name, label, value, onChange, placeholder, type = "text", error
             name={name}
             onChange={onChange}
             type={type}
-            className={"form-control" + (error && " is-invalid")}
+            className={"form-control " + (className && className) + (error && " is-invalid")}
             id={id || name}
             placeholder={placeholder}
             disabled={disabled}

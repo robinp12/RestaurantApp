@@ -76,8 +76,8 @@ const CustomersPage = ({ match, history }) => {
                             <div className="row">
                                 <div className="col-sm-12 col-md-6">
                                     <Field label="Prénom" name="firstName" onChange={handleChange} value={customer.firstName} disabled={change} />
-                                    <Field label="Téléphone" name="phoneNumber" onChange={handleChange} value={customer.phoneNumber} disabled={change} />
-                                    <Field label="Email" name="email" onChange={handleChange} value={customer.email} disabled={change} />
+                                    <Field label="Téléphone" name="phoneNumber" className="manage" onChange={handleChange} value={customer.phoneNumber} disabled={change} />
+                                    <Field label="Email" name="email" className="manage" onChange={handleChange} value={customer.email} disabled={change} />
                                 </div>
                                 <div className="col-sm-12 col-md-6">
                                     <Field label="Nom" name="lastName" onChange={handleChange} value={customer.lastName} disabled={change} />

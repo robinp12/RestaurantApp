@@ -45,6 +45,7 @@ const ConnexionPage = ({ history }) => {
                     <Field
                         label="Adresse mail"
                         name="username"
+                        className="manage"
                         placeholder="Adresse mail"
                         value={login.username}
                         onChange={handleChange}

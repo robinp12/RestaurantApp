@@ -43,6 +43,7 @@ const CustomerForm = ({ errors }) => {
                         label={lang.email}
                         name="email"
                         value={customer.email}
+                        className="manage"
                         onChange={handleChange}
                         type="email"
                         placeholder={lang.email}
@@ -92,6 +93,7 @@ const CustomerForm = ({ errors }) => {
                     <Field
                         label={lang.phoneNumber}
                         name="phoneNumber"
+                        className="manage"
                         value={customer.phoneNumber}
                         onChange={handleChange}
                         placeholder={lang.phoneNumber}

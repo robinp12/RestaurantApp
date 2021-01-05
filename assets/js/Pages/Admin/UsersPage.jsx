@@ -124,8 +124,9 @@ const UsersPage = ({ match, history }) => {
                             <div className="row">
                                 <div className="col-sm-12 col-md-6">
                                     <Field label="Prénom" name="firstName" onChange={handleChange} error={errors.firstName} value={user.firstName} disabled={change} />
-                                    <Field label="Téléphone" name="phoneNumber" onChange={handleChange} error={errors.phoneNumber} value={user.phoneNumber} disabled={change} />
-                                    <Field label="Email" name="email" onChange={handleChange} error={errors.email} value={user.email} disabled={change} />
+
+                                    <Field label="Téléphone" name="phoneNumber" className="manage" onChange={handleChange} error={errors.phoneNumber} value={user.phoneNumber} disabled={change} />
+                                    <Field label="Email" name="email" className="manage" onChange={handleChange} error={errors.email} value={user.email} disabled={change} />
 
                                     <Field label="Mot de passe" name="password" type="password" error={errors.password} placeholder="Nouveau mot de passe" onChange={handleChange} value={user.password} disabled={change} />
                                     <Field label="Confirmation" name="passwordConfirm" type="password" error={errors.password} placeholder="Nouveau mot de passe" onChange={handleChange} value={user.passwordConfirm} disabled={change} />

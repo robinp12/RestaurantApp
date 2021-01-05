@@ -102,6 +102,7 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                                         label="Nom de catégorie"
                                         name="label"
                                         id="label1"
+                                        className="manage"
                                         value={category.label}
                                         onChange={handleChange}
                                         placeholder="Catégorie"
