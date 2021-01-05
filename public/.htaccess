@@ -1,5 +1,8 @@
 RewriteEngine On
 
+RewriteCond %{HTTP_HOST} ^shop-lechevalblanc.be [NC]
+RewriteRule ^(.*)$ http://www.shop-lechevalblanc.be/$1 [L,R=301]
+
 # If we receive a forwarded http request from a proxy...
 RewriteCond %{HTTP:X-Forwarded-Proto} =http [OR]
 
