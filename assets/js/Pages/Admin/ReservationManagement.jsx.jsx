@@ -111,7 +111,7 @@ const ReservationManagement = ({ match, history }) => {
                                             <span> {lang.reservationDate} : {new Date(reservation.reservation_at).toLocaleString()}</span><br />
                                         </div>
                                         <div className="col-sm-12 col-md-6">
-                                            <span> {lang.sendingDate} : {new Date(reservation.sentAt).toLocaleString()}</span><br />
+                                            <span> {lang.sendingDate} {new Date(reservation.sentAt).toLocaleString()}</span><br />
                                             <span> {lang.comment} : <br />
                                                 {reservation.comment}</span>
                                         </div>

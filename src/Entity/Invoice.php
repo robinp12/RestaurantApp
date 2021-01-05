@@ -48,7 +48,7 @@ class Invoice
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"invoices_read"})
+     * @Groups({"invoices_read","orders_read"})
      * @Assert\NotBlank(message="Obligatoire")
      * @Assert\Choice(choices={"SENT", "PAID","CANCELLED"}, message="Le statut n'est pas valide")
      */

@@ -147,6 +147,9 @@ used to vertically center elements, may need modification if you're not using de
 .panel-table .panel-body .table-bordered > tbody > tr > td {
   line-height: 34px;
 }
+input[type="text"] {
+  text-transform: capitalize;
+}
 input[type="text"]:disabled {
   background-color: rgb(240, 240, 240);
 }

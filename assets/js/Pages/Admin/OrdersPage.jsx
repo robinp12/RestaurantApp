@@ -56,6 +56,16 @@ const OrdersPage = ({ match, history }) => {
         fetchAllOrders();
     }, [])
 
+    const status = (status) => {
+        switch (status) {
+            case "PAID":
+                return "Payé";
+            case "CANCELLED":
+                return "Supprimé";
+            default:
+                return "Paiement en attente";
+        }
+    }
     return (
         <>
             {load &&
@@ -82,6 +92,7 @@ const OrdersPage = ({ match, history }) => {
                                             <th className="text-center">Produit</th>
                                             <th className="text-center">Quantité</th>
                                             <th className="text-center">Table</th>
+                                            <th className="text-center">Status</th>
                                             <th className="text-center">Montant total</th>
                                         </tr>
                                     </thead>
@@ -91,6 +102,7 @@ const OrdersPage = ({ match, history }) => {
                                             <td className="text-center align-middle">{order.label} </td>
                                             <td className="text-center align-middle">{order.quantity} </td>
                                             <td className="text-center align-middle">{order.orderTable || <>À emporter</>} </td>
+                                            <td className="text-center align-middle">{(order.invoice?.status == "SENT") ? <i className="text-muted">{status(order.invoice?.status)}</i> : (order.invoice?.status == "CANCELLED") ? <i className="text-primary font-weight-bold">{status(order.invoice?.status)}</i> : <i className="text-success font-weight-bold">{status(order.invoice?.status)}</i>}</td>
                                             <td className="text-center align-middle">{order.totalAmount}€</td>
                                         </tr>)}
 
@@ -125,7 +137,13 @@ const OrdersPage = ({ match, history }) => {
                                             <span> <Link to={`/factures/${order.invoice.id}`}> Facture n°{order.invoice.id}</Link></span><br />
                                         </div>
                                         <div className="col text-right">
-                                            {order.orderTable && <b className="">Sur place</b> || <b className="">À emporter</b>}<br />
+                                            {order.invoice?.status == "SENT" ?
+                                                <i className="text-muted">{status(order.invoice?.status)}</i>
+                                                : (order.invoice?.status == "CANCELLED") ?
+                                                    <i className="text-primary font-weight-bold">{status(order.invoice?.status)}</i>
+                                                    : <i className="lead font-weight-bold text-success">{status(order.invoice?.status)}</i>
+                                            }<br />
+                                            {order.orderTable && <b className="lead">Sur place</b> || <b className="lead">À emporter</b>}<br />
                                         </div>
                                     </div>
                                     <div className="row ">

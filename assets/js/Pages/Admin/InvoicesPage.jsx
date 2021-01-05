@@ -89,8 +89,9 @@ const InvoicesPage = ({ match, history }) => {
                         <table className="table table-responsive-md table-hover ">
                             <thead className="thead-dark">
                                 <tr>
-                                    <th className="text-center hidden-xs">ID</th>
-                                    <th className="text-center">Status</th>
+                                    <th className=" hidden-xs">ID</th>
+                                    <th className="">Status</th>
+                                    <th className="text-center">Table</th>
                                     <th className="text-center">Montant total</th>
                                 </tr>
                             </thead>
@@ -98,8 +99,9 @@ const InvoicesPage = ({ match, history }) => {
                                 {paginatedInvoices.map(invoice => <tr key={invoice.id} className={invoice.id == id ? "actif" : ""}
                                     onClick={() => history.replace("/factures/" + invoice.id)}
                                 >
-                                    <th scope="row" className="text-center align-middle">{paddingNumber(invoice.id)}</th>
-                                    <td className="text-center align-middle">{status(invoice.status)} </td>
+                                    <th scope="row" className=" align-middle">{paddingNumber(invoice.id)}</th>
+                                    <td className="align-middle">{(invoice?.status == "SENT") ? <i className="text-muted">{status(invoice?.status)}</i> : (invoice?.status == "CANCELLED") ? <i className="text-primary font-weight-bold">{status(invoice?.status)}</i> : <i className="text-success font-weight-bold">{status(invoice?.status)}</i>}</td>
+                                    <td className="text-center align-middle">{invoice.invoiceTable || "A emporter"} </td>
                                     <td className="text-center align-middle lead">{invoice.amount}€</td>
                                 </tr>)}
 
@@ -131,9 +133,21 @@ const InvoicesPage = ({ match, history }) => {
                                                     {statusList.map((statu, index) => <option value={statu} key={index}>{status(statu)}</option>)}
                                                 </Select>
                                                 ||
-                                                <><span>Status : <b>{status(invoice.status)}</b></span><br /></>
-                                            }
-                                            <span>Date de réception de la commande :<br /> <b>{new Date(invoice.timeToReceive).toLocaleString()}</b></span><br />
+                                                <>
+                                                    <span>Status :
+                                                    {invoice.status == "SENT" &&
+                                                            <i className=""> {status(invoice?.status)}
+                                                            </i>
+                                                            ||
+                                                            (invoice?.status == "CANCELLED") ? <i className="text-primary font-weight-bold"> {status(invoice?.status)}</i> :
+                                                            <i className="font-weight-bold text-success"> {status(invoice?.status)}
+                                                            </i >}
+                                                    </span>
+                                                    <br />
+                                                </>}
+                                            <span>Réception de la commande : <br />
+                                                <b>{new Date(invoice.timeToReceive).toLocaleString()}</b>
+                                            </span><br />
                                         </div>
                                         <div className="col-sm-12 col-md-6">
                                             <div className="card mb-3" >
