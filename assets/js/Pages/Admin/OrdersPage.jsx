@@ -118,11 +118,11 @@ const OrdersPage = ({ match, history }) => {
                                             <span> Produit : <b>{order.label}</b></span><br />
                                             <span> Quantité : <b>{order.quantity}</b></span><br />
                                             <span> Prix : {order.price}€</span><br />
-                                            <span> Facture : <Link to={`/factures/${order.invoice.id}`}>{order.invoice.id}</Link></span><br />
                                             {typeof (order.invoice.client) !== "undefined" && <>
                                                 <span> Client : <Link to={`/clients/${order.invoice.client.id}`}>{order.invoice.client.firstName} {order.invoice.client.lastName}</Link></span><br />
                                             </> || <></>}
                                             {order.orderTable && <><span> Table : <b>{order.orderTable}</b></span><br /></> || <></>}
+                                            <span> <Link to={`/factures/${order.invoice.id}`}> Facture n°{order.invoice.id}</Link></span><br />
                                         </div>
                                         <div className="col text-right">
                                             {order.orderTable && <b className="">Sur place</b> || <b className="">À emporter</b>}<br />

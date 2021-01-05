@@ -21,7 +21,7 @@ let now = new Date().toISOString().slice(0, 16);
 const StepForm = ({ match, setWhere }) => {
 
     const { id } = match.params
-
+    let decodeId = id ? +atob(`${id}`) : 0;
     const { lang } = useContext(LangContext);
     const { cart, setCart } = useContext(CartContext);
     let [...bag] = cart;
@@ -63,7 +63,7 @@ const StepForm = ({ match, setWhere }) => {
         amount: 0,
         status: "SENT",
         timeToReceive: new Date(),
-        invoiceTable: id < 15 ? +id : 0
+        invoiceTable: decodeId < 15 ? decodeId : 0
     });
 
     const [orderInfo, setOrderInfo] = useState({ reservationAt: "" });
@@ -132,7 +132,7 @@ const StepForm = ({ match, setWhere }) => {
         bag.label = name;
         bag.price = parseFloat(price, 10);
         bag.totalAmount = totalAmount;
-        bag.orderTable = id < 15 ? +id : 0;
+        bag.orderTable = decodeId < 15 ? +decodeId : 0;
         return bag
     }
     const handleSubmitOrder = async (order, id) => {
@@ -181,7 +181,7 @@ const StepForm = ({ match, setWhere }) => {
         fetchCat();
         fetchProd();
         fetchPayment();
-        if (id <= 15) {
+        if ((decodeId !== 0) && (decodeId <= 15)) {
             setChoose(1);
             setWhere(1)
         }
@@ -239,7 +239,6 @@ const StepForm = ({ match, setWhere }) => {
     }
     const componentRef = useRef();
     const componentRef2 = useRef();
-    console.log()
 
     function formOrder() {
         if (choose == 1 && ((11 <= new Date().getHours()) && (new Date().getHours() <= 24))) {
@@ -274,7 +273,6 @@ const StepForm = ({ match, setWhere }) => {
                         <div className="container">
                             <div className="row">
                                 <div className="col">
-
                                     <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setThere(step => step + 1) }} disabled={!cart.length}>{lang.next}</button>
                                 </div>
                             </div>
