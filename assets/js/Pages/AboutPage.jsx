@@ -42,7 +42,6 @@ const AboutPage = ({ ref }) => {
     return (
         <>
             <Header title={lang.about} bool={false} />
-
             <div className="row card-text" >
                 <div className="col-sm-12 col-md-6">
                     <iframe width="100%" height="350" frameBorder="0"
