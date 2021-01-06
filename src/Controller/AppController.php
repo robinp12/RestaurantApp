@@ -115,7 +115,7 @@ class AppController extends AbstractController
     }
 
     /**
-     * @Route("/pay/{id}",name="pay", methods={"POST"})
+     * @Route("/pay/{id}",name="pay", methods={"POST"}, schemes={"https"})
      */
     public function paying(int $id): Response
     {
