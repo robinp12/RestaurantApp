@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import "react-toastify/dist/ReactToastify.css";
-import { socket } from '../../config';
 import Header from '../Components/Header';
 import { LangContext } from '../Context/LangContext';
-import authAPI from '../Services/authAPI';
 import useLocalStorage from '../Services/useLocalStorage';
 
 const AboutPage = ({ ref }) => {
@@ -24,17 +22,17 @@ const AboutPage = ({ ref }) => {
 
     const [message, setMessage] = useLocalStorage('chat-message', [])
 
-    useEffect(() => {
-        socket.emit('login', { email: customer.email, admin: authAPI.isAuth() });
-        socket.on("admin-co", e => setAdminConnected({ msg: e.msg, bool: e.bool }))
-        socket.on(customer.email, (data) => {
-            setMessage((prev) => [...prev, data]); console.log(data)
-        })
-    }, [])
+    // useEffect(() => {
+    //     socket.emit('login', { email: customer.email, admin: authAPI.isAuth() });
+    //     socket.on("admin-co", e => setAdminConnected({ msg: e.msg, bool: e.bool }))
+    //     socket.on(customer.email, (data) => {
+    //         setMessage((prev) => [...prev, data]); console.log(data)
+    //     })
+    // }, [])
 
     const send = function (e, { desc }) {
         e.preventDefault();
-        socket.emit("send", { from: customer.email, desc: desc, admin: authAPI.isAuth(), to: "admin" });
+        // socket.emit("send", { from: customer.email, desc: desc, admin: authAPI.isAuth(), to: "admin" });
         setMessage(prev => [...prev, { from: customer.email, desc: desc }]);
     };
 

@@ -27,6 +27,7 @@ export default function CheckoutForm({ id, setAway }) {
             setClientSecret(rep.data.client_secret)
         } catch (error) {
             setError("Erreur de récupération de la facture")
+            setDisabled(false);
             console.error("Error on client's payment fetching")
         }
     }
@@ -74,7 +75,7 @@ export default function CheckoutForm({ id, setAway }) {
         console.log(result)
 
         if (result.error) {
-            setError(lang.refusedPayment);
+            setError(result.error.message + " " + lang.refusedPayment);
             setDisabled(false);
 
             console.log(result.error.message);

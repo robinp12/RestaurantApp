@@ -1,7 +1,6 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import React, { useContext } from 'react';
-import { STRIPE_PK } from "../../../config";
 import { LangContext } from "../../Context/LangContext";
 import Cart from "../Cart";
 import CheckoutForm from '../CheckoutForm';
