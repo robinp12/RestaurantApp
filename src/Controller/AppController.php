@@ -46,10 +46,10 @@ class AppController extends AbstractController
         $invoice = $this->invoice_repository->findOneBy(["id" => $id]);
         $date = new DateTime();
         if ($invoice->getClient()) {
-            if ($invoice->getSentAt() >= $date->modify("-4 minutes")) {
+            if ($invoice->getSentAt() >= $date->modify("-2 minutes")) {
                 $email = (new TemplatedEmail())
-                    ->from('admin@shop-lechevalblanc.be')
-                    ->cc('admin@shop-lechevalblanc.be')
+                    ->from($_ENV["MAIL_ADMIN"])
+                    ->cc($_ENV["MAIL_ADMIN"])
                     ->to($invoice->getClient()->getEmail())
                     ->subject('Confirmation de commande')
                     ->htmlTemplate('emails/orderConfirmation.html.twig')
@@ -71,10 +71,10 @@ class AppController extends AbstractController
         $encodedid = base64_encode("nb." . $reservation->getPeopleNumber() . "~id@" . $id);
         $date = new DateTime();
         if ($reservation) {
-            if ($reservation->getSentAt() >= $date->modify("-4 minutes")) {
+            if ($reservation->getSentAt() >= $date->modify("-2 minutes")) {
                 $email = (new TemplatedEmail())
-                    ->from('admin@shop-lechevalblanc.be')
-                    ->cc('admin@shop-lechevalblanc.be')
+                    ->from($_ENV["MAIL_ADMIN"])
+                    ->cc($_ENV["MAIL_ADMIN"])
                     ->to($reservation->getCustomer()->getEmail())
                     ->subject('Confirmation de réservation')
                     ->htmlTemplate('emails/reserveConfirmation.html.twig')
@@ -124,7 +124,7 @@ class AppController extends AbstractController
         foreach ($invoice->getOrders() as $key) {
             $orders .= " | " . $key->getQuantity() . "x " . $key->getLabel() . " " . $key->getPrice() . "€ \n";
         }
-        \Stripe\Stripe::setApiKey('sk_test_51HCndUCDUj22MdGMscmy5f7WOiIB4zVDgd8AHVyDJ6pceA0wx8w0OV2Lpf4HtLtdRCAgvOLFDUIBjkR0tf25gwyD002AdZsgEN');
+        \Stripe\Stripe::setApiKey($_ENV["STRIPE_SK"]);
         $pay = \Stripe\PaymentIntent::create([
             'amount' => $invoice->getAmount() * 100,
             'currency' => 'eur',
