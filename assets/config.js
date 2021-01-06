@@ -4,6 +4,7 @@ import socketIOClient from "socket.io-client";
 export const API_URL = process.env.API_URL;
 export const STRIPE_PK = process.env.STRIPE_PK;
 
+console.log(process.env);
 export const socket = socketIOClient(process.env.SOCKET_URL, {
   transports: ["websocket"],
   secure: true,
