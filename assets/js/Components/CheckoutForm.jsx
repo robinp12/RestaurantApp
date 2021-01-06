@@ -71,6 +71,8 @@ export default function CheckoutForm({ id, setAway }) {
             payment_method: { card: elements.getElement(CardElement) }
         });
 
+        console.log(result)
+
         if (result.error) {
             setError(lang.refusedPayment);
             setDisabled(false);

@@ -113,7 +113,7 @@ const ReservationManagement = ({ match, history }) => {
                                         <div className="col-sm-12 col-md-6">
                                             <span> {lang.sendingDate} {new Date(reservation.sentAt).toLocaleString()}</span><br />
                                             <span> {lang.comment} : <br />
-                                                {reservation.comment}</span>
+                                                {reservation.comment || " \ "}</span>
                                         </div>
                                     </div>
                                     <button onClick={() => handleDelete(reservation.id)} className="btn btn-primary float-right">Supprimer</button>

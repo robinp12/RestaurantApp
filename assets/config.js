@@ -6,7 +6,9 @@ export const STRIPE_PK = process.env.STRIPE_PK;
 
 export const socket = socketIOClient(process.env.SOCKET_URL, {
   transports: ["websocket"],
+  secure: true,
 });
+console.log(socket);
 
 // Regroupement dans un fichier pour surcharger
 export const SETTINGS_API = API_URL + "settings";

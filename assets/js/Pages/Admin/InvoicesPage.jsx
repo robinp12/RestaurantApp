@@ -135,13 +135,13 @@ const InvoicesPage = ({ match, history }) => {
                                                 ||
                                                 <>
                                                     <span>Status :
-                                                    {invoice.status == "SENT" &&
+                                                    {invoice.status == "SENT" ?
                                                             <i className=""> {status(invoice?.status)}
                                                             </i>
-                                                            ||
+                                                            :
                                                             (invoice?.status == "CANCELLED") ? <i className="text-primary font-weight-bold"> {status(invoice?.status)}</i> :
-                                                            <i className="font-weight-bold text-success"> {status(invoice?.status)}
-                                                            </i >}
+                                                                <i className="font-weight-bold text-success"> {status(invoice?.status)}
+                                                                </i >}
                                                     </span>
                                                     <br />
                                                 </>}

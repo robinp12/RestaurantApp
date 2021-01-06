@@ -9,7 +9,6 @@ import {
 } from "react-router-dom";
 import { toast, ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { STRIPE_PK } from "../config";
 import "../css/app.css";
 import Footer from "./Components/Footer";
 import NavbarPerso from "./Components/NavbarPerso";
