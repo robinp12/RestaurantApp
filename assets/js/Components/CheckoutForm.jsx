@@ -24,6 +24,8 @@ export default function CheckoutForm({ id, setAway }) {
                 .then(res => {
                     return res;
                 });
+            console.log(rep)
+
             setClientSecret(rep.data.client_secret)
         } catch (error) {
             setError("Erreur de récupération de la facture")
