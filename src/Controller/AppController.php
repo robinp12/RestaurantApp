@@ -115,7 +115,7 @@ class AppController extends AbstractController
     }
 
     /**
-     * @Route("/pay/{id}",name="pay", methods={"POST"})
+     * @Route("/pay/{id}",name="pay", methods={"POST"}, schemes={"https"})
      */
     public function paying(int $id): Response
     {
@@ -124,7 +124,7 @@ class AppController extends AbstractController
         foreach ($invoice->getOrders() as $key) {
             $orders .= " | " . $key->getQuantity() . "x " . $key->getLabel() . " " . $key->getPrice() . "€ \n";
         }
-        \Stripe\Stripe::setApiKey($_ENV["STRIPE_SK"]);
+        \Stripe\Stripe::setApiKey("sk_test_51HCndUCDUj22MdGMscmy5f7WOiIB4zVDgd8AHVyDJ6pceA0wx8w0OV2Lpf4HtLtdRCAgvOLFDUIBjkR0tf25gwyD002AdZsgEN");
         $pay = \Stripe\PaymentIntent::create([
             'amount' => $invoice->getAmount() * 100,
             'currency' => 'eur',
