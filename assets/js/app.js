@@ -76,7 +76,6 @@ const App = () => {
     }
   };
   setLang();
-  console.log(STRIPE_PK);
   const fetchCatProd = async () => {
     try {
       await productsAPI.getAllProducts();
