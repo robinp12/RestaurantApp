@@ -19,6 +19,8 @@ export default function CheckoutForm({ id, setAway }) {
 
     const fetchSecret = async () => {
         // Create PaymentIntent as soon as the page loads
+        console.log(Axios.post("/pay/" + id))
+
         try {
             const rep = await Axios.post("/pay/" + id)
                 .then(res => {
