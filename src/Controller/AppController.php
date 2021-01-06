@@ -7,6 +7,7 @@ use App\Repository\InvoiceRepository;
 use App\Repository\ReservationRepository;
 use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
+use Error;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -115,23 +116,28 @@ class AppController extends AbstractController
     }
 
     /**
-     * @Route("/pay/{id}",name="pay", methods={"POST"}, schemes={"https"})
+     * @Route("/pay/{id}",name="pay", methods={"POST"})
      */
     public function paying(int $id): Response
     {
+        \Stripe\Stripe::setApiKey("sk_test_51HCndUCDUj22MdGMscmy5f7WOiIB4zVDgd8AHVyDJ6pceA0wx8w0OV2Lpf4HtLtdRCAgvOLFDUIBjkR0tf25gwyD002AdZsgEN");
+        header('Content-Type: application/json');
+
         $invoice = $this->invoice_repository->find($id);
         $orders = "";
         foreach ($invoice->getOrders() as $key) {
             $orders .= " | " . $key->getQuantity() . "x " . $key->getLabel() . " " . $key->getPrice() . "€ \n";
         }
-        \Stripe\Stripe::setApiKey("sk_test_51HCndUCDUj22MdGMscmy5f7WOiIB4zVDgd8AHVyDJ6pceA0wx8w0OV2Lpf4HtLtdRCAgvOLFDUIBjkR0tf25gwyD002AdZsgEN");
-        $pay = \Stripe\PaymentIntent::create([
-            'amount' => $invoice->getAmount() * 100,
-            'currency' => 'eur',
-            'payment_method_types' => ['card'],
-            "description" => "Facture n°" . $invoice->getId() . " \n" . $orders
-        ]);
-
-        return $this->json($pay);
+        try {
+            $pay = \Stripe\PaymentIntent::create([
+                'amount' => $invoice->getAmount() * 100,
+                'currency' => 'eur',
+                'payment_method_types' => ['card'],
+                "description" => "Facture n°" . $invoice->getId() . " \n" . $orders
+            ]);
+            return $this->json($pay);
+        } catch (Error $e) {
+            return $this->json(['error' => $e->getMessage()]);
+        }
     }
 }
