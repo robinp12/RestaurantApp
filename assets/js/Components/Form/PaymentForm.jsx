@@ -6,7 +6,7 @@ import { LangContext } from "../../Context/LangContext";
 import Cart from "../Cart";
 import CheckoutForm from '../CheckoutForm';
 
-const promise = loadStripe(STRIPE_PK);
+const promise = loadStripe("pk_test_51HCndUCDUj22MdGMszaBAdLuvPJf8o56sbzBJpYRzLfpqQvwLjJh9vHMNDAThlRWMe2SjbdUfNksbGkNGrp7A40600Up8Wr58j");
 
 const PaymentForm = ({ id, setAway }) => {
     const { lang } = useContext(LangContext);
