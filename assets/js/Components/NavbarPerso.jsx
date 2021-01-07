@@ -3,6 +3,7 @@ import { Nav, Navbar, NavDropdown, OverlayTrigger, Popover } from 'react-bootstr
 import { AuthContext } from "../Context/AuthContext";
 import { CartContext } from "../Context/CartContext";
 import { LangContext } from '../Context/LangContext';
+import authAPI from "../Services/authAPI";
 import Cart from "./Cart";
 
 const NavbarPerso = ({ history }) => {
@@ -86,23 +87,27 @@ const NavbarPerso = ({ history }) => {
             </Nav>
           </>
           ||
-          <Nav className="mr-auto nav-item">
-            {/* <Nav.Link className="nav-item text-muted" href="#map">Map</Nav.Link> */}
-            {/* <Nav.Link className="nav-item text-muted" href="#chatadmin">Chat</Nav.Link> */}
-            <Nav.Link className="nav-item" href="#commandes">Commandes</Nav.Link>
-            <Nav.Link className="nav-item" href="#reservations">Reservations</Nav.Link>
-            <Nav.Link className="nav-item" href="#factures">Factures</Nav.Link>
-            <Nav.Link className="nav-item" href="#clients">Clients</Nav.Link>
-            <NavDropdown title="Gestion" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#manage">Menus</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#map" className="text-muted">Map</NavDropdown.Item>
-              <NavDropdown.Item href="#chatadmin" className="text-muted">Chat</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#utilisateurs">Utilisateurs</NavDropdown.Item>
-              <NavDropdown.Item href="#parametres">Paramètres</NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
+          <>
+            <Nav className="mr-auto nav-item">
+              {/* <Nav.Link className="nav-item text-muted" href="#map">Map</Nav.Link> */}
+              {/* <Nav.Link className="nav-item text-muted" href="#chatadmin">Chat</Nav.Link> */}
+              <Nav.Link className="nav-item" href="#commandes">Commandes</Nav.Link>
+              <Nav.Link className="nav-item" href="#reservations">Reservations</Nav.Link>
+              <Nav.Link className="nav-item" href="#factures">Factures</Nav.Link>
+              <Nav.Link className="nav-item" href="#clients">Clients</Nav.Link>
+              <NavDropdown title="Gestion" id="basic-nav-dropdown">
+                <NavDropdown.Item href="#manage">Menus</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#map" className="text-muted">Map</NavDropdown.Item>
+                <NavDropdown.Item href="#chatadmin" className="text-muted">Chat</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#utilisateurs">Utilisateurs</NavDropdown.Item>
+                <NavDropdown.Item href="#parametres">Paramètres</NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+            <Nav className="nav-item">
+              <Nav.Link className="nav-item active" href={`#utilisateurs/${authAPI.getCurrent().id}`}>{authAPI.getCurrent().firstName + " " + authAPI.getCurrent().lastName.toUpperCase()}</Nav.Link>
+            </Nav></>
         }
       </Navbar.Collapse>
     </Navbar >

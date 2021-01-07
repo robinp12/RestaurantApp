@@ -34,9 +34,10 @@ const Footer = ({ history, setlangue, langue }) => {
                 <div className="col-sm-12 col-md-4">
                     <div className="row">
                         <div className="col-md-4">
-                            <Select onChange={handleChange} value={langue} name={"langue"} defaut={"FR"}>
-                                {lang.map((langue, index) => <option value={langue} key={index}>{langue}</option>)}
-                            </Select>
+                            {!authAPI.isAuth() &&
+                                <Select onChange={handleChange} value={langue} name={"langue"} defaut={"FR"}>
+                                    {lang.map((langue, index) => <option value={langue} key={index}>{langue}</option>)}
+                                </Select>}
                         </div>
                     </div>
                 </div>
