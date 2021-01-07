@@ -7,7 +7,6 @@ import Cart from "./Cart";
 
 const NavbarPerso = ({ history }) => {
   const { cart, setCart } = useContext(CartContext);
-  window.scrollTo(0, 0);
 
   const { language, setLanguage, lang } = useContext(LangContext);
   const { isAuth } = useContext(AuthContext);

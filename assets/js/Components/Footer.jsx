@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../Context/AuthContext";
 import authAPI from "../Services/authAPI";
+import Select from "./Form/Input/Select";
 
-const Footer = ({ history, setCount, count }) => {
+const Footer = ({ history, setlangue, langue }) => {
 
     const { isAuth, setIsAuth } = useContext(AuthContext);
     const handleLogout = () => {
@@ -13,34 +14,31 @@ const Footer = ({ history, setCount, count }) => {
         history.push("/connexion")
     }
 
-    const setLang = () => {
-        switch (count) {
-            case 1:
-                return <><b>EN</b>|PT|FR</>
-            case 2:
-                return <><b>PT</b>|FR|EN</>
-            default:
-                return <><b>FR</b>|EN|PT</>
-        }
+    const handleChange = ({ currentTarget }) => {
+        const { value } = currentTarget;
+        setlangue(value);
     }
-
-    const counte = () => {
-        if (count < 2) {
-            setCount(e => e + 1)
-        }
-        else {
-            setCount(0)
-        }
-    }
+    const [lang, setLang] = useState([
+        'FR',
+        'NL',
+        'EN',
+        'DE',
+        'PT'
+    ]
+    )
 
     return (
         <>
             {/* Composant pour le footer */}
             <div className="row justify-content-between footer my-3">
                 <div className="col-sm-12 col-md-4">
-                    <button className={"btn btn-light btn-sm mr-3"} onClick={() => counte()}>
-                        {setLang()}
-                    </button>
+                    <div className="row">
+                        <div className="col-md-4">
+                            <Select onChange={handleChange} value={langue} name={"langue"} defaut={"FR"}>
+                                {lang.map((langue, index) => <option value={langue} key={index}>{langue}</option>)}
+                            </Select>
+                        </div>
+                    </div>
                 </div>
                 <div className="col-sm-12 col-md-4 text-center">
                     <small className="text-muted">

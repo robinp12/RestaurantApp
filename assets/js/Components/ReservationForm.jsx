@@ -17,6 +17,8 @@ const ReservationForm = () => {
     const [step, setStep] = useState(0);
     const { lang } = useContext(LangContext);
     const reserveConfirm = useRef();
+    window.scrollTo(0, 0);
+
 
     const [customer, setCustomer] = useState({
         firstName: "",
@@ -89,12 +91,10 @@ const ReservationForm = () => {
     const Back = (e) => {
         e.preventDefault();
         setStep(step => step - 1)
-        window.scrollTo(0, 0);
     }
     const Next = (e) => {
         e.preventDefault();
         setStep(step => step + 1)
-        window.scrollTo(0, 0);
     }
     const componentRef2 = useRef();
 
@@ -126,7 +126,6 @@ const ReservationForm = () => {
                         <button className="btn-primary btn float-right" ref={reserveConfirm} onClick={(e) => {
                             handleSubmit(e);
                             oneTimeClick(e)
-                            window.scrollTo(0, 0);
                         }}>{lang.confirm}</button>
                     </div>);
             case 3: // Reservation validation

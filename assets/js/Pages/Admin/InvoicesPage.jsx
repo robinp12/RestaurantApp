@@ -84,7 +84,7 @@ const InvoicesPage = ({ match, history }) => {
                 ||
                 <div className="row">
                     <div className="col-sm-12 col-md-4">
-                        <Field placeholder={"Chercher une facture ..."} onChange={handleSearch} value={search} className="form-control" />
+                        <Field placeholder={"Chercher une facture ..."} onChange={handleSearch} value={search} className=" manage" />
 
                         <table className="table table-responsive-md table-hover ">
                             <thead className="thead-dark">

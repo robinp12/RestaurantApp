@@ -7,6 +7,8 @@ import useLocalStorage from '../Services/useLocalStorage';
 const AboutPage = ({ ref }) => {
 
     const { lang } = useContext(LangContext);
+    window.scrollTo(0, 0);
+
     const [customer, setCustomer] = useState({
         firstName: "Robin",
         lastName: "Paquet",

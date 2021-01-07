@@ -7,6 +7,7 @@ const OrderPage = ({ match }) => {
 
   const { lang } = useContext(LangContext);
   const [where, setWhere] = useState();
+
   return (
     <>
       <Header title={typeof (where) == "undefined" ? lang.toOrder : where == 1 ? lang.orderThere : lang.orderAway} />

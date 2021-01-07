@@ -6,11 +6,11 @@ import { LangContext } from "../Context/LangContext";
 const HomePage = () => {
 
     const { lang } = useContext(LangContext);
+    window.scrollTo(0, 0);
 
     const TEXT_STYLE = {
         fontSize: "2.2vw"
     };
-
 
     return (
         <>

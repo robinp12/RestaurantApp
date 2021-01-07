@@ -16,7 +16,6 @@ const MenuPage = () => {
     const { cart, setCart } = useContext(CartContext);
     const [load, setLoad] = useState(true);
 
-
     const listCart = function () {
         var cartCopy = [];
         for (let i in cart) {

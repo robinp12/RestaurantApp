@@ -70,7 +70,7 @@ const ReservationManagement = ({ match, history }) => {
                 ||
                 <div className="row">
                     <div className="col">
-                        <Field placeholder={"Chercher une réservation ..."} onChange={handleSearch} value={search} className="form-control" />
+                        <Field placeholder={"Chercher une réservation ..."} onChange={handleSearch} value={search} className="manage" />
 
                         <table className="table table-responsive-md table-hover ">
                             <thead className="thead-dark">

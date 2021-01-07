@@ -128,7 +128,7 @@ const CustomersPage = ({ match, history }) => {
                 ||
                 <div className="row">
                     <div className="col-sm-12 col-md-4">
-                        <Field placeholder={"Chercher un client ..."} onChange={handleSearch} value={search} className="form-control" />
+                        <Field placeholder={"Chercher un client ..."} onChange={handleSearch} value={search} className="manage" />
                         <table className="table table-hover ">
                             <thead className="thead-dark">
                                 <tr>
