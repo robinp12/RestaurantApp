@@ -1,3 +1,4 @@
+import Axios from 'axios';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import ReactToPrint from 'react-to-print';
 import { toast } from "react-toastify";
@@ -25,7 +26,7 @@ const StepForm = ({ match, setWhere }) => {
     const { lang } = useContext(LangContext);
     const { cart, setCart } = useContext(CartContext);
     let [...bag] = cart;
-    const [orderCart, setOrderCart] = useLocalStorage('cart', [])
+    // const [orderCart, setOrderCart] = useLocalStorage('cart', [])
     const [message, setMessage] = useLocalStorage('chat-message', [])
 
     const [products, setProducts] = useState([]);
@@ -106,17 +107,33 @@ const StepForm = ({ match, setWhere }) => {
         }
     }
 
-    const sendAllOrders = (id) => {
+    const sendAllOrders = async (id) => {
+
         for (let e in bag) {
-            handleSubmitOrder(formatedOrder(bag[e]), id)
+            const { name, price, totalAmount } = { ...bag[e] };
+            bag[e].label = name;
+            bag[e].invoice = "/api/invoices/" + id;
+            bag[e].price = parseFloat(price, 10);
+            bag[e].totalAmount = totalAmount;
+            bag[e].orderTable = decodeId < 15 ? +decodeId : 0;
+            // handleSubmitOrder(bag[e])
+            try {
+                const rep = await Axios.all([ordersAPI.add(bag[e])]).then(res => {
+                    return res;
+                })
+                console.log(rep)
+            } catch (error) {
+                console.log(error, 1)
+            }
         }
+
         if (!onlinePayment.onlinePayment) {
             sendMail(id);
             toast(lang.paymentConfirmation);
             setAway(5);
         }
         else {
-            setAway(step => step + 1);
+            setTimeout(setAway(step => step + 1), 500);
         }
     }
 
@@ -128,20 +145,18 @@ const StepForm = ({ match, setWhere }) => {
         }
     }
 
-    const formatedOrder = ({ name, price, totalAmount, ...bag }) => {
-        bag.label = name;
-        bag.price = parseFloat(price, 10);
-        bag.totalAmount = totalAmount;
-        bag.orderTable = decodeId < 15 ? +decodeId : 0;
-        return bag
-    }
-    const handleSubmitOrder = async (order, id) => {
-        order.invoice = "/api/invoices/" + id;
+    // const formatedOrder = ({ name, price, totalAmount, ...bag }) => {
+    //     bag.label = name;
+    //     bag.price = parseFloat(price, 10);
+    //     bag.totalAmount = totalAmount;
+    //     bag.orderTable = decodeId < 15 ? +decodeId : 0;
+    //     return bag
+    // }
+    const handleSubmitOrder = async (order) => {
         console.log(ordersAPI.add(order))
-
         try {
             await ordersAPI.add(order);
-            setOrderCart(cart)
+            // setOrderCart(cart)
         } catch (error) {
             console.error("Order's form error")
         }
