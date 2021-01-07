@@ -109,7 +109,6 @@ const StepForm = ({ match, setWhere }) => {
 
     const sendAllOrders = async (id) => {
 
-        const sendOrder = [];
         for (let e in bag) {
             const { name, price, totalAmount } = { ...bag[e] };
             bag[e].label = name;
@@ -117,26 +116,14 @@ const StepForm = ({ match, setWhere }) => {
             bag[e].price = parseFloat(price, 10);
             bag[e].totalAmount = totalAmount;
             bag[e].orderTable = decodeId < 15 ? +decodeId : 0;
-            // handleSubmitOrder(bag[e])
-            // try {
-            //     const rep = await Axios.all([ordersAPI.add(bag[e])]).then(res => {
-            //         return res;
-            //     })
-            //     console.log
-
-            // } catch (error) {
-            //     console.error("Error on order submit")
-            // }
-            sendOrder[e] = ordersAPI.add(bag[e]);
-        }
-        try {
-            const rep = await Axios.all([sendOrder]).then(res => {
-                return res;
-            })
-            console.log(rep);
-
-        } catch (error) {
-            console.error("Error on order submit")
+            try {
+                const rep = await Axios.all([ordersAPI.add(bag[e])]).then(res => {
+                    return res;
+                })
+                console.log(rep)
+            } catch (error) {
+                console.error("Error on order submit")
+            }
         }
 
         if (!onlinePayment.onlinePayment) {

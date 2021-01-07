@@ -7,6 +7,7 @@ const Pagination = ({ currentPage, itemsPerPage, length, onPageChanged }) => {
     for (let i = 1; i <= pageCount; i++) {
         pages.push(i);
     }
+    const copy = pages.filter(a => { return 5 < a });
 
     return (
         <div className="row justify-content-center">
@@ -14,7 +15,7 @@ const Pagination = ({ currentPage, itemsPerPage, length, onPageChanged }) => {
                 <li className={"page-item" + (currentPage === 1 && " disabled")}>
                     <button className="page-link" onClick={() => onPageChanged(prev => prev - 1)}>&laquo;</button>
                 </li>
-                {pages.map((page) =>
+                {copy.map((page) =>
                     <li key={page} className={"page-item" + (currentPage === page && " active")}>
                         <button className="page-link" onClick={() => onPageChanged(page)}>{page}</button>
                     </li>
