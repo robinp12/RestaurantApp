@@ -5,12 +5,6 @@ import Cache from "./cache";
 // Ajout d'un nouvel order
 function add(order) {
   return Axios.post(ORDERS_API, order).then(async (response) => {
-    // Verification si il se trouve en cache
-    const cachedOrders = await Cache.get("orders");
-    if (cachedOrders) {
-      // Mise en cache si il n'y est pas encore
-      Cache.set("orders", [...cachedOrders, response.data]);
-    }
     return response;
   });
 }
