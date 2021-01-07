@@ -120,7 +120,6 @@ const StepForm = ({ match, setWhere }) => {
                 const rep = await Axios.all([ordersAPI.add(bag[e])]).then(res => {
                     return res;
                 })
-                console.log(rep)
             } catch (error) {
                 console.error("Error on order submit")
             }
