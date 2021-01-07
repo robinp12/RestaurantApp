@@ -69,6 +69,10 @@ class Reservation
      * @ORM\Column(type="datetime")
      * @Groups({"reservations_read"})
      * @Assert\NotBlank(message="Date obligatoire")
+     * @Assert\GreaterThanOrEqual(
+     *      value = "1 day",
+     *      message = "Disponible seulement au dela des 24 heures"
+     * )
      */
     private $reservation_at;
 

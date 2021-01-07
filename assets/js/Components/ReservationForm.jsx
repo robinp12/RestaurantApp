@@ -19,7 +19,6 @@ const ReservationForm = () => {
     const reserveConfirm = useRef();
     window.scrollTo(0, 0);
 
-
     const [customer, setCustomer] = useState({
         firstName: "",
         lastName: "",
@@ -37,7 +36,8 @@ const ReservationForm = () => {
         address: "",
         zipcode: "",
         city: "",
-        phoneNumber: ""
+        phoneNumber: "",
+        reservation_at: ""
     });
 
     const [reservation, setReservation] = useState({
@@ -53,6 +53,9 @@ const ReservationForm = () => {
             handleSubmitReservation(rep.data.id)
         } catch (error) {
             console.error("Customer's form error")
+            toast("Erreur dans le formulaire", {
+                className: "bg-red-toast",
+            });
             if (error.response.data.violations) {
                 const apiErrors = {};
                 setStep(1)
@@ -81,6 +84,24 @@ const ReservationForm = () => {
             setStep(step => step + 1);
         } catch (error) {
             console.error("Reservation's form error")
+            if (error.response.data.violations) {
+                console.log(error.response)
+
+                const apiErrors = {};
+                error.response.data.violations.forEach((violation) => {
+                    if (violation.propertyPath == "reservation_at") {
+                        toast("Date incorrecte", {
+                            className: "bg-red-toast",
+                        });
+                        setStep(0)
+                    }
+                    else {
+                        setStep(1)
+                    }
+                    apiErrors[violation.propertyPath] = violation.message;
+                });
+                setErrors(apiErrors);
+            }
         }
     }
     const oneTimeClick = (e) => {
@@ -149,7 +170,7 @@ const ReservationForm = () => {
                         <div className="container text-center">
                             {console.log(reservation.reservationAt)
                             }
-                            <OrderForm isReservation setReservation={setReservation} reservation={reservation} now={now} />
+                            <OrderForm isReservation setReservation={setReservation} reservation={reservation} now={now} errors={errors.reservation_at} />
                             <button className="btn-primary btn" onClick={Next} disabled={!reservation.reservationAt}>{lang.next}</button>
 
                         </div>

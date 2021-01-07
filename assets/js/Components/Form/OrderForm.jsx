@@ -5,7 +5,7 @@ import Field from './Input/Field';
 let maxReserve = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().slice(0, 16)
 let maxOrder = new Date(new Date().setHours(new Date().getHours() + 168)).toISOString().slice(0, 16)
 
-const OrderForm = ({ isReservation = false, reservation, setReservation, now }) => {
+const OrderForm = ({ isReservation = false, reservation, setReservation, now, errors = "" }) => {
 
     const { lang } = useContext(LangContext);
 
@@ -20,8 +20,11 @@ const OrderForm = ({ isReservation = false, reservation, setReservation, now }) 
                 <div className="col-sm-12 col-md-6">
                     <div className="form-group">
                         {isReservation && <label htmlFor={"time"}>{lang.reserveDate}</label> || <label htmlFor={"time"}>{lang.receptionDate}</label>}
-                        <input name="reservationAt" type="datetime-local" className="form-control"
-                            min={now} max={isReservation ? maxReserve : maxOrder} value={reservation.reservationAt} onChange={handleChange} placeholder={now} />
+                        <input name="reservationAt" type="datetime-local" className={"form-control" + (errors && " is-invalid")}
+                            min={now} max={isReservation ? maxReserve : maxOrder} value={reservation.reservationAt} onChange={handleChange} placeholder={"MM/DD/YY HH:mm"} />
+                        {errors && <p className="invalid-feedback">{errors}</p>}
+                        {console.log(errors)}
+
                     </div>{console.log(reservation.reservationAt)
                     }
                 </div>

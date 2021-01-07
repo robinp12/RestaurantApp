@@ -173,7 +173,7 @@ const UsersPage = ({ match, history }) => {
                                     <th className="text-center hidden-xs align-middle">ID</th>
                                     <th className="text-center align-middle">Utilisateur</th>
                                     <th className="text-center align-middle">
-                                        {authAPI.isAdmin && <button onClick={() => setAddUser(!addUser)} className="btn btn-primary float-right"><i className="fa fa-user-plus fa-lg" aria-hidden="true"></i></button> || <></>}
+                                        {authAPI.isAdmin() && <button onClick={() => setAddUser(!addUser)} className="btn btn-primary float-right"><i className="fa fa-user-plus fa-lg" aria-hidden="true"></i></button> || <></>}
                                     </th>
                                 </tr>
                             </thead>
@@ -190,22 +190,32 @@ const UsersPage = ({ match, history }) => {
                         </table>
                     </div>
                     <div className="col">
-                        {authAPI.isAdmin() && <>
+                        <>
                             {addUser &&
                                 <>
                                     <UserForm />
                                 </>
                                 ||
                                 <>
-                                    {users.map(userInfo =>
-                                        userInfo.id == id &&
-                                        <div key={userInfo.id}>
-                                            <SingleUser userInfo={userInfo} />
-                                        </div>
-                                    )}
+                                    {authAPI.isAdmin() &&
+                                        users.map(userInfo =>
+                                            userInfo.id == id &&
+                                            <div key={userInfo.id}>
+                                                <SingleUser userInfo={userInfo} />
+                                            </div>
+                                        )
+                                        ||
+                                        <>
+                                            {users.map(userInfo =>
+                                                userInfo.id == authAPI.getCurrent().id &&
+                                                <div key={userInfo.id}>
+                                                    <SingleUser userInfo={userInfo} />
+                                                </div>
+                                            )}
+                                        </>}
                                 </>
                             }
-                        </>}
+                        </>
                     </div>
                 </div>}
         </>

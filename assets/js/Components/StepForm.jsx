@@ -57,7 +57,8 @@ const StepForm = ({ match, setWhere }) => {
         address: "",
         zipcode: "",
         city: "",
-        phoneNumber: ""
+        phoneNumber: "",
+        timeToReceive: ""
     });
 
     const [invoice, setInvoice] = useState({
@@ -77,14 +78,15 @@ const StepForm = ({ match, setWhere }) => {
             handleSubmitInvoice(rep.data.id)
         } catch (error) {
             console.error("Customer's form error")
-            toast("Erreur dans le formulaire !" + "", {
-                className: "bg-red-toast",
-            });
+
             if (error.response.data.violations) {
                 setAway(0)
                 const apiErrors = {};
                 error.response.data.violations.forEach((violation) => {
                     apiErrors[violation.propertyPath] = violation.message;
+                    toast(violation.message + "", {
+                        className: "bg-red-toast",
+                    });
                 });
                 setErrors(apiErrors);
             }
@@ -92,7 +94,7 @@ const StepForm = ({ match, setWhere }) => {
     };
 
     const handleSubmitInvoice = async (id = 0) => {
-        invoice.timeToReceive = orderInfo.reservationAt
+        invoice.timeToReceive = orderInfo.reservationAt || new Date()
         if (id !== 0) invoice.client = "/api/customers/" + id;
         confirmRef.current.setAttribute("disabled", "")
         try {
@@ -104,6 +106,19 @@ const StepForm = ({ match, setWhere }) => {
             // sendNotif()
         } catch (error) {
             console.error("Invoice's form error")
+            if (error.response.data.violations) {
+                console.log(error.response)
+
+                const apiErrors = {};
+                error.response.data.violations.forEach((violation) => {
+                    setAway(2)
+                    toast(violation.message + "", {
+                        className: "bg-red-toast",
+                    });
+                    apiErrors[violation.propertyPath] = violation.message;
+                });
+                setErrors(apiErrors);
+            }
         }
     }
 
@@ -295,11 +310,10 @@ const StepForm = ({ match, setWhere }) => {
                     );
                 case 2: // Order informations
                     return (
-
                         <div className="container">
-                            <OrderForm reservation={orderInfo} setReservation={setOrderInfo} now={now} />
+                            <OrderForm reservation={orderInfo} setReservation={setOrderInfo} now={now} errors={errors.timeToReceive} />
                             <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
-                            <button className="btn-primary btn float-right mt-4" onClick={Next} disabled={!orderInfo.reservationAt}>{lang.next}</button>
+                            <button className="btn-primary btn float-right mt-4" onClick={Next} >{lang.next}</button>
                         </div>
                     );
                 case 3: // Order summary
@@ -349,15 +363,7 @@ const StepForm = ({ match, setWhere }) => {
                             <CustomerForm errors={errors} />
                             <button className="btn-primary btn float-left" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setChoose(0) }}>{lang.back}</button>
                             <button className="btn-primary btn float-right" onClick={Next}
-                                disabled={!(
-                                    customer.firstName &&
-                                    customer.lastName &&
-                                    customer.email &&
-                                    customer.zipcode &&
-                                    customer.city &&
-                                    customer.phoneNumber &&
-                                    customer.address
-                                )}
+
                             >{lang.next}</button>
 
                         </div>

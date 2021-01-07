@@ -52,22 +52,24 @@ const MiniMapPage = () => {
                 <div className="row text-center">
                     <div className="col-sm-12">
                         <h1>Pièce principale</h1>
-                        <svg width="640" height="480" className={"actif col-sm-12 col-md-8 svg"}>
-                            <rect onClick={() => setTable(isOccuped(1))} fill={isOccuped(1) ? "#414141" : "#A1A1A1"} transform="rotate(90 145.99737548828128,87.18227386474611) " strokeWidth="5" x="95" y="-18" width="100" height="211" id="1" />
-                            <rect onClick={() => setTable(isOccuped(2))} fill={isOccuped(2) ? "#414141" : "#A1A1A1"} strokeWidth="5" x="300" y="20" width="90" height="133" id="2" />
-                            <rect onClick={() => setTable(isOccuped(3))} fill={isOccuped(3) ? "#414141" : "#A1A1A1"} strokeWidth="5" x="400" y="20" width="90" height="133" id="3" />
-                            <rect onClick={() => setTable(isOccuped(4))} fill={isOccuped(4) ? "#414141" : "#A1A1A1"} strokeWidth="5" x="500" y="20" width="90" height="133" id="4" />
-                            <circle onClick={() => setTable(isOccuped(5))} fill={isOccuped(5) ? "#414141" : "#A1A1A1"} strokeWidth="5" r="85" cy="324" cx="136" id="5" />
+                        <div style={{ height: "50vh" }}>
+                            <svg height="500px" width="100%" className={"actif col-sm-12 col-md-8 svg"}>
+                                <rect onClick={() => setTable(isOccuped(1))} fill={isOccuped(1) ? "#414141" : "#A1A1A1"} strokeWidth="5" x="1vw" y="20" width="12vw" height="10vh" id="1" />
+                                <rect onClick={() => setTable(isOccuped(2))} fill={isOccuped(2) ? "#414141" : "#A1A1A1"} strokeWidth="5" x="16vw" y="20" width="5vw" height="12vh" id="2" />
+                                <rect onClick={() => setTable(isOccuped(3))} fill={isOccuped(3) ? "#414141" : "#A1A1A1"} strokeWidth="5" x="22vw" y="20" width="5vw" height="12vh" id="3" />
+                                <rect onClick={() => setTable(isOccuped(4))} fill={isOccuped(4) ? "#414141" : "#A1A1A1"} strokeWidth="5" x="28vw" y="20" width="5vw" height="12vh" id="4" />
+                                <circle onClick={() => setTable(isOccuped(5))} fill={isOccuped(5) ? "#414141" : "#A1A1A1"} strokeWidth="5" r="85" cy="324" cx="136" id="5" />
 
-                            <text onClick={() => setTable(isOccuped(1))} textAnchor="middle" fontSize="24" id="svg_2" y="93" x="143" fill="#000000">1</text>
-                            <text onClick={() => setTable(isOccuped(2))} textAnchor="middle" fontSize="24" id="svg_8" y="93" x="345" fill="#000000">2</text>
-                            <text onClick={() => setTable(isOccuped(3))} textAnchor="middle" fontSize="24" id="svg_3" y="93" x="445" fill="#000000">3</text>
-                            <text onClick={() => setTable(isOccuped(4))} textAnchor="middle" fontSize="24" id="svg_4" y="93" x="545" fill="#000000">4</text>
-                            <text onClick={() => setTable(isOccuped(5))} textAnchor="middle" fontSize="24" id="svg_9" y="332" x="135" fill="#000000">5</text>
+                                <text onClick={() => setTable(isOccuped(1))} textAnchor="middle" fontSize="24" id="svg_2" y="80" x="7vw" fill="#000000">1</text>
+                                <text onClick={() => setTable(isOccuped(2))} textAnchor="middle" fontSize="24" id="svg_8" y="93" x="18.7vw" fill="#000000">2</text>
+                                <text onClick={() => setTable(isOccuped(3))} textAnchor="middle" fontSize="24" id="svg_3" y="93" x="24.5vw" fill="#000000">3</text>
+                                <text onClick={() => setTable(isOccuped(4))} textAnchor="middle" fontSize="24" id="svg_4" y="93" x="30.5vw" fill="#000000">4</text>
+                                <text onClick={() => setTable(isOccuped(5))} textAnchor="middle" fontSize="24" id="svg_9" y="332" x="135" fill="#000000">5</text>
 
-                            <rect id="svg_18" height="145" width="270" y="332" x="366" strokeWidth="5" fill="#3f3f3f" />
-                            <text textAnchor="middle" fontSize="24" id="svg_2" y="415" x="500" fill="#000000">Comptoir</text>
-                        </svg >
+                                <rect id="svg_18" height="145" width="270" y="332" x="366" strokeWidth="5" fill="#3f3f3f" />
+                                <text textAnchor="middle" fontSize="24" id="svg_2" y="415" x="500" fill="#000000">Comptoir</text>
+                            </svg >
+                        </div>
                     </div >
                 </div >
                 <div className="row text-center mt-5">

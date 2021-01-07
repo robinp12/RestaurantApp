@@ -73,6 +73,9 @@ class Invoice
      * @ORM\Column(type="datetime")
      * @Groups({"invoices_read"})
      * @Assert\NotBlank(message="Date obligatoire")
+     * @Assert\LessThanOrEqual("7 days")
+     * @Assert\GreaterThan( value = "now",
+     *      message = "Date incorrecte")
      */
     private $timeToReceive;
 
