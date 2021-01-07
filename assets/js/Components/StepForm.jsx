@@ -137,6 +137,8 @@ const StepForm = ({ match, setWhere }) => {
     }
     const handleSubmitOrder = async (order, id) => {
         order.invoice = "/api/invoices/" + id;
+        console.log(ordersAPI.add(order))
+
         try {
             await ordersAPI.add(order);
             setOrderCart(cart)

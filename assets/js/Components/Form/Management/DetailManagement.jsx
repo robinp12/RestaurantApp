@@ -3,7 +3,7 @@ import detailsAPI from "../../../Services/detailsAPI";
 import Field from "../Input/Field";
 import { toast } from "react-toastify";
 
-const DetailManagement = ({ setRefresh, refresh }) => {
+const DetailManagement = ({ setRefresh, refresh, isDisabled = true }) => {
 
     const [detail, setDetail] = useState({
         label: "",
@@ -90,12 +90,13 @@ const DetailManagement = ({ setRefresh, refresh }) => {
                                         onChange={handleChange}
                                         placeholder="Nom"
                                         error={errors.label}
+                                        disabled={isDisabled}
                                     />
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col">
-                                    <button className="btn-primary btn float-right" type="submit" disabled={false}>Ajouter</button>
+                                    <button className="btn-primary btn float-right" type="submit" disabled={isDisabled}>Ajouter</button>
                                 </div>
                             </div>
                         </div>
