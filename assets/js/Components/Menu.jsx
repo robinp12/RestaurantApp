@@ -30,7 +30,7 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
             <div className="card-text">
                 <div className="row">
                     {categories.map((cat, index) =>
-                        <div key={index} className={"col-sm-12 col-md-" + (index == 2 ? "12" : "6")}>
+                        <div key={index} className={"col-sm-12 col-md-" + (index == 2 ? "6" : "6")}>
                             <h4 className="display-5 my-3" id={cat.label}>{cat.label}</h4>
                             <ul className="list-group">
                                 {products.map((prod, index) =>

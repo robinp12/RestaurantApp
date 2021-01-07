@@ -19,14 +19,11 @@ export default function CheckoutForm({ id, setAway }) {
 
     const fetchSecret = async () => {
         // Create PaymentIntent as soon as the page loads
-        console.log(Axios.post("/pay/" + id))
         try {
             const rep = await Axios.post("/pay/" + id)
                 .then(async res => {
                     return res;
                 });
-            console.log(rep)
-
             setClientSecret(rep.data.client_secret)
         } catch (error) {
             setError("Erreur de récupération de la facture")
