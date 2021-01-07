@@ -42,7 +42,7 @@ const Menu = ({ products, categories, listCart, addItemToCart }) => {
                                                 <div className="row">
                                                     <div className="col">
 
-                                                        <div className="justify-content-between align-items-center align-middle d-flex" onClick={() => {
+                                                        <div className="listeelem justify-content-between align-items-center align-middle d-flex" onClick={() => {
                                                             addItemToCart(prod.id, prod.label, prod.price, 1); setCart(listCart);
                                                         }}>
                                                             <span className="float-left">

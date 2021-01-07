@@ -277,6 +277,9 @@ a:hover,
   background-color: #5f3647 !important;
   border-color: #5f3647 !important;
 }
+.listeelem:hover {
+  cursor: pointer;
+}
 .stripe {
   background: #5469d4 !important;
   font-family: Arial, sans-serif !important;

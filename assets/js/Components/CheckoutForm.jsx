@@ -22,7 +22,7 @@ export default function CheckoutForm({ id, setAway }) {
         console.log(Axios.post("/pay/" + id))
         try {
             const rep = await Axios.post("/pay/" + id)
-                .then(res => {
+                .then(async res => {
                     return res;
                 });
             console.log(rep)
