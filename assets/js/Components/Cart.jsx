@@ -44,7 +44,6 @@ const Cart = ({ pay }) => {
 
     const removeItemFromCart = function (product, name, price, quantity) {
         setRefresh(!refresh)
-        console.log(product, name, price, quantity)
 
         for (var item in cart) {
             if (cart[item].product === product) {
