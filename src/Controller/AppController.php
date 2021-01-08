@@ -109,7 +109,7 @@ class AppController extends AbstractController
                 $entityManager->flush();
                 echo ("<h1>Votre réservation a correctement été supprimée</h1>");
             } else {
-                echo ("<h1>Impossible de supprimer une réservation déja passée</h1>");
+                echo ("<h1>Impossible de supprimer une réservation ayant déja eu lieu</h1>");
             }
         } else {
             return $this->redirectToRoute("app");
