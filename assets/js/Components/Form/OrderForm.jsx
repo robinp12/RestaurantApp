@@ -15,7 +15,6 @@ const OrderForm = ({ isReservation = false, reservation, setReservation, now, er
     };
 
     const ref = useRef();
-    console.log(ref)
 
     return (
         <>
@@ -26,11 +25,7 @@ const OrderForm = ({ isReservation = false, reservation, setReservation, now, er
                         <input ref={ref} name="reservationAt" type="datetime-local" className={"form-control" + (errors && " is-invalid")}
                             min={now} max={isReservation ? maxReserve : maxOrder} value={reservation.reservationAt} onChange={handleChange} placeholder={"mm/jj/aaaa HH:mm"} />
                         {errors && <p className="invalid-feedback">{errors}</p> || <p className={"text-muted float-left"}>{lang.date} : {new Date(reservation.reservationAt || now).toLocaleString()}</p>}
-
-                        {console.log(errors)}
-
-                    </div>{console.log(reservation.reservationAt)
-                    }
+                    </div>
                 </div>
             </div>
             {

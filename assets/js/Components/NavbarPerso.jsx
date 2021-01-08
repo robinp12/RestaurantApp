@@ -15,7 +15,7 @@ const NavbarPerso = ({ history }) => {
   const [show, setShow] = useState(false);
   const popover = (
     <Popover id="popover-basic">
-      <Popover.Title><h4 className="m-1">Panier</h4></Popover.Title>
+      <Popover.Title><h4 className="m-1">Panier  <a onClick={() => setCart([])} className="btn btn-primary btn-sm float-right"><em className="fa fa-trash"></em></a></h4></Popover.Title>
       <Popover.Content>
         <Cart />
         {(history.location.pathname !== "/commander") &&
@@ -59,8 +59,6 @@ const NavbarPerso = ({ history }) => {
               <NavDropdown title={lang.theMenu} id="basic-nav-dropdown">
                 <NavDropdown.Item href="#menu#foods">{lang.foods}</NavDropdown.Item>
                 <NavDropdown.Item href="#menu#drinks">{lang.drinks}</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">{"..."}</NavDropdown.Item>
                 {/* <NavDropdown.Item href="#action/3.4">{lang.suggestions}</NavDropdown.Item> */}
               </NavDropdown>
               <Nav.Link className="nav-item" href="#apropos">{lang.about}</Nav.Link>

@@ -75,7 +75,7 @@ class Invoice
      * @Assert\NotBlank(message="Date obligatoire")
      * @Assert\LessThanOrEqual(value ="7 days",message="La date ne peut pas depasser une semaine")
      * @Assert\GreaterThan( value = "now",
-     *      message = "Date incorrecte")
+     *      message = "La date doit être antérieur ")
      */
     private $timeToReceive;
 

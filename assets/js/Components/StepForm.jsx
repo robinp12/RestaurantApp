@@ -19,6 +19,7 @@ import PaymentForm from './Form/PaymentForm';
 import { Menu } from './Menu';
 
 let now = new Date().toISOString().slice(0, 16);
+
 const StepForm = ({ match, setWhere }) => {
 
     const { id } = match.params
@@ -64,11 +65,11 @@ const StepForm = ({ match, setWhere }) => {
     const [invoice, setInvoice] = useState({
         amount: 0,
         status: "SENT",
-        timeToReceive: new Date(),
+        timeToReceive: "",
         invoiceTable: decodeId < 15 ? decodeId : 0
     });
 
-    const [orderInfo, setOrderInfo] = useState({ reservationAt: "" });
+    const [orderInfo, setOrderInfo] = useState({ reservationAt: new Date(new Date(now).setHours(new Date().getHours() + 1)) });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -94,7 +95,7 @@ const StepForm = ({ match, setWhere }) => {
     };
 
     const handleSubmitInvoice = async (id = 0) => {
-        invoice.timeToReceive = orderInfo.reservationAt || new Date()
+        invoice.timeToReceive = orderInfo.reservationAt ? new Date(orderInfo.reservationAt) : new Date(new Date().setHours(new Date().getHours() + 1));
         if (id !== 0) invoice.client = "/api/customers/" + id;
         confirmRef.current.setAttribute("disabled", "")
         try {
@@ -354,7 +355,7 @@ const StepForm = ({ match, setWhere }) => {
                                     documentTitle={"Facture-Le-Cheval-Blanc"}
                                 />
                                 {/* <OrderChat admin={authAPI.isAuth()} socket={socket} message={message} /> */}
-                                {/* <button className="btn-primary btn float-right" onClick={() => { setChoose(0); setAway(0); }}>OK</button> */}
+                                <a href={"#home"} className="btn-primary btn float-left" onClick={() => setCart([])}>Retour au site</a>
                             </div>
                         </>);
                 default: // Client informations

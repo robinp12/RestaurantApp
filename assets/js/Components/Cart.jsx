@@ -84,9 +84,9 @@ const Cart = ({ pay }) => {
         <>
             <div className="row">
                 <div className="col">
-                    <div className="row">
-                        <div className="col">
-                            <table className="table table-responsive-md table-hover ">
+                    <div className="row outside">
+                        <div className="col insidecart">
+                            <table className="table table-responsive-md table-hover">
                                 <thead>
                                     <tr>
                                         <th className="text-center">{lang.product}</th>

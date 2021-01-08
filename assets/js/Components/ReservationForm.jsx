@@ -161,6 +161,8 @@ const ReservationForm = () => {
                                 content={() => componentRef2.current}
                                 documentTitle={"Réservation-Le-Cheval-Blanc"}
                             />
+                            <a href={"#home"} className="btn-primary btn float-left" >Retour au site</a>
+
                         </div>
                     </>);
 

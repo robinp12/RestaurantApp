@@ -300,3 +300,10 @@ input[type="number"]:hover::-webkit-inner-spin-button,
 input[type="number"]:hover::-webkit-outer-spin-button {
   opacity: 1;
 }
+.insidecart {
+  max-height: 35vh;
+  overflow-y: scroll;
+}
+.outside {
+  overflow: hidden;
+}
