@@ -1,15 +1,16 @@
 {# templates/emails/signup.html.twig #}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTDXHTML1.0Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
 	<head>
 		<!--[if gte mso 9]>
-								<xml>
-									<o:OfficeDocumentSettings>
-									<o:AllowPNG/>
-									<o:PixelsPerInch>96</o:PixelsPerInch>
-									</o:OfficeDocumentSettings>
-								</xml>
-								<![endif]-->
+																		<xml>
+																			<o:OfficeDocumentSettings>
+																			<o:AllowPNG/>
+																			<o:PixelsPerInch>96</o:PixelsPerInch>
+																			</o:OfficeDocumentSettings>
+																		</xml>
+																		<![endif]-->
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta
@@ -25,11 +26,13 @@
 				color: #0000ee;
 				text-decoration: underline;
 			}
+
 			@media(max-width: 480px) {
 				#u_content_menu_1 .v-padding {
 					padding: 5px 40px !important;
 				}
 			}
+
 			[owa] .u-row .u-col {
 				display: table-cell;
 				float: none !important;
@@ -56,6 +59,7 @@
 				.u-row {
 					width: 640px !important;
 				}
+
 				.u-row .u-col {
 					vertical-align: top;
 				}
@@ -76,20 +80,25 @@
 					padding-left: 0 !important;
 					padding-right: 0 !important;
 				}
+
 				.u-row .u-col {
 					min-width: 320px !important;
 					max-width: 100% !important;
 					display: block !important;
 				}
+
 				.u-row {
 					width: calc(100% - 40px) !important;
 				}
+
 				.u-col {
 					width: 100% !important;
 				}
+
 				.u-col > div {
 					margin: 0 auto;
 				}
+
 				.no-stack .u-col {
 					min-width: 0 !important;
 					display: table-cell !important;
@@ -104,6 +113,7 @@
 				}
 
 			}
+
 			body {
 				margin: 0;
 				padding: 0;
@@ -326,7 +336,8 @@
 																<div class="v-text-align" style="color: #000000; line-height: 140%; text-align: left; word-wrap: break-word;">
 																	<p style="line-height: 140%; text-align: center; font-size: 14px;">
 																		<strong>
-																			<span style="font-size: 24px; line-height: 33.6px;">Merci pour votre commande au Cheval Blanc !
+																			<span style="font-size: 24px; line-height: 33.6px;">Merci
+																																							pour votre commande au Cheval Blanc !
 																			</span>
 																		</strong>
 																	</p>
@@ -348,6 +359,50 @@
 							</div>
 						</div>
 
+						<div class="u-row-container" style="padding: 0px;background-color: transparent">
+							<div style="Margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;" class="u-row">
+								<div style="border-collapse: collapse;display: table;width: 100%;background-color: #ffffff;">
+									<!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: #ffffff;"><![endif]-->
+
+									<!--[if (mso)|(IE)]><td align="center" width="640" style="width: 640px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
+										<div class="u-col u-col-100" style="max-width: 320px;min-width: 640px;display: table-cell;vertical-align: top;"> <div
+											style="width: 100% !important;">
+											<!--[if (!mso)&(!IE)]><!-->
+											<div
+												style="padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
+												<!--<![endif]-->
+
+												<table id="u_content_text_1" class="u_content_text" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+													<tbody>
+														<tr>
+															<td style="overflow-wrap:break-word;word-break:break-word;padding:1px 10px;font-family:arial,helvetica,sans-serif;" align="left">
+
+																<div class="v-text-align" style="color: #000000; line-height: 140%; text-align: left; word-wrap: break-word;">
+																	<p style="line-height: 140%; text-align: center; font-size: 14px;">
+																		<strong>
+																			<span style="font-size: 14px; line-height: 33.6px;">Date
+																																							de réception :
+																				{{time||date()}}
+																			</span>
+																		</strong>
+																	</p>
+																</div>
+
+															</td>
+														</tr>
+													</tbody>
+												</table>
+
+												<!--[if (!mso)&(!IE)]><!-->
+											</div>
+											<!--<![endif]-->
+										</div>
+									</div>
+									<!--[if (mso)|(IE)]></td><![endif]-->
+									<!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
+								</div>
+							</div>
+						</div>
 
 						<div class="u-row-container" style="padding: 0px;background-color: transparent">
 							<div style="Margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;" class="u-row">
@@ -368,7 +423,8 @@
 															<td style="overflow-wrap:break-word;word-break:break-word;padding:15px 10px;font-family:arial,helvetica,sans-serif;" align="left">
 
 																<div class="v-text-align" style="color: #000000; line-height: 140%; text-align: left; word-wrap: break-word;">
-																	<p style="font-size: 14px; line-height: 140%; text-align: center;">Ceci est un email pour confirmer votre commande</p>
+																	<p style="font-size: 14px; line-height: 140%; text-align: center;">
+																		Ceci est un email pour confirmer votre commande</p>
 																</div>
 
 															</td>
@@ -464,7 +520,7 @@
 															<tr>
 																<td style="overflow-wrap:break-word;word-break:break-word;padding:15px 10px;font-family:arial,helvetica,sans-serif;" align="left">
 
-																	<div class="menu" style="text-align:center">
+																	<div class="menu" style="text-align:justify">
 																		<!--[if (mso)|(IE)]><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center"><tr><![endif]-->
 
 																		<!--[if (mso)|(IE)]><td style="padding:5px 120px 5px 124px"><![endif]-->
@@ -702,14 +758,42 @@
 												<table id="u_content_text_3" class="u_content_text" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
 													<tbody>
 														<tr>
+															<td style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 10px;font-family:arial,helvetica,sans-serif;" align="left">
+
+																<div class="v-text-align" style="color: #000000; line-height: 140%; text-align: left; word-wrap: break-word;">
+																	<p style="font-size: 14px; line-height: 140%; text-align: center;">
+																		<span style="font-size: 12px; line-height: 16.8px;">T&eacute;l&eacute;phone
+																																					: 0475 31 93 24
+																		</span>
+																	</p>
+																	<p style="font-size: 14px; line-height: 140%; text-align: center;">
+																		<span style="font-size: 12px; line-height: 16.8px;">Adresse
+																																					mail : cavalo.branco@skynet.be
+																		</span>
+																	</p>
+																</div>
+
+															</td>
+														</tr>
+													</tbody>
+												</table>
+
+												<table id="u_content_text_3" class="u_content_text" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+													<tbody>
+														<tr>
 															<td style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 20px;font-family:arial,helvetica,sans-serif;" align="left">
 
 																<div class="v-text-align" style="color: #000000; line-height: 140%; text-align: left; word-wrap: break-word;">
 																	<p style="font-size: 14px; line-height: 140%; text-align: center;">
-																		<span style="font-size: 12px; line-height: 16.8px;">Cet email a &eacute;t&eacute; envoy&eacute; par Le Cheval Blanc.</span>
+																		<span style="font-size: 12px; line-height: 16.8px;">Cet
+																																					email a &eacute;t&eacute; envoy&eacute; par Le
+																																					Cheval Blanc.</span>
 																	</p>
 																	<p style="font-size: 14px; line-height: 140%; text-align: center;">
-																		<span style="font-size: 12px; line-height: 16.8px;">Pour vous assurer la r&eacute;ception dans votre boite mail, vous pouvez ajouter cette adresse mail dans votre liste d'adresse.</span>
+																		<span style="font-size: 12px; line-height: 16.8px;">Pour
+																																					vous assurer la r&eacute;ception dans votre
+																																					boite mail, vous pouvez ajouter cette adresse
+																																					mail dans votre liste d'adresse.</span>
 																	</p>
 																</div>
 
@@ -736,4 +820,5 @@
 			</tbody>
 		</td>
 	</body>
+
 </html></tr></tbody></table><!--[if (mso)|(IE)]></div><![endif]--></body></html>

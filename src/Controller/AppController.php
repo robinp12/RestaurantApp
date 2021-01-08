@@ -54,7 +54,7 @@ class AppController extends AbstractController
                     ->to($invoice->getClient()->getEmail())
                     ->subject('Confirmation de commande')
                     ->htmlTemplate('emails/orderConfirmation.html.twig')
-                    ->context(['totalAmount' => $invoice->getAmount(), 'orders' => $invoice->getOrders()]);
+                    ->context(['totalAmount' => $invoice->getAmount(), 'orders' => $invoice->getOrders(), 'time' => $invoice->getTimeToReceive()]);
                 $this->mailer->send($email);
                 return new Response;
             }

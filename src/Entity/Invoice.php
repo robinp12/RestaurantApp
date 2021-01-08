@@ -73,7 +73,7 @@ class Invoice
      * @ORM\Column(type="datetime")
      * @Groups({"invoices_read"})
      * @Assert\NotBlank(message="Date obligatoire")
-     * @Assert\LessThanOrEqual("7 days")
+     * @Assert\LessThanOrEqual(value ="7 days",message="La date ne peut pas depasser une semaine")
      * @Assert\GreaterThan( value = "now",
      *      message = "Date incorrecte")
      */

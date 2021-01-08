@@ -39,7 +39,7 @@ class Customer
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
-     * @Assert\Length(min=2, minMessage="Prénom trop court", max=50, maxMessage="Prénom trop long")
+     * @Assert\Length(min=2, minMessage="Le prénom doit contenir au moins 2 caractères", max=50, maxMessage="Le prénom est trop long")
      * @Assert\NotBlank(message="Prénom obligatoire")
      */
     private $firstName;
@@ -47,7 +47,7 @@ class Customer
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
-     * @Assert\Length(min=2, minMessage="Nom trop court", max=50, maxMessage="Nom trop long")
+     * @Assert\Length(min=2, minMessage="Le nom doit contenir au moins 2 caractères", max=50, maxMessage="Le nom est trop long")
      * @Assert\NotBlank(message="Nom obligatoire")
      */
     private $lastName;
@@ -55,34 +55,34 @@ class Customer
     /**
      * @ORM\Column(type="string", length=100)
      * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
-     * @Assert\NotBlank(message="Email obligatoire")
-     * @Assert\Email(message="Format de l'email invalide")
+     * @Assert\NotBlank(message="L'email est obligatoire")
+     * @Assert\Email(message="Le format de l'email invalide")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=30)
      * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
-     * @Assert\Length(min=5, minMessage="Numéro trop court", max=30, maxMessage="Numéro trop long")
-     * @Assert\NotBlank(message="Numéro de téléphone obligatoire")
-     * @Assert\Type("numeric",message="Format du numéro de téléphone invalide")
+     * @Assert\Length(min=5, minMessage="Le numéro de téléphone doit contenir au moins 5 chiffres", max=30, maxMessage="Le numéro de téléphone ne peut contenir plus de 30 chiffres")
+     * @Assert\NotBlank(message="Le numéro de téléphone obligatoire")
+     * @Assert\Type("numeric",message="Veuillez écrire le numéro sans point ni barre oblique")
      */
     private $phoneNumber;
 
     /**
      * @ORM\Column(type="string", length=100)
      * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
-     * @Assert\Length(min=5, minMessage="Trop court")
-     * @Assert\NotBlank(message="Adresse obligatoire")
+     * @Assert\Length(min=5, minMessage="L'adresse entrée est trop courte")
+     * @Assert\NotBlank(message="L'adresse obligatoire")
      */
     private $address;
 
     /**
      * @ORM\Column(type="string")
      * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
-     * @Assert\NotBlank(message="Code postal obligatoire")
+     * @Assert\NotBlank(message="Le code postal est obligatoire")
      * @Assert\Range(min=1000,max=99999,notInRangeMessage = "Le format du code postal n'est pas valide")
-     * @Assert\Type("numeric",message="Format du code postal invalide")
+     * @Assert\Type("numeric",message="Le format du code postal est invalide")
      */
     private $zipcode;
 
