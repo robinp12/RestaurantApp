@@ -36,7 +36,7 @@ class Category
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"category_read","product_read"})
-     * @Assert\NotBlank(message="Nom obligatoire")
+     * @Assert\NotBlank(message="Le label est obligatoire")
      */
     private $label;
 
@@ -49,7 +49,7 @@ class Category
     /**
      * @ORM\Column(type="string", length=5)
      * @Groups({"category_read","product_read"})
-     * @Assert\NotBlank(message="Position obligatoire")
+     * @Assert\NotBlank(message="La position est obligatoire")
      */
     private $position;
 

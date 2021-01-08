@@ -34,7 +34,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=100, unique=true)
      * @Groups({"users_read"})
      * @Assert\NotBlank(message="Email obligatoire")
-     * @Assert\Email(message="Format de l'email invalide")
+     * @Assert\Email(message="Le format de l'adresse mail est invalide")
      */
     private $email;
 
@@ -49,7 +49,7 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\Length(min=5, minMessage="Mot de passe trop court")
+     * @Assert\Length(min=5, minMessage="Le mot de passe doit contenir minimum 5 caractères")
      * @Assert\NotBlank(message="Mot de passe obligatoire")
      */
     private $password;
@@ -57,7 +57,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"users_read"})
-     * @Assert\Length(min=2, minMessage="Prénom trop court", max=50, maxMessage="Prénom trop long")
+     * @Assert\Length(min=2, minMessage="Le prénom doit contenir au moins 2 caractères", max=50, maxMessage="Prénom trop long")
      * @Assert\NotBlank(message="Prénom obligatoire")
      */
     private $firstName;
@@ -65,7 +65,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"users_read"})
-     * @Assert\Length(min=2, minMessage="Nom trop court", max=50, maxMessage="Nom trop long")
+     * @Assert\Length(min=2, minMessage="Le nom doit contenir au moins 2 caractères", max=50, maxMessage="Nom trop long")
      * @Assert\NotBlank(message="Nom obligatoire")
      */
     private $lastName;
@@ -73,7 +73,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=100)
      * @Groups({"users_read"})
-     * @Assert\Length(min=5, minMessage="Trop court")
+     * @Assert\Length(min=5, minMessage="L'adresse doit contenir au moins 5 caractères")
      * @Assert\NotBlank(message="Adresse obligatoire")
      */
     private $address;
@@ -82,15 +82,15 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=6)
      * @Groups({"users_read"})
      * @Assert\NotBlank(message="Code postal obligatoire")
-     * @Assert\Length(min=4,max=6,minMessage = "Format du code postal trop court",maxMessage = "Format de code postal trop long")
-     * @Assert\Type("numeric",message="Format du code postal de type numérique")
+     * @Assert\Length(min=4,max=6,minMessage = "Le code postal doit contenir au moins 4 caractères",maxMessage = "Le code postal peut contenir au maximum 6 caractères")
+     * @Assert\Type("numeric",message="Le format doit être numérique")
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"users_read"})
-     * @Assert\Length(min=2, minMessage="Nom trop court", max=50, maxMessage="Nom trop long")
+     * @Assert\Length(min=2, minMessage=""La ville doit contenir au moins 2 caractères", max=50, maxMessage="Nom trop long")
      * @Assert\NotBlank(message="Ville obligatoire")
      */
     private $city;
@@ -98,9 +98,9 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=15)
      * @Groups({"users_read"})
-     * @Assert\Length(min=8, minMessage="Numéro trop court", max=15, maxMessage="Numéro trop long")
+     * @Assert\Length(min=8, minMessage="Le numéro de télephone doit contenir au moins 8 chiffres", max=15, maxMessage="Le numéro de télephone peut contenir au maximum 15 chiffres")
      * @Assert\NotBlank(message="Numéro de téléphone obligatoire")
-     * @Assert\Type("numeric",message="Format du numéro de téléphone invalide")
+     * @Assert\Type("numeric",message="Le format doit être de type numérique")
      */
     private $phoneNumber;
 

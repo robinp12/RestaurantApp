@@ -72,10 +72,10 @@ class Invoice
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"invoices_read"})
-     * @Assert\NotBlank(message="Date obligatoire")
-     * @Assert\LessThanOrEqual(value ="7 days",message="La date ne peut pas depasser une semaine")
+     * @Assert\NotBlank(message="La date est obligatoire")
+     * @Assert\LessThanOrEqual(value ="7 days",message="La date doit être inférieure à 1 semaine")
      * @Assert\GreaterThan( value = "now",
-     *      message = "La date doit être antérieur ")
+     *      message = "La date doit être postérieure")
      */
     private $timeToReceive;
 
@@ -88,7 +88,7 @@ class Invoice
     /**
      * @ORM\Column(type="integer")
      * @Groups({"invoices_read"})
-     * @Assert\NotBlank(message="Obligatoire")
+     * @Assert\NotBlank(message="Un numéro de table est obligatoire")
      */
     private $invoiceTable;
 

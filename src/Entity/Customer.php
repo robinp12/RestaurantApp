@@ -63,7 +63,7 @@ class Customer
     /**
      * @ORM\Column(type="string", length=30)
      * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
-     * @Assert\Length(min=5, minMessage="Le numéro de téléphone doit contenir au moins 5 chiffres", max=30, maxMessage="Le numéro de téléphone ne peut contenir plus de 30 chiffres")
+     * @Assert\Length(min=5, minMessage="Le numéro de téléphone doit contenir au moins 5 chiffres", max=30, maxMessage="Le numéro de téléphone peut contenir au maximum 30 chiffres")
      * @Assert\NotBlank(message="Le numéro de téléphone obligatoire")
      * @Assert\Type("numeric",message="Veuillez écrire le numéro sans point ni barre oblique")
      */
@@ -72,7 +72,7 @@ class Customer
     /**
      * @ORM\Column(type="string", length=100)
      * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
-     * @Assert\Length(min=5, minMessage="L'adresse entrée est trop courte")
+     * @Assert\Length(min=5, minMessage="L'adresse doit contenir au minimum 5 caractères")
      * @Assert\NotBlank(message="L'adresse obligatoire")
      */
     private $address;
@@ -89,7 +89,7 @@ class Customer
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"customers_read","invoices_read","orders_read", "reservations_read"})
-     * @Assert\Length(min=2, minMessage="Nom trop court", max=50, maxMessage="Nom trop long")
+     * @Assert\Length(min=2, minMessage="La ville doit contenir minimum 2 caractères", max=50, maxMessage="Nom trop long")
      * @Assert\NotBlank(message="Ville obligatoire")
      */
     private $city;

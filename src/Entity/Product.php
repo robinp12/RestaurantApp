@@ -33,7 +33,7 @@ class Product
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"product_read","category_read","orders_read","invoices_read"})
-     * @Assert\NotBlank(message="Nom obligatoire")
+     * @Assert\NotBlank(message="Le nom est obligatoire")
      */
     private $label;
 
@@ -53,7 +53,7 @@ class Product
      * @ORM\Column(type="string")
      * @Groups({"product_read","category_read","orders_read"})
      * @Assert\NotBlank(message="Prix obligatoire")
-     * @Assert\Type("numeric",message="Format incorrect")
+     * @Assert\Type("numeric",message="Le format est incorrect")
      */
     private $price;
 
