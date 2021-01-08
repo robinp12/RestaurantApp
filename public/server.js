@@ -8,7 +8,6 @@ server.on("connection", (socket) => {
   console.info(`Client connecté [id=${socket.id}]`);
 
   socket.on("login", ({ email, admin }) => {
-    console.log("connected");
     //Signaler que l'admin est connecté
     server.emit("admin-co", { msg: "Le Cheval Blanc est connecté", bool: 1 });
 
@@ -18,6 +17,7 @@ server.on("connection", (socket) => {
     }
     //Envoyer la liste a l'admin
     server.emit("usersToAdmin", users);
+    server.emit("usersToAdmin1", socket.id);
 
     //Envoi de message
     socket.on("send", ({ from, desc, admin, to }) => {

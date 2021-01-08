@@ -13,6 +13,8 @@ const ChatPage = () => {
     useEffect(() => {
         socket.emit('login', { admin: authAPI.isAuth() });
         socket.on("usersToAdmin", (e) => setUsers(e))
+        socket.on("usersToAdmin1", (e) => console.log
+            (e))
         socket.on("msgToAdmin", e => setMessage((prev) => [...prev, e]))
         setSelectedUser(users[0])
     }, [])
