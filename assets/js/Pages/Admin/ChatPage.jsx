@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { socket } from '../../../config';
 import OrderChat from '../../Components/Form/OrderChat';
 import authAPI from '../../Services/authAPI';
 import useLocalStorage from '../../Services/useLocalStorage';
@@ -10,15 +11,15 @@ const ChatPage = () => {
     const [selectedUser, setSelectedUser] = useState();
 
     useEffect(() => {
-        // socket.emit('login', { admin: authAPI.isAuth() });
-        // socket.on("usersToAdmin", (e) => setUsers(e))
-        // socket.on("msgToAdmin", e => setMessage((prev) => [...prev, e]))
+        socket.emit('login', { admin: authAPI.isAuth() });
+        socket.on("usersToAdmin", (e) => setUsers(e))
+        socket.on("msgToAdmin", e => setMessage((prev) => [...prev, e]))
         setSelectedUser(users[0])
     }, [])
 
     const send = function (e, { desc }) {
         e.preventDefault();
-        // socket.emit("send", { from: "admin", desc: desc, admin: authAPI.isAuth(), to: selectedUser });
+        socket.emit("send", { from: "admin", desc: desc, admin: authAPI.isAuth(), to: selectedUser });
         setMessage(prev => [...prev, { admin: authAPI.isAuth(), desc: desc, to: selectedUser }]);
     };
 
