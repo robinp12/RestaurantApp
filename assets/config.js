@@ -1,13 +1,13 @@
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 // export const API_URL = "http://localhost:8000/api/";
 export const API_URL = process.env.API_URL;
 
-export const socket = socketIOClient("https://shop-lechevalblanc.be", {
-  transports: ["websocket"],
-  secure: true,
-  reconnect: true,
-  rejectUnauthorized: false,
-});
+// export const socket = socketIOClient("https://shop-lechevalblanc.be", {
+//   transports: ["websocket"],
+//   secure: true,
+//   reconnect: true,
+//   rejectUnauthorized: false,
+// });
 // Regroupement dans un fichier pour surcharger
 export const SETTINGS_API = API_URL + "settings";
 export const USERS_API = API_URL + "users";

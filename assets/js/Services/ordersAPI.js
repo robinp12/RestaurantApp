@@ -10,7 +10,9 @@ function add(order) {
 }
 
 function sendMail(order) {
-  return Axios.post("/order-confirm/" + order);
+  return Axios.post("/order-confirm/" + order).then(async (response) => {
+    return response;
+  });
 }
 
 // Récuperer un order pour la page profil
