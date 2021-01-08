@@ -8,7 +8,6 @@ export const socket = socketIOClient("https://shop-lechevalblanc.be", {
   reconnect: true,
   rejectUnauthorized: false,
 });
-
 // Regroupement dans un fichier pour surcharger
 export const SETTINGS_API = API_URL + "settings";
 export const USERS_API = API_URL + "users";
