@@ -2,7 +2,7 @@ import socketIOClient from "socket.io-client";
 // export const API_URL = "http://localhost:8000/api/";
 export const API_URL = process.env.API_URL;
 
-export const socket = socketIOClient("http://localhost:3000/", {
+export const socket = socketIOClient("https://shop-lechevalblanc.be", {
   transports: ["websocket"],
   secure: true,
   reconnect: true,
