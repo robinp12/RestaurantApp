@@ -13,10 +13,10 @@ const Header = ({ title, center, right, bool = true }) => {
                 {center && <div className="col">
                     <small className="ml-3 text-muted">{center}</small>
                 </div>}
-                {bool && <div className="col">
-                    <small className="ml-3 float-right mr-4 text-violet">{bool && "En développement ..."}</small>
+                <div className="col">
+                    {/* <small className="ml-3 float-right mr-4 text-violet">{"En développement ..."}</small> */}
                     <span className="float-right mr-4">{right}</span>
-                </div>}
+                </div>
             </div>
         </>
     );

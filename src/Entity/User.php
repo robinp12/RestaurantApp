@@ -90,7 +90,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"users_read"})
-     * @Assert\Length(min=2, minMessage=""La ville doit contenir au moins 2 caractères", max=50, maxMessage="Nom trop long")
+     * @Assert\Length(min=2, minMessage="La ville doit contenir au moins 2 caractères", max=50, maxMessage="Nom trop long")
      * @Assert\NotBlank(message="Ville obligatoire")
      */
     private $city;
