@@ -149,7 +149,7 @@ const ReservationForm = () => {
                         <button className="btn-primary btn float-right" ref={reserveConfirm} onClick={(e) => {
                             handleSubmit(e);
                             oneTimeClick(e)
-                        }}>{lang.confirm}</button>
+                        }}>{lang.confirmReserve}</button>
                     </div>);
             case 3: // Reservation validation
                 return (

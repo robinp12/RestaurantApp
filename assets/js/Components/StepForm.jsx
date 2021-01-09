@@ -276,7 +276,7 @@ const StepForm = ({ match, setWhere }) => {
                                         handleSubmitInvoice()
                                         oneTimeClick(e)
                                         window.scrollTo(0, 0);
-                                    }}>{lang.confirm}</button>
+                                    }}>{lang.confirmOrder}</button>
                                 </> ||
                                 <ReactToPrint bodyClass={"m-5 p-5"}
                                     trigger={() => <a className="btn-secondary btn float-right mt-4">Imprimer</a>}
@@ -337,7 +337,7 @@ const StepForm = ({ match, setWhere }) => {
                                 handleSubmit(e)
                                 oneTimeClick(e)
                                 window.scrollTo(0, 0);
-                            }} disabled={!cart.length} >{lang.confirm + "" + confirmB}</button>
+                            }} disabled={!cart.length} >{lang.confirmOrder + "" + confirmB}</button>
                         </div>
                     );
                 case 4: // Payment
