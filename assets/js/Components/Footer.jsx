@@ -46,7 +46,10 @@ const Footer = ({ history, setlangue, langue }) => {
                         Application developped by <b>Robin Paquet</b><br />
                     </small>
                     <small className="text-muted">
-                        © Copyright 2020 Le Cheval Blanc - All rights reserved
+                        © Copyright 2020 Le Cheval Blanc - All rights reserved<br />
+                    </small>
+                    <small className="text-muted">
+                        <a className="underline" href="./POLITIQUE DE CONFIDENTIALITE.pdf"><u>Politique de confidentialité</u></a>
                     </small>
                 </div>
                 <div className="col-sm-12 col-md-4 text-right">
