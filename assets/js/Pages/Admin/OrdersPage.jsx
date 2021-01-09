@@ -153,7 +153,7 @@ const OrdersPage = ({ match, history }) => {
                                         </div>
 
                                     </div>
-                                    <button className="btn btn-primary float-right" onClick={() => handleDelete(order.id)}>Supprimer</button>
+                                    {/* <button className="btn btn-primary float-right" onClick={() => handleDelete(order.id)}>Supprimer</button> */}
                                 </div>
                             </div>
 

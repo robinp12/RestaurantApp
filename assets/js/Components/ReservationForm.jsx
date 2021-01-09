@@ -17,6 +17,8 @@ const ReservationForm = () => {
     const [step, setStep] = useState(0);
     const { lang } = useContext(LangContext);
     const reserveConfirm = useRef();
+    const [confirmB, setConfirmB] = useState("");
+
     window.scrollTo(0, 0);
 
     const [customer, setCustomer] = useState({
@@ -49,9 +51,11 @@ const ReservationForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            setConfirmB("...")
             const rep = await customersAPI.register(customer);
             handleSubmitReservation(rep.data.id)
         } catch (error) {
+            setConfirmB("")
             console.error("Customer's form error")
             toast("Erreur dans le formulaire", {
                 className: "bg-red-toast",
@@ -78,6 +82,7 @@ const ReservationForm = () => {
                 await reservationsAPI.sendMail(rep.data.id);
                 reserveConfirm.current.removeAttribute("disabled");
             } catch (error) {
+                setConfirmB("")
                 console.error("Error on email sending")
             }
             toast(lang.sentReservation);
@@ -149,7 +154,7 @@ const ReservationForm = () => {
                         <button className="btn-primary btn float-right" ref={reserveConfirm} onClick={(e) => {
                             handleSubmit(e);
                             oneTimeClick(e)
-                        }}>{lang.confirmReserve}</button>
+                        }}>{lang.confirmReserve + "" + confirmB}</button>
                     </div>);
             case 3: // Reservation validation
                 return (

@@ -29,8 +29,17 @@ const CustomersPage = ({ match, history }) => {
         const originCustomers = [...customers];
 
         setCustomers(customers.filter(customer => customer.id !== id));
+
         try {
-            await customersAPI.deletecustomers(id);
+            await customersAPI.updateInfo(id, {
+                firstName: "xxxxxx",
+                lastName: "xxxxxx",
+                email: "xxxxxx@xxxxxx.com",
+                address: "xxxxxx",
+                city: "xxxxxx",
+                zipcode: "9999",
+                phoneNumber: "0000000000",
+            });
             toast("Client n°" + id + " supprimé");
             history.replace("/clients/" + customers[0].id)
         } catch (error) {
@@ -93,7 +102,7 @@ const CustomersPage = ({ match, history }) => {
                                         :
                                         <button className="btn btn-secondary float-left" onClick={handleSubmitChange}>Enregistrer</button>
                                     }
-                                    <button className="btn btn-primary float-right" onClick={() => handleDelete(customerInfo.id)} disabled={customerInfo.invoices?.length || customerInfo.reservations?.length}>Supprimer</button>
+                                    <button className="btn btn-primary float-right" onClick={() => handleDelete(customerInfo.id)} >Supprimer</button>
                                 </div>
                             </div>
                         </div>
@@ -138,7 +147,7 @@ const CustomersPage = ({ match, history }) => {
                             </thead>
                             <tbody>
                                 {paginated.map((customer, index) =>
-                                    (typeof (customer.id) != "undefined") &&
+                                    (typeof (customer.id) != "undefined" && customer.email !== "xxxxxx@xxxxxx.com") &&
                                     < tr key={index} onClick={() => history.replace("/clients/" + customer.id)} className={customer.id == id ? "actif" : ""}>
                                         <th scope="row" className="text-center align-middle">#{customer.id}</th>
                                         <td className="text-center align-middle">{customer.firstName} {customer.lastName?.toUpperCase()}</td>

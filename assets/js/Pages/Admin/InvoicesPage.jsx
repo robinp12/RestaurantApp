@@ -40,6 +40,7 @@ const InvoicesPage = ({ match, history }) => {
         try {
             await invoicesAPI.update(invoice, { status: status });
             toast(`Etat de la facture ${invoice} changé à payé`);
+            setChange(false)
             setRefresh(!refresh)
         } catch (error) {
             console.log(error)
@@ -162,10 +163,10 @@ const InvoicesPage = ({ match, history }) => {
                                     </div>
                                     <div className="row justify-content-between">
                                         <div className="col">
-                                            {invoice.status !== "PAID" &&
+                                            {invoice.status == "SENT" ?
                                                 <button className="btn btn-primary" onClick={() => handleChangeStatus(invoice.id, "PAID")}>Payer</button>
-                                                ||
-                                                <button className="btn btn-link" disabled>{status(invoice.status)}</button>
+                                                :
+                                                <></>
                                             }
                                         </div>
                                         <div className="col text-right">

@@ -94,7 +94,7 @@ const NavbarPerso = ({ history }) => {
               <Nav.Link className="nav-item" href="#factures">Factures</Nav.Link>
               <Nav.Link className="nav-item" href="#clients">Clients</Nav.Link>
               <NavDropdown title="Gestion" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#manage">Menus</NavDropdown.Item>
+                <NavDropdown.Item href="#manage">Menu</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#map" className="text-muted">Map</NavDropdown.Item>
                 <NavDropdown.Item href="#chatadmin" className="text-muted">Chat</NavDropdown.Item>
