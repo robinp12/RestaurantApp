@@ -307,3 +307,8 @@ input[type="number"]:hover::-webkit-outer-spin-button {
 .outside {
   overflow: hidden;
 }
+.numbe {
+  font-size: 120%;
+  color: #532e3d;
+  padding: 0px 6px;
+}

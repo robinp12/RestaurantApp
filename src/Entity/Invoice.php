@@ -74,8 +74,6 @@ class Invoice
      * @Groups({"invoices_read"})
      * @Assert\NotBlank(message="La date est obligatoire")
      * @Assert\LessThanOrEqual(value ="7 days",message="La date doit être inférieure à 1 semaine")
-     * @Assert\GreaterThan( value = "now",
-     *      message = "La date doit être postérieure")
      */
     private $timeToReceive;
 

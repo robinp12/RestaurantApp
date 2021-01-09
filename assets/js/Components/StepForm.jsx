@@ -102,7 +102,7 @@ const StepForm = ({ match, setWhere }) => {
         if (id !== 0) invoice.client = "/api/customers/" + id;
         confirmRef.current.setAttribute("disabled", "")
         try {
-            toast(lang.paymentConfirmation);
+            toast(lang.orderConfirmation);
             const rep = await invoicesAPI.add(invoice);
             confirmRef.current.removeAttribute("disabled")
             setInvoiceId(rep.data.id);
@@ -265,6 +265,7 @@ const StepForm = ({ match, setWhere }) => {
                     orderInfo.reservationAt = new Date();
                     return (<>
                         <div className="container" >
+                            <div className="row justify-content-end"><span className="numbe"> {there + 1} / 2 </span></div>
                             <div ref={componentRef}>
                                 <OrderSummary reservation={invoice.invoiceTable} takeAway toPrint={confirmed} />
                             </div>
@@ -289,6 +290,8 @@ const StepForm = ({ match, setWhere }) => {
                 default:
                     return (
                         <div className="container">
+                            <div className="row justify-content-end"><span className="numbe"> {there + 1} / 2 </span></div>
+
                             <div className="row">
                                 <div className="col">
                                     <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setThere(step => step + 1) }} disabled={!cart.length}>{lang.next}</button>
@@ -305,6 +308,7 @@ const StepForm = ({ match, setWhere }) => {
                 case 1: // Menu choice
                     return (
                         <ButtonOrder back={lang.back} next={lang.next} disabled={!cart.length}>
+                            <div className="row justify-content-end"><span className="numbe"> {away + 1} / 5 </span></div>
                             <div className="row">
                                 <div className="col">
                                     <button className="btn-primary btn float-right mt-4" onClick={Next} disabled={!cart.length}>{lang.next}</button>
@@ -316,6 +320,7 @@ const StepForm = ({ match, setWhere }) => {
                 case 2: // Order informations
                     return (
                         <div className="container">
+                            <div className="row justify-content-end"><span className="numbe"> {away + 1} / 5</span></div>
                             <OrderForm reservation={orderInfo} setReservation={setOrderInfo} now={now} errors={errors.timeToReceive} />
                             <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
                             <button className="btn-primary btn float-right mt-4" onClick={Next} >{lang.next}</button>
@@ -325,6 +330,7 @@ const StepForm = ({ match, setWhere }) => {
                     if (!cart.length) setAway(1);
                     return (
                         <div className="container">
+                            <div className="row justify-content-end"><span className="numbe"> {away + 1} / 5</span></div>
                             <OrderSummary reservation={orderInfo} pay={false} />
                             <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
                             <button className="btn-primary btn float-right mt-4" ref={confirmRef} onClick={(e) => {
@@ -338,6 +344,7 @@ const StepForm = ({ match, setWhere }) => {
                     if (!cart.length) setAway(1);
                     return (
                         <div className="container">
+                            <div className="row justify-content-end"><span className="numbe"> {away + 1} / 5</span></div>
                             <PaymentForm id={invoiceId} setAway={setAway} />
                             {/* <button className="btn-primary btn float-right mt-4" onClick={(e) => {
                                 e.preventDefault();
@@ -365,6 +372,7 @@ const StepForm = ({ match, setWhere }) => {
                 default: // Client informations
                     return (
                         <div className="container">
+                            <div className="row justify-content-end"><span className="numbe"> {away + 1} / 5</span></div>
                             <CustomerForm errors={errors} />
                             <button className="btn-primary btn float-left" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setChoose(0) }}>{lang.back}</button>
                             <button className="btn-primary btn float-right" onClick={Next}

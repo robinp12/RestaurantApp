@@ -124,6 +124,7 @@ const ReservationForm = () => {
             case 1: // Client informations
                 return (
                     <div className="container">
+                        <div className="row justify-content-end"><span className="numbe"> {step + 1} / 3 </span></div>
                         <CustomerForm errors={errors} />
                         <button className="btn-primary btn float-left" onClick={Back}>{lang.back}</button>
                         <button className="btn-primary btn float-right" onClick={Next}
@@ -142,6 +143,7 @@ const ReservationForm = () => {
             case 2: // Reservation summary
                 return (
                     <div className="container">
+                        <div className="row justify-content-end"><span className="numbe"> {step + 1} / 3 </span></div>
                         <OrderSummary isReservation reservation={reservation} setReservation={setReservation} />
                         <button className="btn-primary btn float-left" onClick={Back}>{lang.back}</button>
                         <button className="btn-primary btn float-right" ref={reserveConfirm} onClick={(e) => {
@@ -170,8 +172,7 @@ const ReservationForm = () => {
                 return (
                     <>
                         <div className="container text-center">
-                            {console.log(reservation.reservationAt)
-                            }
+                            <div className="row justify-content-end"><span className="numbe"> {step + 1} / 3 </span></div>
                             <OrderForm isReservation setReservation={setReservation} reservation={reservation} now={now} errors={errors.reservation_at} />
                             <button className="btn-primary btn" onClick={Next} disabled={!reservation.reservationAt}>{lang.next}</button>
 
