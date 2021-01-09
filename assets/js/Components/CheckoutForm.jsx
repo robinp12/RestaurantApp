@@ -75,10 +75,13 @@ export default function CheckoutForm({ id, setAway }) {
         if (result.error) {
             setError(result.error.message + " " + lang.refusedPayment);
             setDisabled(false);
-
+            toast(lang.refusedPayment, {
+                className: "bg-red-toast",
+            });
             console.log(result.error.message);
         } else {
             // The payment has been processed!
+            toast(lang.verification);
             setProcessing(true);
             setDisabled(true);
             if (result.paymentIntent.status === 'succeeded') {
@@ -91,9 +94,9 @@ export default function CheckoutForm({ id, setAway }) {
                 // post-payment actions.
                 try {
                     const rep = await invoicesAPI.update(id, { status: "PAID" });
-                    toast(lang.paymentConfirmation);
                     //Envoi du mail de confirmation 
                     const mail = await ordersAPI.sendMail(id);
+                    toast(lang.paymentConfirmation);
                     setAway(step => step + 1)
                 } catch (error) {
                     console.error("Error on invoice update to paid")
@@ -111,7 +114,7 @@ export default function CheckoutForm({ id, setAway }) {
             </button>
             {error && (<div className="card-errors" role="alert">{error}</div>)}
             {succeeded && <p className={succeeded ? "result-message" : "result-message hidden"}>
-                {LangContext.paymentSucceed}
+                {lang.paymentSucceed}
             </p>}
         </>
     );

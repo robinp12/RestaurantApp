@@ -39,6 +39,7 @@ const StepForm = ({ match, setWhere }) => {
     const [there, setThere] = useState(0);
     const [confirmed, setConfirmed] = useState(false);
     const [onlinePayment, setOnlinePayment] = useState();
+    const [confirmB, setConfirmB] = useState("");
 
     const [invoiceId, setInvoiceId] = useState();
 
@@ -74,11 +75,13 @@ const StepForm = ({ match, setWhere }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            setConfirmB("...")
             const rep = await customersAPI.register(customer);
             setErrors("");
             handleSubmitInvoice(rep.data.id)
         } catch (error) {
             console.error("Customer's form error")
+            setConfirmB("")
 
             if (error.response.data.violations) {
                 setAway(0)
@@ -99,6 +102,7 @@ const StepForm = ({ match, setWhere }) => {
         if (id !== 0) invoice.client = "/api/customers/" + id;
         confirmRef.current.setAttribute("disabled", "")
         try {
+            toast(lang.paymentConfirmation);
             const rep = await invoicesAPI.add(invoice);
             confirmRef.current.removeAttribute("disabled")
             setInvoiceId(rep.data.id);
@@ -107,6 +111,7 @@ const StepForm = ({ match, setWhere }) => {
             // sendNotif()
         } catch (error) {
             console.error("Invoice's form error")
+            setConfirmB("")
             if (error.response.data.violations) {
                 console.log(error.response)
 
@@ -140,7 +145,6 @@ const StepForm = ({ match, setWhere }) => {
                 console.error("Error on order submit")
             }
         }
-
         if (!onlinePayment.onlinePayment) {
             sendMail(id);
             toast(lang.paymentConfirmation);
@@ -327,7 +331,7 @@ const StepForm = ({ match, setWhere }) => {
                                 handleSubmit(e)
                                 oneTimeClick(e)
                                 window.scrollTo(0, 0);
-                            }} disabled={!cart.length} >{lang.confirm}</button>
+                            }} disabled={!cart.length} >{lang.confirm + "" + confirmB}</button>
                         </div>
                     );
                 case 4: // Payment

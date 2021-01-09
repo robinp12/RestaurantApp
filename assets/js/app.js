@@ -173,7 +173,7 @@ const App = () => {
         className="toast-container"
         position={toast.POSITION.BOTTOM_RIGHT}
         transition={Zoom}
-        autoClose={4000}
+        autoClose={7000}
         pauseOnFocusLoss={false}
         hideProgressBar={true}
         newestOnTop={true}

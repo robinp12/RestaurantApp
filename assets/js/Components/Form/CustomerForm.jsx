@@ -18,7 +18,7 @@ const CustomerForm = ({ errors }) => {
             <div className="row">
                 <div className="col-sm-12 col-md-6">
                     <Field
-                        label={lang.lastName}
+                        label={lang.lastName + "*"}
                         name="lastName"
                         value={customer.lastName}
                         onChange={handleChange}
@@ -28,7 +28,7 @@ const CustomerForm = ({ errors }) => {
                 </div>
                 <div className="col-sm-12 col-md-6">
                     <Field
-                        label={lang.firstName}
+                        label={lang.firstName + "*"}
                         name="firstName"
                         value={customer.firstName}
                         onChange={handleChange}
@@ -40,7 +40,7 @@ const CustomerForm = ({ errors }) => {
             <div className="row">
                 <div className="col">
                     <Field
-                        label={lang.email}
+                        label={lang.email + "*"}
                         name="email"
                         value={customer.email}
                         className="manage"
@@ -55,7 +55,7 @@ const CustomerForm = ({ errors }) => {
             <div className="row">
                 <div className="col-sm-12 col-md-6">
                     <Field
-                        label={lang.address}
+                        label={lang.address + "*"}
                         name="address"
                         value={customer.address}
                         onChange={handleChange}
@@ -67,7 +67,7 @@ const CustomerForm = ({ errors }) => {
 
                     <Field
                         type="number"
-                        label={lang.zipcode}
+                        label={lang.zipcode + "*"}
                         name="zipcode"
                         value={customer.zipcode}
                         onChange={handleChange}
@@ -80,7 +80,7 @@ const CustomerForm = ({ errors }) => {
                 <div className="col-sm-12 col-md-6">
 
                     <Field
-                        label={lang.city}
+                        label={lang.city + "*"}
                         name="city"
                         value={customer.city}
                         onChange={handleChange}
@@ -91,7 +91,7 @@ const CustomerForm = ({ errors }) => {
                 <div className="col-sm-12 col-md-6">
 
                     <Field
-                        label={lang.phoneNumber}
+                        label={lang.phoneNumber + "*"}
                         name="phoneNumber"
                         className="manage"
                         value={customer.phoneNumber}

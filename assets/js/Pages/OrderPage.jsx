@@ -13,9 +13,9 @@ const OrderPage = ({ match }) => {
       <Header title={typeof (where) == "undefined" ? lang.toOrder : where == 1 ? lang.orderThere : lang.orderAway} />
       <div className="container">
         <div className="row justify-content-center">
-          <form className="d-flex blockStep">
+          <div className="d-flex blockStep">
             <StepForm match={match} setWhere={setWhere} />
-          </form>
+          </div>
         </div>
       </div>
     </>
