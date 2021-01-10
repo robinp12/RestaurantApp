@@ -24,37 +24,16 @@ const HomePage = () => {
                                     <Carousel.Item>
                                         <img
                                             className="d-block w-100"
-                                            src="https://ad962edbae8ba7b03b7f-d10007df79b5b7a4e475a291e50a08cf.ssl.cf3.rackcdn.com/creer-un-restaurant/creer-un-restaurant.jpg"
+                                            src="./cheval-blanc-restaurant.jpg"
                                             alt="First slide"
                                         />
-                                        {/* <Carousel.Caption>
-                                            <h5>Bienvenue</h5>
-                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                        </Carousel.Caption> */}
                                     </Carousel.Item>
                                     <Carousel.Item>
                                         <img
                                             className="d-block w-100"
-                                            src="https://ad962edbae8ba7b03b7f-d10007df79b5b7a4e475a291e50a08cf.ssl.cf3.rackcdn.com/creer-un-restaurant/creer-un-restaurant.jpg"
+                                            src="./cheval-blanc-bar.jpg"
                                             alt="Third slide"
                                         />
-
-                                        {/* <Carousel.Caption>
-                                            <h5>Bienvenue</h5>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                        </Carousel.Caption> */}
-                                    </Carousel.Item>
-                                    <Carousel.Item>
-                                        <img
-                                            className="d-block w-100"
-                                            src="https://ad962edbae8ba7b03b7f-d10007df79b5b7a4e475a291e50a08cf.ssl.cf3.rackcdn.com/creer-un-restaurant/creer-un-restaurant.jpg"
-                                            alt="Third slide"
-                                        />
-
-                                        {/* <Carousel.Caption>
-                                            <h3>Second slide label</h3>
-                                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                                        </Carousel.Caption> */}
                                     </Carousel.Item>
                                 </Carousel>
                             </div>

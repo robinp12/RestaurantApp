@@ -1,20 +1,9 @@
 const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
-const fs = require("fs");
 
 const app = express();
 
-// const sserver = https
-//   .createServer(
-//     {
-//       key: fs.readFileSync("./private.key").toString(),
-//       cert: fs.readFileSync("./certificate.crt").toString(),
-//     },
-//     app
-//   )
-//   .listen(3000);
-// const serer = io.listen(process.env.PORT || 3000);
 const server = http.Server(app);
 server.listen(3000);
 
