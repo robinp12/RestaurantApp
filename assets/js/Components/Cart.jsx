@@ -3,80 +3,63 @@ import { CartContext } from '../Context/CartContext';
 import { LangContext } from '../Context/LangContext';
 
 const Cart = ({ pay }) => {
-    const { cart, setCart } = useContext(CartContext);
+    const { cartLocal, setCartLocal } = useContext(CartContext);
+
     const { lang } = useContext(LangContext);
 
     const [refresh, setRefresh] = useState(true);
 
     const totalCart = function () {
         var totalCart = 0;
-        for (var item in cart) {
-            totalCart += cart[item].price * cart[item].quantity;
+        for (var item in cartLocal) {
+            totalCart += cartLocal[item].price * cartLocal[item].quantity;
         }
         return Number(totalCart.toFixed(2));
     }
 
     const deleteItem = (product) => {
 
-        for (var item in cart) {
-            if (cart[item].product === product) {
-                cart.splice(item, 1);
+        for (var item in cartLocal) {
+            if (cartLocal[item].product === product) {
+                cartLocal.splice(item, 1);
                 break;
             }
         }
-        setCart([...cart])
+        setCartLocal([...cartLocal]);
     }
 
     const addItemToCart = function (product, name, price, quantity) {
         setRefresh(!refresh)
 
-        for (var item in cart) {
-            if (cart[item].product === product) {
-                cart[item].quantity++;
-                cart[item].totalAmount = +Number(cart[item].price * cart[item].quantity).toFixed(2);
+        for (var item in cartLocal) {
+            if (cartLocal[item].product === product) {
+                if (cartLocal[item].quantity < 10) cartLocal[item].quantity++;
+                cartLocal[item].totalAmount = +Number(cartLocal[item].price * cartLocal[item].quantity).toFixed(2);
                 return;
             }
         }
         price = parseFloat(price)
         var item = { product, name, price, quantity };
-        cart.push(item);
+        cartLocal.push(item);
     }
 
     const removeItemFromCart = function (product, name, price, quantity) {
         setRefresh(!refresh)
 
-        for (var item in cart) {
-            if (cart[item].product === product) {
-                cart[item].quantity--;
-                if (cart[item].quantity == 0) {
-                    deleteItem(cart[item].product)
+        for (var item in cartLocal) {
+            if (cartLocal[item].product === product) {
+                cartLocal[item].quantity--;
+                if (cartLocal[item].quantity == 0) {
+                    deleteItem(cartLocal[item].product)
                     break;
                 }
                 else {
-                    cart[item].totalAmount = +Number(cart[item].price * cart[item].quantity).toFixed(2);
+                    cartLocal[item].totalAmount = +Number(cartLocal[item].price * cartLocal[item].quantity).toFixed(2);
                     break;
                 }
             }
         }
     }
-
-    // const handleChange = ({ currentTarget }) => {
-    //     const { name, value } = currentTarget;
-    //     setRefresh(!refresh)
-    //     for (var item in cart) {
-    //         if (cart[item].product == name) {
-    //             cart[item].quantity = +value
-    //             if (cart[item].quantity == 0) {
-    //                 deleteItem(cart[item].product)
-    //                 break;
-    //             }
-    //             else {
-    //                 cart[item].totalAmount = +Number(cart[item].price * cart[item].quantity).toFixed(2);
-    //                 break;
-    //             }
-    //         }
-    //     }
-    // };
 
     useEffect(() => { }, [refresh])
 
@@ -92,11 +75,10 @@ const Cart = ({ pay }) => {
                                         <th className="text-center">{lang.product}</th>
                                         <th className="text-center">#</th>
                                         <th className="text-center">{lang.price}</th>
-                                        {/* <th className="text-center"></th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {cart.map((e) =>
+                                    {cartLocal.map((e) =>
                                         <tr key={e.product}>
                                             <td className="text-center">{e.name}</td>
                                             {pay && <td className=" text-center">{e.quantity}</td> ||
@@ -109,28 +91,17 @@ const Cart = ({ pay }) => {
                                                         <li className="page-item disabled">
                                                             <a className="page-link">{e.quantity}</a>
                                                         </li>
-                                                        <li className="page-item" onClick={() => addItemToCart(e.product, e.name, e.price, e.quantity)}>
-                                                            <a className="page-link">&raquo;</a>
-                                                        </li>
+                                                        {e.quantity < 10 &&
+                                                            <li className="page-item" onClick={() => addItemToCart(e.product, e.name, e.price, e.quantity)}>
+                                                                <a className="page-link">&raquo;</a>
+                                                            </li>
+                                                        }
                                                     </ul>
-                                                    {/* <input
-                                                            className={"form-control"}
-                                                            value={e.quantity}
-                                                            name={e.product}
-                                                            onChange={handleChange}
-                                                            type={"number"}
-                                                            placeholder={e.quantity}
-                                                        /> */}
+
                                                 </td>
                                             }
                                             <td className=" text-center">{e.totalAmount} €</td>
-                                            {/* <td className=" text-center">
-                                                 {!pay &&
-                                                    <a className="badge badge-primary" onClick={() => deleteItem(e.product)}>
-                                                        <em className="fa fa-times fa-sm"></em>
-                                                    </a>
-                                                } 
-                                            </td>  */}
+
                                         </tr>
                                     )}
                                 </tbody>

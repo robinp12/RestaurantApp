@@ -14,13 +14,11 @@ const OrderChat = ({ admin = false, customer = false, message, setMessage, send,
         return (<>
             <div>
                 {message.map((e, index) =>
-                    // (e.from || e.to) == selectedUser &&
                     <div key={index} className={"row mx-2 " + (isAdmin(e.admin) && " " || "justify-content-end")}>
                         <div className="col-sm-12 col-md-7">
                             {console.log(e)
                             }
                             <div className={"alert alert-dismissible " + (isAdmin(e.admin) && "alert-info" || "alert-warning")}>
-                                {/* <h5 className="alert-heading">{e.admin ? "Le Cheval Blanc" : (!e.from?.email ? "Moi" : e.from?.email)}</h5> */}
                                 <h5 className="alert-heading">{e.admin ? "Le Cheval Blanc" : e.from}</h5>
                                 <em>{e.desc}</em>
                             </div>

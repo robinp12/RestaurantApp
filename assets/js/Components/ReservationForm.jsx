@@ -1,4 +1,3 @@
-import Axios from 'axios';
 import React, { useContext, useRef, useState } from 'react';
 import ReactToPrint from 'react-to-print';
 import { toast } from "react-toastify";
@@ -39,7 +38,8 @@ const ReservationForm = () => {
         zipcode: "",
         city: "",
         phoneNumber: "",
-        reservation_at: ""
+        reservation_at: "",
+        peopleNumber: ""
     });
 
     const [reservation, setReservation] = useState({
@@ -57,13 +57,14 @@ const ReservationForm = () => {
         } catch (error) {
             setConfirmB("")
             console.error("Customer's form error")
-            toast("Erreur dans le formulaire", {
-                className: "bg-red-toast",
-            });
+
             if (error.response.data.violations) {
                 const apiErrors = {};
                 setStep(1)
                 error.response.data.violations.forEach((violation) => {
+                    toast(violation.message, {
+                        className: "bg-red-toast",
+                    });
                     apiErrors[violation.propertyPath] = violation.message;
                 });
                 setErrors(apiErrors);
@@ -83,6 +84,7 @@ const ReservationForm = () => {
                 reserveConfirm.current.removeAttribute("disabled");
             } catch (error) {
                 setConfirmB("")
+                reserveConfirm.current.removeAttribute("disabled");
                 console.error("Error on email sending")
             }
             toast(lang.sentReservation);
@@ -94,13 +96,16 @@ const ReservationForm = () => {
 
                 const apiErrors = {};
                 error.response.data.violations.forEach((violation) => {
-                    if (violation.propertyPath == "reservation_at") {
-                        toast("Date incorrecte", {
+                    if (violation.propertyPath == "reservation_at" || violation.propertyPath == "peopleNumber") {
+                        toast(violation.message, {
                             className: "bg-red-toast",
                         });
                         setStep(0)
                     }
                     else {
+                        toast(violation.message, {
+                            className: "bg-red-toast",
+                        });
                         setStep(1)
                     }
                     apiErrors[violation.propertyPath] = violation.message;
@@ -178,7 +183,7 @@ const ReservationForm = () => {
                     <>
                         <div className="container text-center">
                             <div className="row justify-content-end"><span className="numbe"> {step + 1} / 3 </span></div>
-                            <OrderForm isReservation setReservation={setReservation} reservation={reservation} now={now} errors={errors.reservation_at} />
+                            <OrderForm isReservation setReservation={setReservation} reservation={reservation} now={now} errors={errors} />
                             <button className="btn-primary btn" onClick={Next} disabled={!reservation.reservationAt}>{lang.next}</button>
 
                         </div>

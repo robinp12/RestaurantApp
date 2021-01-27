@@ -7,8 +7,6 @@ import cache from "./cache";
 function logout() {
   window.localStorage.removeItem("authToken");
   delete Axios.defaults.headers["Authorization"];
-  cache.invalidate("hospitals");
-  cache.invalidate("hospitalsMap");
   cache.invalidate("users");
   cache.invalidate("datas");
 }

@@ -19,7 +19,6 @@ const Pagination = ({ currentPage, itemsPerPage, length, onPageChanged }) => {
                 </li>
                 {copy.map((page, index) =>
                     < li key={page} className={"page-item" + (currentPage === page && " active")} >
-                        {/* {console.log(page)} */}
                         < button className="page-link" onClick={() => onPageChanged(page)}>{page}</button>
                     </li>
                 )}

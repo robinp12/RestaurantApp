@@ -2,11 +2,11 @@ import socketIOClient from "socket.io-client";
 // export const API_URL = "http://localhost:8000/api/";
 export const API_URL = process.env.API_URL;
 
-export const socket = socketIOClient("//shop-lechevalblanc.be:3000", {
-  transports: ["websocket"],
-  secure: true,
-  reconnect: true,
-  rejectUnauthorized: false,
+export const socket = socketIOClient("https://chatkot12.herokuapp.com/", {
+	transports: ["websocket"],
+	secure: true,
+	reconnect: true,
+	rejectUnauthorized: false,
 });
 // Regroupement dans un fichier pour surcharger
 export const SETTINGS_API = API_URL + "settings";

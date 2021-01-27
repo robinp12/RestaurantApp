@@ -25,12 +25,12 @@ const StepForm = ({ match, setWhere }) => {
     const { id } = match.params
     let decodeId = id ? +atob(`${id}`) : 0;
     const { lang } = useContext(LangContext);
-    const { cart, setCart } = useContext(CartContext);
-    let [...bag] = cart;
-    // const [orderCart, setOrderCart] = useLocalStorage('cart', [])
+    const { cartLocal, setCartLocal } = useContext(CartContext);
+    let [...bag] = cartLocal;
     const [message, setMessage] = useLocalStorage('chat-message', [])
 
     const [products, setProducts] = useState([]);
+    const [allSent, setAllSent] = useState(false);
     const [categories, setCategories] = useState([]);
 
     const confirmRef = useRef();
@@ -70,7 +70,7 @@ const StepForm = ({ match, setWhere }) => {
         invoiceTable: decodeId < 15 ? decodeId : 0
     });
 
-    const [orderInfo, setOrderInfo] = useState({ reservationAt: new Date(new Date(now).setHours(new Date().getHours() + 1)) });
+    const [orderInfo, setOrderInfo] = useState({ reservationAt: "" });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -98,20 +98,20 @@ const StepForm = ({ match, setWhere }) => {
     };
 
     const handleSubmitInvoice = async (id = 0) => {
-        invoice.timeToReceive = orderInfo.reservationAt ? new Date(orderInfo.reservationAt) : new Date(new Date().setHours(new Date().getHours() + 1));
+        invoice.timeToReceive = new Date(orderInfo.reservationAt);
         if (id !== 0) invoice.client = "/api/customers/" + id;
         confirmRef.current.setAttribute("disabled", "")
         try {
-            toast(lang.orderConfirmation);
+            toast("Commande en cours");
             const rep = await invoicesAPI.add(invoice);
             confirmRef.current.removeAttribute("disabled")
             setInvoiceId(rep.data.id);
             sendAllOrders(rep.data.id)
             setConfirmed(true)
-            // sendNotif()
         } catch (error) {
             console.error("Invoice's form error")
             setConfirmB("")
+            confirmRef.current.removeAttribute("disabled")
             if (error.response.data.violations) {
                 console.log(error.response)
 
@@ -130,6 +130,7 @@ const StepForm = ({ match, setWhere }) => {
 
     const sendAllOrders = async (id) => {
 
+
         for (let e in bag) {
             const { name, price, totalAmount } = { ...bag[e] };
             bag[e].label = name;
@@ -141,17 +142,23 @@ const StepForm = ({ match, setWhere }) => {
                 const rep = await Axios.all([ordersAPI.add(bag[e])]).then(res => {
                     return res;
                 })
+                if (e == bag.length - 1) {
+                    if (!onlinePayment.onlinePayment) {
+                        sendMail(id);
+                        setAway(5);
+                    }
+                    else {
+                        setTimeout(setAway(step => step + 1), 500);
+                    }
+                }
             } catch (error) {
+                setAway(1);
+                toast(<p><b>Erreur dans la commande</b><br />Vérifiez que la quantité par article ne soit pas trop importante</p>,
+                    {
+                        className: "bg-red-toast",
+                    })
                 console.error("Error on order submit")
             }
-        }
-        if (!onlinePayment.onlinePayment) {
-            sendMail(id);
-            toast(lang.paymentConfirmation);
-            setAway(5);
-        }
-        else {
-            setTimeout(setAway(step => step + 1), 500);
         }
     }
 
@@ -191,9 +198,6 @@ const StepForm = ({ match, setWhere }) => {
             console.log("Error on check online payment");
         }
     }
-    // const sendNotif = () => {
-    //     SocketClient.sendToSocket("notifSend", "Nouvelle commande");
-    // }
 
     useEffect(() => {
         fetchCat();
@@ -207,8 +211,8 @@ const StepForm = ({ match, setWhere }) => {
 
     const listCart = function () {
         var cartCopy = [];
-        for (let i in cart) {
-            let item = cart[i];
+        for (let i in cartLocal) {
+            let item = cartLocal[i];
             let itemCopy = {};
             for (let p in item) {
                 itemCopy[p] = item[p];
@@ -220,15 +224,15 @@ const StepForm = ({ match, setWhere }) => {
     }
     // Add to cart
     const addItemToCart = function (product, name, price, quantity) {
-        for (var item in cart) {
-            if (cart[item].product === product) {
-                cart[item].quantity++;
+        for (var item in cartLocal) {
+            if (cartLocal[item].product === product) {
+                if (cartLocal[item].quantity < 10) cartLocal[item].quantity++;
                 return;
             }
         }
         price = parseFloat(price)
         var item = { product, name, price, quantity };
-        cart.push(item);
+        cartLocal.push(item);
     }
 
     const Next = (e) => {
@@ -294,11 +298,11 @@ const StepForm = ({ match, setWhere }) => {
 
                             <div className="row">
                                 <div className="col">
-                                    <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setThere(step => step + 1) }} disabled={!cart.length}>{lang.next}</button>
+                                    <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setThere(step => step + 1) }} disabled={!cartLocal.length}>{lang.next}</button>
                                 </div>
                             </div>
                             <Menu products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
-                            <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setThere(step => step + 1) }} disabled={!cart.length}>{lang.next}</button>
+                            <button className="btn-primary btn float-right mt-4" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setThere(step => step + 1) }} disabled={!cartLocal.length}>{lang.next}</button>
                         </div>
                     );
             }
@@ -307,11 +311,11 @@ const StepForm = ({ match, setWhere }) => {
             switch (away) {
                 case 1: // Menu choice
                     return (
-                        <ButtonOrder back={lang.back} next={lang.next} disabled={!cart.length}>
+                        <ButtonOrder back={lang.back} next={lang.next} disabled={!cartLocal.length}>
                             <div className="row justify-content-end"><span className="numbe"> {away + 1} / 5 </span></div>
                             <div className="row">
                                 <div className="col">
-                                    <button className="btn-primary btn float-right mt-4" onClick={Next} disabled={!cart.length}>{lang.next}</button>
+                                    <button className="btn-primary btn float-right mt-4" onClick={Next} disabled={!cartLocal.length}>{lang.next}</button>
                                 </div>
                             </div>
                             <Menu products={products} categories={categories} listCart={listCart} addItemToCart={addItemToCart} />
@@ -321,13 +325,13 @@ const StepForm = ({ match, setWhere }) => {
                     return (
                         <div className="container">
                             <div className="row justify-content-end"><span className="numbe"> {away + 1} / 5</span></div>
-                            <OrderForm reservation={orderInfo} setReservation={setOrderInfo} now={now} errors={errors.timeToReceive} />
+                            <OrderForm reservation={orderInfo} setReservation={setOrderInfo} now={now} errors={errors} />
                             <button className="btn-primary btn float-left mt-4" onClick={Back}>{lang.back}</button>
-                            <button className="btn-primary btn float-right mt-4" onClick={Next} >{lang.next}</button>
+                            <button className="btn-primary btn float-right mt-4" onClick={Next} disabled={!orderInfo.reservationAt}>{lang.next}</button>
                         </div>
                     );
                 case 3: // Order summary
-                    if (!cart.length) setAway(1);
+                    if (!cartLocal.length) setAway(1);
                     return (
                         <div className="container">
                             <div className="row justify-content-end"><span className="numbe"> {away + 1} / 5</span></div>
@@ -337,20 +341,15 @@ const StepForm = ({ match, setWhere }) => {
                                 handleSubmit(e)
                                 oneTimeClick(e)
                                 window.scrollTo(0, 0);
-                            }} disabled={!cart.length} >{lang.confirmOrder + "" + confirmB}</button>
+                            }} disabled={!cartLocal.length} >{lang.confirmOrder + "" + confirmB}</button>
                         </div>
                     );
                 case 4: // Payment
-                    if (!cart.length) setAway(1);
+                    if (!cartLocal.length) setAway(1);
                     return (
                         <div className="container">
                             <div className="row justify-content-end"><span className="numbe"> {away + 1} / 5</span></div>
                             <PaymentForm id={invoiceId} setAway={setAway} />
-                            {/* <button className="btn-primary btn float-right mt-4" onClick={(e) => {
-                                e.preventDefault();
-                                setAway(step => step + 1)
-                                // setCart([])
-                            }} >{lang.next}</button> */}
                         </div>
                     );
                 case 5: // Chat validation
@@ -365,8 +364,7 @@ const StepForm = ({ match, setWhere }) => {
                                     content={() => componentRef2.current}
                                     documentTitle={"Facture-Le-Cheval-Blanc"}
                                 />
-                                {/* <OrderChat admin={authAPI.isAuth()} socket={socket} message={message} /> */}
-                                <a href={"#home"} className="btn-primary btn float-left" onClick={() => setCart([])}>Retour au site</a>
+                                <a href={"#home"} className="btn-primary btn float-left" onClick={() => setCartLocal([])}>Retour au site</a>
                             </div>
                         </>);
                 default: // Client informations
@@ -375,9 +373,17 @@ const StepForm = ({ match, setWhere }) => {
                             <div className="row justify-content-end"><span className="numbe"> {away + 1} / 5</span></div>
                             <CustomerForm errors={errors} />
                             <button className="btn-primary btn float-left" onClick={(e) => { e.preventDefault(); window.scrollTo(0, 0); setChoose(0) }}>{lang.back}</button>
-                            <button className="btn-primary btn float-right" onClick={Next}
-
-                            >{lang.next}</button>
+                            <button className="btn-primary btn float-right" onClick={Next} disabled={
+                                !(
+                                    customer.firstName &&
+                                    customer.lastName &&
+                                    customer.email &&
+                                    customer.zipcode &&
+                                    customer.city &&
+                                    customer.phoneNumber &&
+                                    customer.address
+                                )
+                            }>{lang.next}</button>
 
                         </div>
                     );
@@ -387,9 +393,6 @@ const StepForm = ({ match, setWhere }) => {
             return (
                 <div className="container d-flex justify-content-center ">
                     <div className="row align-items-center">
-                        {/* <div className="col">
-                            <a className="btn btn-block borderButt text-primary my-2 border-primary" onClick={() => setChoose(1)}>{lang.there}</a>
-                        </div> */}
                         <div className="col">
                             <a className="btn btn-block borderButt btn-outline-violet my-2" onClick={() => { setChoose(2); setWhere(2); window.scrollTo(0, 0); }}>{lang.takeAway}</a>
                         </div>

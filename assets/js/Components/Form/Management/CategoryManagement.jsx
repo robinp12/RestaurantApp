@@ -166,7 +166,6 @@ const CategoryManagement = ({ setRefresh, refresh }) => {
                                     </div>
                                 </td>
                                 <td className="text-center align-middle">{cat.label}</td>
-                                {/* <td>{prod.category.label}</td> */}
                                 <td align="center">
                                     <a className="btn btn-primary" onClick={() => handleDeleteCategory(cat.id)}><em className="fa fa-trash"></em></a>
                                 </td>

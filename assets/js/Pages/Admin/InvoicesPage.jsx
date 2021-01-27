@@ -39,7 +39,7 @@ const InvoicesPage = ({ match, history }) => {
     const handleChangeStatus = async (invoice, status) => {
         try {
             await invoicesAPI.update(invoice, { status: status });
-            toast(`Etat de la facture ${invoice} changé à payé`);
+            toast(`Etat de la facture ${invoice} modifié`);
             setChange(false)
             setRefresh(!refresh)
         } catch (error) {

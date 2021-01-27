@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import Header from '../Components/Header';
 import Loader from '../Components/Loader';
 import { Menu } from '../Components/Menu';
-import categoriesAPI from '../Services/categoriesAPI';
-import { LangContext } from '../Context/LangContext';
-import productsAPI from '../Services/productsAPI';
 import { CartContext } from '../Context/CartContext';
+import { LangContext } from '../Context/LangContext';
+import categoriesAPI from '../Services/categoriesAPI';
+import productsAPI from '../Services/productsAPI';
 
 
 const MenuPage = () => {
@@ -13,19 +13,17 @@ const MenuPage = () => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const { lang } = useContext(LangContext);
-    const { cart, setCart } = useContext(CartContext);
+    const { cartLocal, setCartLocal } = useContext(CartContext);
+
     const [load, setLoad] = useState(true);
 
     const listCart = function () {
         var cartCopy = [];
-        for (let i in cart) {
-
-            let item = cart[i];
+        for (let i in cartLocal) {
+            let item = cartLocal[i];
             let itemCopy = {};
             for (let p in item) {
-
                 itemCopy[p] = item[p];
-
             }
             itemCopy.totalAmount = +Number(item.price * item.quantity).toFixed(2);
             cartCopy.push(itemCopy)
@@ -35,14 +33,14 @@ const MenuPage = () => {
     // Add to cart
     const addItemToCart = function (product, name, price, quantity) {
 
-        for (var item in cart) {
-            if (cart[item].product === product) {
-                cart[item].quantity++;
+        for (var item in cartLocal) {
+            if (cartLocal[item].product === product) {
+                if (cartLocal[item].quantity < 10) cartLocal[item].quantity++;
                 return;
             }
         }
         var item = { product, name, price, quantity };
-        cart.push(item);
+        cartLocal.push(item);
     }
 
     const fetchCatProd = async () => {

@@ -29,16 +29,12 @@ const ReservationManagement = ({ match, history }) => {
         }
     }
     const handleDelete = async (id) => {
-        const originValue = [...reservations];
-
-        setReservations(reservations.filter(reservation => reservation.id !== id));
         try {
-            await reservationsAPI.deleteReservations(id)
+            const rep = await reservationsAPI.update(id)
             toast("Réservation n°" + id + " supprimé");
             history.replace("/reservations/" + reservations[0].id)
-
         } catch (error) {
-            setReservations(originValue);
+            console.log(error)
         }
     }
 
@@ -87,10 +83,9 @@ const ReservationManagement = ({ match, history }) => {
                                 >
                                     <th scope="row" className="text-center align-middle">{paddingNumber(reservation.id)}</th>
                                     <td className="text-center align-middle">{reservation.customer?.firstName} {reservation.customer?.lastName} </td>
-                                    <td className="text-center align-middle">{reservation.peopleNumber} </td>
+                                    <td className="text-center align-middle">{new Date(reservation.sentAt) <= new Date("12-12-1971") ? <i className="text-primary font-weight-bold">Supprimé</i> : reservation.peopleNumber} </td>
                                     <td className="text-center align-middle">{new Date(reservation.reservation_at).toLocaleString()}</td>
                                 </tr>)}
-
                             </tbody>
                         </table>
                         {itemsPerPage < reservations.length && <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={reservations.length} onPageChanged={handleChangePage} />}

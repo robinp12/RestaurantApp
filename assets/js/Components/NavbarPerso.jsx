@@ -7,15 +7,15 @@ import authAPI from "../Services/authAPI";
 import Cart from "./Cart";
 
 const NavbarPerso = ({ history }) => {
-  const { cart, setCart } = useContext(CartContext);
 
-  const { language, setLanguage, lang } = useContext(LangContext);
+  const { lang } = useContext(LangContext);
   const { isAuth } = useContext(AuthContext);
+  const { cartLocal, setCartLocal } = useContext(CartContext);
 
   const [show, setShow] = useState(false);
   const popover = (
     <Popover id="popover-basic">
-      <Popover.Title><h4 className="m-1">Panier  <a onClick={() => setCart([])} className="btn btn-primary btn-sm float-right"><em className="fa fa-trash"></em></a></h4></Popover.Title>
+      <Popover.Title><h4 className="m-1">Panier  <a onClick={() => { setCartLocal([]) }} className="btn btn-primary btn-sm float-right"><em className="fa fa-trash"></em></a></h4></Popover.Title>
       <Popover.Content>
         <Cart />
         {(history.location.pathname !== "/commander") &&
@@ -33,7 +33,7 @@ const NavbarPerso = ({ history }) => {
     <Navbar fixed="top" className="violet" variant="dark" collapseOnSelect={true} expand="lg" onToggle={() => setShow(false)}>
       <Navbar.Brand href={!isAuth && "#home" || ""}>
         <img
-          alt=""
+          alt="Logo du site"
           src="/logo.png"
           width="44"
           height="24"
@@ -43,8 +43,8 @@ const NavbarPerso = ({ history }) => {
       <Navbar.Toggle aria-controls="basic-navbar-nav text-primary border-primary ml-1">
         {!isAuth &&
           <>
-            {cart.length &&
-              <b><em className="fa fa-shopping-cart "></em> {cart.length}</b>
+            {cartLocal &&
+              <b><em className="fa fa-shopping-cart "></em> {cartLocal?.length}</b>
               ||
               <i className="fa fa-bars" aria-hidden="true"></i>
 
@@ -56,11 +56,7 @@ const NavbarPerso = ({ history }) => {
         {!isAuth &&
           <>
             <Nav className="mr-auto nav-item">
-              <NavDropdown title={lang.theMenu} id="basic-nav-dropdown">
-                <NavDropdown.Item href="#menu#foods">{lang.foods}</NavDropdown.Item>
-                <NavDropdown.Item href="#menu#drinks">{lang.drinks}</NavDropdown.Item>
-                {/* <NavDropdown.Item href="#action/3.4">{lang.suggestions}</NavDropdown.Item> */}
-              </NavDropdown>
+              <Nav.Link className="nav-item" href="#menu">{lang.theMenu}</Nav.Link>
               <Nav.Link className="nav-item" href="#apropos">{lang.about}</Nav.Link>
             </Nav>
             <Nav className="nav-item">
@@ -69,10 +65,10 @@ const NavbarPerso = ({ history }) => {
                   {(history.location.pathname !== "/commander") &&
                     <>
                       <Nav.Link className="btn text-light mr-1" href="#reserver">{lang.toReserve}</Nav.Link>
-                      {cart.length &&
+                      {cartLocal?.length &&
                         <OverlayTrigger trigger="click" placement="bottom" show={show} overlay={popover} transition>
                           <Nav.Link className="nav-item btn text-light border-light ml-1" onClick={() => setShow(!show)}>
-                            <b><em className="fa fa-shopping-cart fa-lg"></em> {lang.cart} : {cart.length}</b>
+                            <b><em className="fa fa-shopping-cart fa-lg"></em> {lang.cart} : {cartLocal?.length}</b>
                           </Nav.Link>
                         </OverlayTrigger>
                         ||
@@ -87,8 +83,6 @@ const NavbarPerso = ({ history }) => {
           ||
           <>
             <Nav className="mr-auto nav-item">
-              {/* <Nav.Link className="nav-item text-muted" href="#map">Map</Nav.Link> */}
-              {/* <Nav.Link className="nav-item text-muted" href="#chatadmin">Chat</Nav.Link> */}
               <Nav.Link className="nav-item" href="#commandes">Commandes</Nav.Link>
               <Nav.Link className="nav-item" href="#reservations">Reservations</Nav.Link>
               <Nav.Link className="nav-item" href="#factures">Factures</Nav.Link>

@@ -113,11 +113,6 @@ const OrdersPage = ({ match, history }) => {
                         }
                     </div>
                     <div className={"col-sm-12 col-md-" + (show ? "6" : "12")} >
-                        {/* PROBLEME D'HEURE COMMANDE /RESERVATION
-                        PROBLEME D'HEURE COMMANDE /RESERVATION
-                        PROBLEME D'HEURE COMMANDE /RESERVATION
-                        PROBLEME D'HEURE COMMANDE /RESERVATION
-                        PROBLEME D'HEURE COMMANDE /RESERVATION */}
                         {orders.map(order =>
                             ((order.id <= id) && (order.id > id - 5)) &&
                             <div key={order.id} className="card mb-3">
@@ -153,7 +148,6 @@ const OrdersPage = ({ match, history }) => {
                                         </div>
 
                                     </div>
-                                    {/* <button className="btn btn-primary float-right" onClick={() => handleDelete(order.id)}>Supprimer</button> */}
                                 </div>
                             </div>
 

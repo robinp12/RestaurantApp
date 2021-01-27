@@ -25,14 +25,14 @@ const HomePage = () => {
                                         <img
                                             className="d-block w-100"
                                             src="./cheval-blanc-restaurant.jpg"
-                                            alt="First slide"
+                                            alt="Premier slide"
                                         />
                                     </Carousel.Item>
                                     <Carousel.Item>
                                         <img
                                             className="d-block w-100"
                                             src="./cheval-blanc-bar.jpg"
-                                            alt="Third slide"
+                                            alt="Deuxieme slide"
                                         />
                                     </Carousel.Item>
                                 </Carousel>

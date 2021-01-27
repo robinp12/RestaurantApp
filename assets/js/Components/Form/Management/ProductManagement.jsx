@@ -101,7 +101,6 @@ const ProductManagement = ({ setRefresh, refresh }) => {
                                             <td className="text-center align-middle">{prod.label}</td>
                                             <td className="text-center align-middle">{prod.price}€</td>
                                             <td className="text-center align-middle">{prod.description}</td>
-                                            {/* <td>{prod.category.label}</td> */}
                                             <td align="center">
                                                 <a className="btn btn-secondary" onClick={() => { setProduct(prod); setUpdate(true) }}><em className="fa fa-pencil"></em></a>
                                                 <a className="btn btn-primary" onClick={() => handleDeleteProduct(prod.id)}><em className="fa fa-trash"></em></a>

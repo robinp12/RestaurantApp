@@ -42,7 +42,11 @@ class Reservation
      * @ORM\Column(type="integer", length=4)
      * @Groups({"reservations_read"})
      * @Assert\NotBlank(message="Obligatoire")
-     * @Assert\Positive(message="Quantité invalide")
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 20,
+     *      notInRangeMessage = "La réservation n'est possible qu'entre {{ min }} et {{ max }} personnes",
+     * )
      */
     private $peopleNumber;
 

@@ -49,6 +49,10 @@ class Order
      * @Groups({"orders_read","invoices_read"})
      * @Assert\NotBlank(message="Invalide")
      * @Assert\Positive(message="Quantité invalide")
+     * @Assert\LessThan(
+     *     value = 10,
+     *     message = "Quantité trop élevée"
+     * )
      */
     private $quantity;
 
